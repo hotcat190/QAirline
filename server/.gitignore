@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+npm-debug.log
+
+# Optional npm cache directory
+.npm
+
+# Environment variables file
+.env
+.env.development
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Compiled binary addons
+build/Release
