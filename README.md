@@ -22,41 +22,6 @@
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
-
-## About The Project
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-#### Client
-
-- [![React Native][React-Native.js]][React-Native-url]
-- ![Javascript]
-- [![Axios][Axios.JS]][SCSS-url]
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Server
-
-- [![Node][Node.JS]][Node-url]
-- ![Javascript]
-- [![Express][Express.JS]][Node-url]
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Design UI/UX
-
-- [![Figma]][Node-url]
-
-### Team
-
-- Hoang Duc Bach: Backend and Design UI/UX
-- Dang Thi Thanh Hien: Design System and Document
-- Tran Duc Luong: Frontend and Design System
-- Pham Minh Tam: Frontend and Document
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
@@ -89,23 +54,3 @@ This section should list any major frameworks/libraries used to bootstrap your p
 [Axios-url]: https://axios-http.com/
 [Figma]: https://img.shields.io/badge/Figma-222222?style=for-the-badge&logo=figma
 [Figma-url]: https://www.figma.com/
-
-## Quickstart
-
-```bash
-# clone project
-git clone https://github.com/HoangDucBach/museart.git
-cd museart
-cd src
-
-# run server
-cd server
-npm install
-run localhost: npm run dev
-
-# run frontend
-cd mobile
-npm install
-npm run android
-if network error: adb reverse tcp:8000 tcp:8000
-``` -->
