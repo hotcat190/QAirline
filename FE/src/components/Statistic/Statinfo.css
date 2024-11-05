@@ -1,0 +1,111 @@
+.stats-info .stats {
+    display: flex;
+    gap: 50px;
+}
+
+.stats-info .ex-stats {
+    width: 45%;
+    position: relative;
+}
+
+.stats-info .ex-stats img {
+    width: 80%;
+    border-radius: 20px;
+}
+
+.stats-info .num-stats {
+    flex: 1;
+}
+
+.stats .share-ex {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    bottom: -20px;
+    right: 30px;
+}
+
+.emojis {
+    display: flex;
+    gap: 5px;
+}
+
+.emojis .emoji {
+    font-size: 2.3rem;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.emojis .emoji:hover {
+    transform: translateY(-5px);
+}
+
+
+.desc-share {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.num-stats .stats-title {
+    font-weight: bold;
+    font-size: 3.5rem;
+}
+
+.num-stats .stats-desc {
+    font-size: 1.6rem;
+    color: #5a6473;
+    line-height: 1.7;
+    margin-top: 20px;
+}
+
+.stats-info .num {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.stat-commonn {
+    display: flex;
+    position: relative;
+    padding-left: 15px;
+}
+
+.stat-commonn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #ccc;
+}
+
+.stats-info .stat-common {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.stats-info .detailed {
+    display: flex;
+    margin-top: 30px;
+}
+
+.stats-info .separator {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin-top: 30px;
+}
+
+
+.num-stats .btn {
+    max-width: 130px;
+    display: block;
+    margin-top: 70px;
+}

@@ -1,0 +1,69 @@
+.travel-ease {
+    margin-top: 20px;
+}
+
+
+.travel-ease .content {
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 30px 0px;
+}
+
+.travel-ease h2 {
+    font-size: 2.5rem;
+    font-weight: 650;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.travel-ease .content .desc {
+    font-size: 1.2rem;
+    color: #666;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.features {
+    width: 92%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+.feature-card {
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card img {
+    width: 50px;
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    font-size: 2.0rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.feature-card p {
+    font-size: 1.2rem;
+    color: #777;
+    line-height: 1.5;
+}

@@ -1,0 +1,70 @@
+.newsletter {
+    position: relative;
+}
+
+.newsletter img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+.newsletter h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.newsletter .desc {
+    font-size: 1.6rem;
+    color: white;
+    line-height: 1.5;
+}
+
+
+.subscription .main-form {
+    position: absolute;
+    width: 38%;
+    bottom: 5%;
+    right: 0%;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 50px;
+    padding: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    height: 55px;
+    margin-top: 20px;
+}
+
+.email-input {
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 50px 0 0 50px;
+    width: 250px;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+.subscribe-btn {
+    position: absolute;
+    right: 2%;
+    border: none;
+    outline: none;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 13px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.subscribe-btn:hover {
+    opacity: 0.9;
+}

@@ -1,0 +1,64 @@
+.fixed-header {
+    background: #f8f4f7;
+    padding-top: 26px;
+    position: sticky;
+    top: -26px;
+    z-index: 20;
+}
+
+.fixed-header .navbar {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.fixed-header #pc-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    margin-left: 100px;
+}
+
+.fixed-header #pc-nav a {
+    color: #6c6a6a;
+}
+
+.fixed-header #pc-nav a:hover {
+    color: var(--primary-color);
+    position: relative;
+}
+
+.fixed-header #pc-nav a:hover::before {
+    content: '';
+    position: absolute;
+    left: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+.fixed-header .action-link {
+    margin-right: 20px;
+    color: black;
+}
+
+.fixed-header .action-btn {
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.fixed-header .action-btn:hover {
+    transform: translateY(-10px);
+    /* Di chuyển lên 10px */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* Đổ bóng khi hover */
+}
+
+.fixed-header .actions {
+    margin-left: auto;
+}

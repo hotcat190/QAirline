@@ -1,0 +1,128 @@
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 30;
+}
+
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #333;
+    background: #16182308;
+    font-size: 2.8rem;
+    line-height: 0;
+    cursor: pointer;
+    border: none;
+}
+
+.close-btn:hover {
+    opacity: 0.9;
+}
+
+.signin-form,
+.signup-form {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background-image: linear-gradient(to top, #fddb92 0%, #d1fdff 100%);
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 41;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+}
+
+.showSign {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.common-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    padding-left: 16px;
+    border: 2px solid #dce0e3;
+    border-radius: 44px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.common-btn:hover {
+    background: #e7e7e7;
+}
+
+.common-btn span {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 40px;
+}
+
+.common-btn img {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    left: 16px;
+}
+
+.main-signin,
+.main-signup {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+    width: 60%;
+}
+
+.actions-container {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+.actions-container a {
+    color: #ff5733;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.4rem;
+}
+
+.actions-container a:hover {
+    text-decoration: underline;
+}
+
+.actions-container p {
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+
+.signin-form h2,
+.signup-form h2 {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 2.7rem;
+    font-weight: 550;
+    color: black;
+}

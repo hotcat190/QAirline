@@ -1,0 +1,297 @@
+.slideshow-container {
+    margin-top: 100px;
+}
+
+.slideshow-container .content {
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+}
+
+.slides-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+
+.slide .name {
+    font-weight: 600;
+    font-size: 2.0rem;
+}
+
+.slide {
+    min-width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px 30px 80px;
+    border-radius: 20px;
+}
+
+.slide1 {
+    background: rgb(19, 18, 18);
+}
+
+.staffs-show {
+    text-align: center;
+}
+
+
+.arrow-slide {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    user-select: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow-slide:hover {
+    opacity: 0.9;
+}
+
+.arrow-left {
+    left: 10px;
+}
+
+.arrow-right {
+    right: 10px;
+}
+
+.dot-parent {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.active-dot {
+    background-color: #333;
+}
+
+
+.testimonial-text {
+    width: 43%;
+}
+
+.slide3 .testimonial-text {
+    text-align: center;
+}
+
+.testimonial-text h3 {
+    font-size: 2.3em;
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+.testimonial-text .comment {
+    display: none;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.comment.active-hover {
+    display: block;
+}
+
+.comment-1 {
+    display: block;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.stars {
+    color: #ffa500;
+    margin-right: 10px;
+}
+
+.world-map {
+    position: relative;
+    width: 55%;
+}
+
+.slide .name {
+    margin-top: 20px;
+}
+
+.slide .job {
+    margin-top: 5px;
+}
+
+.world-map .person-icon img {
+    width: 30px;
+    border-radius: 999px;
+    transition: transform 0.3s ease;
+}
+
+.world-map .world {
+    width: 100%;
+    height: auto;
+}
+
+.person-icon {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.person-icon:hover img {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: var(--primary-color) 2px solid;
+}
+
+.person-1 {
+    top: 10%;
+    left: 20%;
+}
+
+.person-2 {
+    bottom: 40%;
+    left: 50%;
+}
+
+.person-3 {
+    top: 25%;
+    right: 30%;
+}
+
+.person-4 {
+    top: 70%;
+    left: 23%;
+}
+
+.person-5 {
+    right: 10%;
+    bottom: 20%;
+}
+
+.slide2 {
+    background-image: linear-gradient(to top, #fcc5e4 0%, #fda34b 15%, #ff7882 35%, #c8699e 52%, #7046aa 71%, #0c1db8 87%, #020f75 100%);
+}
+
+.staffs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.staffs .desc {
+    width: 50%;
+    font-size: 1.6rem;
+    color: #666;
+}
+
+.staffs img {
+    object-fit: cover;
+    max-width: 30%;
+    height: 100%;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.staffs img:hover {
+    transform: scale(1.1);
+}
+
+.staffs-show h3 {
+    font-size: 2.3em;
+    margin-bottom: 10px;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+.slide3 {
+    background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
+}
+
+.beautiful-place {
+    width: 80%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+.location-1 {
+    top: 13%;
+    left: 45%;
+}
+
+.location-2 {
+    top: 27%;
+    left: 60%;
+}
+
+.location-3 {
+    bottom: 15%;
+    right: 7%;
+}
+
+.world-map .locationn img {
+    width: 30px;
+    border-radius: 999px;
+}
+
+.locationn:hover {
+    cursor: pointer;
+}
+
+.locationn {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.locationn:hover img {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: var(--primary-color) 2px solid;
+}
+
+.locationn::after {
+    content: attr(data-text);
+    position: absolute;
+    bottom: 100%;
+    left: 100%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    display: none;
+}
+
+.locationn:hover::after {
+    display: block;
+}

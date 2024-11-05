@@ -1,0 +1,241 @@
+main .main-leftcontent .ranking {
+    background-color: #fef5f6;
+    color: var(--primary-color);
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.main-content {
+    padding-top: 80px;
+    position: relative;
+}
+
+main .main-leftcontent {
+    width: 55%;
+    position: relative;
+}
+
+main .main-leftcontent .des {
+    font-size: 1.6rem;
+    margin-top: 30px;
+    line-height: 1.4;
+}
+
+.main-content .content {
+    display: flex;
+}
+
+main .main-content .destination {
+    position: absolute;
+    left: -90px;
+    top: 60px;
+    transform: rotate(-45deg);
+}
+
+main .main-content .cloud {
+    position: absolute;
+    top: -50px;
+    left: -120px;
+}
+
+
+
+main .main-rightcontent {
+    position: relative;
+    margin-left: auto;
+}
+
+main .main-rightcontent .plane {
+    position: absolute;
+    top: -60px;
+    right: -110px;
+    transform: rotate(20deg);
+}
+
+
+main .main-content .rating-container {
+    position: absolute;
+    bottom: -20px;
+    right: -55px;
+    width: 160px;
+    padding: 10px 5px 10px 20px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+
+
+main .main-content .avatars {
+    display: flex;
+    position: relative;
+}
+
+/* .main-rightcontent .person {
+    height: 100%;
+} */
+
+main .main-content .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    overflow: hidden;
+    margin-left: -10px;
+    /* Overlap effect */
+}
+
+main .main-content .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+main .main-content .rating-text {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+main .main-content .star {
+    color: gold;
+    margin-left: 5px;
+}
+
+main .main-rightcontent img {
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+}
+
+.booking-container {
+    padding: 20px;
+    background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.flight-options {
+    background: #e40f27;
+    display: flex;
+    justify-content: space-evenly;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.dropdown {
+    background: #e40f27;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown:focus {
+    outline: none;
+    /* Loại bỏ viền focus */
+    box-shadow: none;
+    /* Loại bỏ bóng */
+}
+
+.flight-details {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.flight-details-from,
+.flight-details-to {
+    display: flex;
+    gap: 10px;
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.detail label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.detail input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 200px;
+}
+
+.detail .location,
+.detail .date {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-right: 5px;
+    color: #555;
+}
+
+.search-btn {
+    background-color: #e40f27;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+h1 {
+    margin-top: 20px;
+    font-size: 6.0rem;
+    font-weight: bold;
+    color: black;
+    line-height: 1.3;
+}
+
+.red-text {
+    color: #e30613;
+}
+
+.search-btn:hover {
+    background-color: #d40d24;
+}
+
+
+.main-booking {
+    margin-top: 40px;
+    display: inline-block;
+}
+
+.fa-magnifying-glass {
+    font-size: 18px;
+}
+
+.icon-rotate {
+    transform: rotate(180deg);
+}
