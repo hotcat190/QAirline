@@ -54,3 +54,22 @@
 [Axios-url]: https://axios-http.com/
 [Figma]: https://img.shields.io/badge/Figma-222222?style=for-the-badge&logo=figma
 [Figma-url]: https://www.figma.com/
+
+## Quickstart
+
+```bash
+# clone project
+git clone https://github.com/dluong1210/QAirline
+cd QAirline
+cd src
+
+# run server
+cd server
+npm install
+npm run dev
+
+# run frontend
+cd FE
+npm install
+npm start
+```
