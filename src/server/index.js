@@ -5,6 +5,9 @@ import helmet from "helmet";
 import bodyParser from "body-parser";
 
 import authRouter from "./routes/auth.js";
+import userRouter from "./routes/user.js";
+import flightRouter from "./routes/flight.js";
+import bookingRouter from "./routes/booking.js";
 
 dotenv.config();
 
@@ -20,6 +23,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/flight", flightRouter);
+app.use("/api/booking", bookingRouter);
 
 app.listen(port, () => {
   console.log("Server listen in port " + port);

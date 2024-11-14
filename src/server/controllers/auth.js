@@ -24,7 +24,7 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-  const { email, password, username, number } = req.body;
+  const { email, password, username } = req.body;
   try {
     const [existingUser] = await pool.query(
       "SELECT * FROM customer WHERE email = ?",
