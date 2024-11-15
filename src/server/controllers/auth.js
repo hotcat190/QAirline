@@ -2,11 +2,12 @@ import * as argon2 from "argon2";
 import pool from "../database/database.js";
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, numberPhone } = req.body;
   try {
-    const [user] = await pool.query("SELECT * FROM customer WHERE email = ?", [
-      email,
-    ]);
+    const [user] = await pool.query(
+      "SELECT * FROM customer WHERE email = ? OR numberPhone = ?",
+      [email, numberPhone]
+    );
 
     if (user.length === 0) {
       return res.status(400).json({ message: "User is not exists." });
@@ -24,11 +25,11 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-  const { email, password, username } = req.body;
+  const { email, password, numberPhone, username } = req.body;
   try {
     const [existingUser] = await pool.query(
-      "SELECT * FROM customer WHERE email = ?",
-      [email]
+      "SELECT * FROM customer WHERE email = ? OR numberPhone = ?",
+      [email, numberPhone]
     );
     console.log(existingUser);
 
@@ -38,8 +39,8 @@ export const register = async (req, res) => {
     var passwordHash = await argon2.hash(password);
 
     await pool.query(
-      "INSERT INTO customer (username, email, password) VALUES (?, ?, ?)",
-      [username, email, passwordHash]
+      "INSERT INTO customer (username, email, password, numberPhone) VALUES (?, ?, ?, ?)",
+      [username, email, passwordHash, numberPhone]
     );
   } catch (e) {
     res.status(500).send(e.message);
