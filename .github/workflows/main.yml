@@ -28,7 +28,3 @@ jobs:
     - name: Deploy Backend
       run: |
         ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} "cd QAirline/src/server && git pull && npm install && pm2 restart backend"
-
-    - name: Restart Database (Optional)
-      run: |
-        ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} "sudo systemctl restart mysql"  # Only if changes affect the database configuration
