@@ -36,7 +36,7 @@ function MyFlight() {
                                 <p>
                                     If you want to view your booked flight, change your flight schedule, or purchase additional services like baggage, seat selection, or meals, please fill in the information below:
                                 </p>
-                                <form action='#'>
+                                <form className='form-myflight' action='#'>
                                     <div className="input-group">
                                         <input type="text" id="booking-code" name="booking-code" placeholder="Booking code *" required />
                                     </div>
@@ -46,7 +46,7 @@ function MyFlight() {
                                     <div className="input-group">
                                         <input type="text" id="first-name" name="first-name" placeholder="First name *" required />
                                     </div>
-                                    <button type="submit">Tìm kiếm</button>
+                                    <button type="submit" className='search'>Search</button>
                                 </form>
                             </div>
                             <div className='myflight-image'>

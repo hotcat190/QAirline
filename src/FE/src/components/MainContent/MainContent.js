@@ -91,7 +91,7 @@ function MainContent() {
                   </div>
 
                   <div className="bottom">
-                    <button className="search-btn">Search</button>
+                    <button className="search-flights">Search</button>
                   </div>
                 </div>
               </div>
@@ -103,7 +103,7 @@ function MainContent() {
               src="img/plane.svg"
               alt=""
               className="plane"
-              width="90px"
+              width="110px"
             />
             <img
               src="img/cloud.svg"

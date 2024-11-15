@@ -18,7 +18,13 @@ button {
     transition: background-color 0.3s, color 0.3s;
 }
 
-button:hover {
+.search-codemyflights:hover {
+    cursor: pointer;
+    background-color: rgb(255, 250, 250);
+    color: rgb(224, 54, 54);
+}
+
+.search-myflights:hover {
     cursor: pointer;
     background-color: rgb(255, 250, 250);
     color: rgb(224, 54, 54);
@@ -30,7 +36,7 @@ button:hover {
 }
 
 button > div {
-    min-width: 170px;
+    min-width: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
