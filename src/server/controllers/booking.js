@@ -55,3 +55,39 @@ export const bookTicket = async (req, res) => {
     connection.release();
   }
 };
+
+export const getTicketByCode = async (req, res) => {
+  const { code } = req.body;
+
+  try {
+    const query = `SELECT 
+                      ticket.idTicket,
+                      classFlight.idclassFlight,
+                      classFlight.class,
+                      ticket.code,
+                      ticket.price,
+                      ticket.status,
+                      ticket.created_at,
+                      flight.timeStart,
+                      ap1.name AS airportBeginName,
+                      ap2.name AS airportEndName
+                  FROM 
+                      customer
+                  JOIN 
+                      ticket USING(idCustomer)
+                  JOIN 
+                      classFlight USING(idclassFlight)
+                  JOIN 
+                      flight USING(idFlight)
+                  JOIN 
+                      airport AS ap1 ON flight.idbeginAirport = ap1.idairport
+                  JOIN 
+                      airport AS ap2 ON flight.idendAirport = ap2.idairport
+                  WHERE 
+                      ticket.code = ?;`;
+    const [infoTicket] = await pool.query(query, [code]);
+    res.send(infoTicket);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
