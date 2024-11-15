@@ -1,8 +1,9 @@
 import express from "express";
-import { bookTicket } from "../controllers/booking.js";
+import { bookTicket, getTicketByCode } from "../controllers/booking.js";
 
 const router = express.Router();
 
 router.post("/", bookTicket);
+router.get("/getTicketByCode", getTicketByCode);
 
 export default router;
