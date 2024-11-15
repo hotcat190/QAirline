@@ -5,6 +5,10 @@
     color: #000339;
 }
 
+.location span {
+    margin-left: 5px;
+}
+
 .featured header {
     width: 92%;
     margin: 0 auto;
@@ -30,6 +34,10 @@
     font-weight: 600;
     font-size: 1.8rem;
     color: #0689ff;
+}
+
+.featured .link:hover {
+    opacity: 0.9;
 }
 
 .featured .link .arrow {
@@ -123,3 +131,4 @@
 .featured .info .btn {
     margin-left: auto;
 }
+

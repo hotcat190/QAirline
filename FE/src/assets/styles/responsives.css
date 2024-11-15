@@ -1,3 +1,25 @@
+@media screen and (max-width: 900px) {
+    .myflight-image {
+        display: none;
+    }
+
+    .flight-form {
+        width: 90%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .form-myflight {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .flight-form p {
+        width: 80%;
+        margin: 0px auto 20px auto;
+    }
+}
+
 @media screen and (min-width: 992px) {
 
 
@@ -206,6 +228,39 @@
 /* Mobile */
 
 @media screen and (max-width: 767px) {
+
+    button > div {
+        font-size: 13px;
+    }
+
+    .logo {
+        width: 110px;
+    }
+
+    .flight-form {
+        width: 100%;
+    }
+
+    .tab {
+        font-size: 1.2rem;
+    }
+
+    .flight-form button {
+        font-size: 1.3rem;
+    }
+
+    .flight-form p {
+        width: 100%;
+        font-size: 1.3rem;
+    }
+
+    .empty-state p {
+        font-size: 1.2rem;
+    }
+
+    .form-myflight {
+        width: 80%;
+    }
 
     .beautiful-place {
         width: 60%;
@@ -446,3 +501,11 @@
     }
 
 }
+
+@media screen and (max-width: 450px) {
+    .toprow-myflights {
+        display: flex;
+        justify-content: space-between;
+    }    
+}
+

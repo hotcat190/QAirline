@@ -6,6 +6,11 @@
     z-index: 20;
 }
 
+.logo {
+    width: 150px;
+    height: auto;
+}
+
 .fixed-header .navbar {
     padding: 10px 0;
     display: flex;
@@ -21,12 +26,15 @@
 }
 
 .fixed-header #pc-nav a {
-    color: #6c6a6a;
+    color: #535353;
+    background-position: left;
+    transition: all 0.3s ease;
 }
 
 .fixed-header #pc-nav a:hover {
     color: var(--primary-color);
     position: relative;
+    background-position: right;
 }
 
 .fixed-header #pc-nav a:hover::before {

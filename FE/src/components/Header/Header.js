@@ -40,7 +40,7 @@ function Header() {
             </svg>
           </label>
           <a href="/">
-            <img className="logo" src="img/logo.svg" alt="Besnik." />
+            <img className="logo" src="img/LOGO.png" alt="Besnik." />
           </a>
 
           <ul id="pc-nav">
