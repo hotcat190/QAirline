@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
-import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 
 import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
@@ -17,6 +17,7 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
