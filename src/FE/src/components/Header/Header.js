@@ -1,9 +1,6 @@
 import React from 'react';
 import * as rd from 'react-router-dom'
-// import Home from '../pages/Home'; 
-// import About from '../pages/About';
-// import Destination from '../pages/Destination';
-// import Offers from '../pages/Offers';
+
 
 import './Header.css';
 
