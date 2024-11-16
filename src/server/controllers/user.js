@@ -33,13 +33,16 @@ export const getTickets = async (req, res) => {
 
   try {
     const query = `SELECT 
-                        ticket.idTicket,
-                        classFlight.idclassFlight,
-                        classFlight.class,
-                        ticket.price,
-                        flight.timeStart,
-                        ap1.name AS airportBeginName,
-                        ap2.name AS airportEndName
+                      ticket.idTicket,
+                      classFlight.idclassFlight,
+                      classFlight.class,
+                      ticket.code,
+                      ticket.price,
+                      ticket.status,
+                      ticket.created_at,
+                      flight.timeStart,
+                      ap1.name AS airportBeginName,
+                      ap2.name AS airportEndName
                     FROM 
                         customer
                     JOIN 
