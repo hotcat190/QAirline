@@ -1,7 +1,8 @@
 import pool from "../database/database.js";
 
 export const bookTicket = async (req, res) => {
-  const { idCustomer, idClassFlight } = req.body;
+  const { idCustomer } = req.user;
+  const { idClassFlight } = req.body;
 
   const connection = await pool.getConnection();
 

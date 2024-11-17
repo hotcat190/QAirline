@@ -58,7 +58,7 @@ export const getInfoFlight = async (req, res) => {
           id: rows[0].idendAirport,
           name: rows[0].endAirportName,
         },
-        airplaneId: rows[0].idAirplane,
+        idAirplane: rows[0].idAirplane,
         classes: {},
       };
 
@@ -70,11 +70,167 @@ export const getInfoFlight = async (req, res) => {
         };
       });
 
-      console.log(rows);
       res.send(flightData);
     } else {
-      console.log("No flight found with the given id.");
+      res.status(404).json({ message: "No flight found with the given id." });
     }
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+export const createFlight = async (req, res) => {
+  const { idAdmin, role } = req.user;
+  const {
+    timeStart,
+    timeEnd,
+    idBeginAirport,
+    idEndAirport,
+    classes,
+    idAirplane,
+  } = req.body;
+
+  if (role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Access denied. You do not have admin privileges." });
+  }
+
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [result] = await connection.query(
+      `INSERT INTO flight (timeStart, timeEnd, idbeginAirport, idendAirport, idAirplane, idAdmin_created) VALUE (?, ?, ?, ?, ?, ?)`,
+      [timeStart, timeEnd, idBeginAirport, idEndAirport, idAirplane, idAdmin]
+    );
+    const idFlight = result.insertId;
+
+    for (const classType in classes) {
+      if (classes.hasOwnProperty(classType)) {
+        const { seatAmount, currentPrice } = classes[classType];
+
+        await connection.query(
+          "INSERT INTO classflight (class, seatAmount, seatBooked, currentPrice, idFlight) VALUE (?, ?, ?, ?, ?)",
+          [classType, seatAmount, 0, currentPrice, idFlight]
+        );
+      }
+    }
+
+    await connection.commit();
+    res.send({ idFlight: `${idFlight}` });
+  } catch (err) {
+    await connection.rollback();
+    res.status(500).send(err.message);
+  } finally {
+    connection.release();
+  }
+};
+
+export const changeInfoFlight = async (req, res) => {
+  const { idAdmin, role } = req.user;
+  const { idFlight, timeStart, timeEnd, classes, idAirplane } = req.body;
+
+  if (role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Access denied. You do not have admin privileges." });
+  }
+  if (!idFlight) {
+    return res.status(400).json({ message: "idFlight is required." });
+  }
+
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    let query = "UPDATE flight SET idAdmin_created = ?";
+    const updateValues = [idAdmin];
+
+    if (timeStart) {
+      query += ", timeStart = ?";
+      updateValues.push(timeStart);
+    }
+    if (timeEnd) {
+      query += ", timeEnd = ?";
+      updateValues.push(timeEnd);
+    }
+    if (idAirplane) {
+      query += ", idAirplane = ?";
+      updateValues.push(idAirplane);
+    }
+    query += " WHERE idFlight = ?";
+    updateValues.push(idFlight);
+
+    const [result] = await connection.query(query, updateValues);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Flight not found." });
+    }
+
+    if (classes) {
+      for (const classType in classes) {
+        if (classes.hasOwnProperty(classType)) {
+          const { seatAmount, currentPrice } = classes[classType];
+
+          const [result] = await connection.query(
+            `UPDATE classflight
+             SET seatAmount = ?, currentPrice = ?
+             WHERE idFlight = ? AND class = ?`,
+            [seatAmount, currentPrice, idFlight, classType]
+          );
+
+          if (result.affectedRows === 0) {
+            return res.status(404).json({
+              message: `Class ${classType} not found for the flight.`,
+            });
+          }
+        }
+      }
+    }
+
+    await connection.commit();
+    res.json({ message: "Flight information updated successfully." });
+  } catch (err) {
+    await connection.rollback();
+    console.error(err);
+    res.status(500).json({ message: "Server error." });
+  } finally {
+    connection.release();
+  }
+};
+
+export const deleteFlight = async (req, res) => {
+  const { idAdmin, role } = req.user;
+  const { idFlight } = req.query;
+
+  if (role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Access denied. You do not have admin privileges." });
+  }
+  if (!idFlight) {
+    return res.status(400).json({ message: "idFlight is required." });
+  }
+
+  try {
+    const [classResult] = await pool.query(
+      "DELETE FROM classflight WHERE idFlight = ?",
+      [idFlight]
+    );
+
+    const [flightResult] = await pool.query(
+      "DELETE FROM flight WHERE idFlight = ?",
+      [idFlight]
+    );
+    if (flightResult.affectedRows === 0) {
+      return res.status(404).json({
+        message: `Flight not found`,
+      });
+    }
+
+    res.send("Delete successfully");
   } catch (err) {
     res.status(500).send(err.message);
   }
