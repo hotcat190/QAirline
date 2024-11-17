@@ -1,7 +1,7 @@
 import pool from "../database/database.js";
 
 export const getInfo = async (req, res) => {
-  const { idCustomer } = req.body;
+  const { idCustomer } = req.user;
 
   try {
     const [info] = await pool.query(
@@ -15,7 +15,8 @@ export const getInfo = async (req, res) => {
 };
 
 export const changeInfo = async (req, res) => {
-  const { idCustomer, username, email } = req.body;
+  const { idCustomer } = req.user;
+  const { username, email } = req.body;
 
   try {
     await pool.query(
@@ -29,7 +30,7 @@ export const changeInfo = async (req, res) => {
 };
 
 export const getTickets = async (req, res) => {
-  const { idCustomer } = req.body;
+  const { idCustomer } = req.user;
 
   try {
     const query = `SELECT 
@@ -57,16 +58,7 @@ export const getTickets = async (req, res) => {
                         airport AS ap2 ON flight.idendAirport = ap2.idairport
                     WHERE 
                         customer.idCustomer = ?;`;
-    const [
-      info,
-      // idTickets,
-      // idclassFlight,
-      // classFlight,
-      // price,
-      // timeStart,
-      // airportBegin,
-      // airportEnd,
-    ] = await pool.query(query, idCustomer);
+    const [info] = await pool.query(query, idCustomer);
 
     res.send(info);
   } catch (err) {
