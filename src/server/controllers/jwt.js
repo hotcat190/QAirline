@@ -27,11 +27,20 @@ export const refreshAccessToken = async (req, res) => {
       if (err) {
         return res.status(403).json({ message: "Invalid token. " });
       }
-      var userId = decoded.idCustomer;
-      const payload = {
-        idCustomer: `${userId}`,
-        createAt: new Date(),
-      };
+      const role = decoded.role;
+      var userId = role === "admin" ? decoded.idAdmin : decoded.idCustomer;
+      const payload =
+        role === "admin"
+          ? {
+              idAdmin: `${userId}`,
+              role: `${role}`,
+              createAt: new Date(),
+            }
+          : {
+              idCustomer: `${userId}`,
+              role: `${role}`,
+              createAt: new Date(),
+            };
       const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, {
         expiresIn: "30s",
       });
