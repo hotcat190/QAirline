@@ -1,13 +1,13 @@
 .fixed-header {
     background: #f8f4f7;
-    padding-top: 26px;
+    padding-top: 17px;
     position: sticky;
-    top: -26px;
+    top: -17px;
     z-index: 20;
 }
 
 .logo {
-    width: 150px;
+    width: 110px;
     height: auto;
 }
 

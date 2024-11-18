@@ -59,7 +59,7 @@ function MainContent() {
                         <label htmlFor="depart">Depart</label>
                       </div>
                       <div className="date">
-                        <input type="date" id="depart" value="2024-09-12" />
+                        <input type="date" id="depart" />
                       </div>
                     </div>
                   </div>
@@ -85,7 +85,7 @@ function MainContent() {
                         <label htmlFor="return">Return</label>
                       </div>
                       <div className="date">
-                        <input type="date" id="return" value="2024-09-20" />
+                        <input type="date" id="return" />
                       </div>
                     </div>
                   </div>
