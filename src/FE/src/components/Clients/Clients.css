@@ -38,6 +38,7 @@
 .list-clients a:hover {
     background-color: white;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    transform: scale(1.2);
 }
 
 .list-clients img {

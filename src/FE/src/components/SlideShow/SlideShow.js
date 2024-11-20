@@ -12,6 +12,19 @@ function SlideShow() {
       setCurrentSlide(1);
     }
   }
+
+  function changetofirstSlide() {
+    setCurrentSlide(1);
+  }
+
+  function changetosecondSlide() {
+    setCurrentSlide(2);
+  }
+
+  function changetothirdSlide() {
+    setCurrentSlide(3);
+  }
+
   function changePrevSlide() {
     if (currentSlide === 1) {
       setCurrentSlide(document.querySelectorAll(".slide").length);
@@ -172,7 +185,7 @@ function SlideShow() {
           </div>
           <div className="slide slide3">
             <div className="testimonial-text">
-              <h3>Spectacular Views</h3>
+              <h3>Scenery Views</h3>
               <img src="img/pd_1.jpg" alt="" className="beautiful-place" />
             </div>
             <div className="world-map">
@@ -199,9 +212,9 @@ function SlideShow() {
         </div>
         <div className="dot-parent">
           <div className="dots-container">
-            <span className="dot active-dot"></span>
-            <span className="dot"></span>
-            <span className="dot"></span>
+            <span className="dot active-dot" onClick={changetofirstSlide}></span>
+            <span className="dot" onClick={changetosecondSlide}></span>
+            <span className="dot" onClick={changetothirdSlide}></span>
           </div>
         </div>
       </div>

@@ -42,7 +42,7 @@ function MainContent() {
                   <div className="flight-details-from">
                     <div className="detail">
                       <div className="from">
-                        <span className="icon">✈️</span>
+                        <img src="img/airplane-takeoff-16.png" />
                         <label htmlFor="from">From</label>
                       </div>
                       <div className="location">
@@ -67,7 +67,7 @@ function MainContent() {
                   <div className="flight-details-to">
                     <div className="detail">
                       <div className="to">
-                        <span className="icon">✈️</span>
+                        <img src="img/airplane-landing-16.png" />
                         <label htmlFor="to">To</label>
                       </div>
                       <div className="location">
@@ -113,7 +113,7 @@ function MainContent() {
             />
             <img
               className="person"
-              src="img/person1.jpeg"
+              src="img/main_image.jpeg"
               alt=""
               width="425px"
             />

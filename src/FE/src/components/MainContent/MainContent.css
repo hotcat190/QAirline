@@ -205,7 +205,6 @@ main .main-rightcontent img {
 }
 
 .detail label {
-    margin-right: 10px;
     font-weight: bold;
 }
 
@@ -220,11 +219,6 @@ main .main-rightcontent img {
 .detail .date {
     display: flex;
     align-items: center;
-}
-
-.icon {
-    margin-right: 5px;
-    color: #555;
 }
 
 .search-flights {
@@ -267,4 +261,10 @@ h1 {
 
 .icon-rotate {
     transform: rotate(180deg);
+}
+
+.main-booking .from, .main-booking .to, .main-booking .depart, .main-booking .return {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
