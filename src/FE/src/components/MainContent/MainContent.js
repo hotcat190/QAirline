@@ -1,4 +1,5 @@
 import React from 'react';
+// import { useEffect, useSta } from 'react';
 import './MainContent.css';
 
 function MainContent() {
