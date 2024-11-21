@@ -1,8 +1,7 @@
 import pool from "../database/database.js";
 
 export const getFlightByTimeAndAirport = async (req, res) => {
-  const { time, idBeginAirport, idEndAirport } = req.query;
-  const { day, month, year } = time;
+  const { day, month, year, idBeginAirport, idEndAirport } = req.query;
 
   try {
     const query = `SELECT f.*, c.*, a1.name AS beginAirportName, a2.name AS endAirportName
