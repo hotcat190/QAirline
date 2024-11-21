@@ -6,7 +6,7 @@ main {
     padding-top: 40px;
 }
 
-button {
+.myflights-container button {
     border: none;
     background-color: transparent;
     color: #6c6a6a;
@@ -30,12 +30,12 @@ button {
     color: rgb(224, 54, 54);
 }
 
-.active-flightoption {
+.myflights-container .active-flightoption {
     background-color: rgb(255, 250, 250);
     color: rgb(224, 54, 54);
 }
 
-button > div {
+.myflights-container button > div {
     min-width: 160px;
     display: flex;
     justify-content: center;

@@ -225,120 +225,120 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
--- DELIMITER //
+DELIMITER //
 
--- CREATE TRIGGER gen_ticket_code
--- BEFORE INSERT ON ticket
--- FOR EACH ROW
--- BEGIN
---     DECLARE beginAirportCode VARCHAR(3);
---     DECLARE seatClassCode VARCHAR(3);
---     DECLARE seatOrder INT;
+CREATE TRIGGER gen_ticket_code
+BEFORE INSERT ON ticket
+FOR EACH ROW
+BEGIN
+    DECLARE beginAirportCode VARCHAR(3);
+    DECLARE seatClassCode VARCHAR(3);
+    DECLARE seatOrder INT;
 
---     -- Lấy mã sân bay khởi hành từ bảng flight
---     SELECT code INTO beginAirportCode
---     FROM airport
---     WHERE idairport = (SELECT idbeginAirport FROM flight WHERE idFlight = (SELECT idFlight FROM classflight WHERE idclassFlight = NEW.idclassFlight));
+    -- Lấy mã sân bay khởi hành từ bảng flight
+    SELECT code INTO beginAirportCode
+    FROM airport
+    WHERE idairport = (SELECT idbeginAirport FROM flight WHERE idFlight = (SELECT idFlight FROM classflight WHERE idclassFlight = NEW.idclassFlight));
 
---     -- Lấy mã hạng vé từ bảng classflight và chuyển đổi thành mã rút gọn
---     SELECT class INTO seatClassCode
---     FROM classflight
---     WHERE idclassFlight = NEW.idclassFlight;
+    -- Lấy mã hạng vé từ bảng classflight và chuyển đổi thành mã rút gọn
+    SELECT class INTO seatClassCode
+    FROM classflight
+    WHERE idclassFlight = NEW.idclassFlight;
 
---     -- Chuyển đổi hạng vé sang mã rút gọn: Economy -> Eco, Business -> Bus
---     SET seatClassCode = CASE
---         WHEN seatClassCode = 'Economy' THEN 'ENM'
---         WHEN seatClassCode = 'Business' THEN 'BSN'
---         WHEN seatClassCode = 'First_Class' THEN 'FCS'
---         ELSE 'DEF' -- mặc định cho các hạng khác (nếu có)
---     END;
+    -- Chuyển đổi hạng vé sang mã rút gọn: Economy -> Eco, Business -> Bus
+    SET seatClassCode = CASE
+        WHEN seatClassCode = 'Economy' THEN 'ENM'
+        WHEN seatClassCode = 'Business' THEN 'BSN'
+        WHEN seatClassCode = 'First_Class' THEN 'FCS'
+        ELSE 'DEF' -- mặc định cho các hạng khác (nếu có)
+    END;
 
---     -- Lấy số thứ tự ghế đã đặt và định dạng thành 3 chữ số
---     SELECT seatBooked INTO seatOrder
---     FROM classflight
---     WHERE idclassFlight = NEW.idclassFlight;
+    -- Lấy số thứ tự ghế đã đặt và định dạng thành 3 chữ số
+    SELECT seatBooked INTO seatOrder
+    FROM classflight
+    WHERE idclassFlight = NEW.idclassFlight;
 
---     -- Tạo mã code cho vé
---     SET NEW.code = CONCAT(beginAirportCode, seatClassCode, seatOrder);
--- END//
+    -- Tạo mã code cho vé
+    SET NEW.code = CONCAT(beginAirportCode, seatClassCode, seatOrder);
+END//
 
--- DELIMITER ;
+DELIMITER ;
 
--- USE qairline;
--- SET SQL_SAFE_UPDATES = 0;
--- -- Dữ liệu cho bảng `airplane`
--- DELETE FROM airplane;
--- INSERT INTO airplane () VALUES (), (), (); -- Chỉ cần thêm các dòng trống vì `idAirplane` tự tăng
+USE qairline;
+SET SQL_SAFE_UPDATES = 0;
+-- Dữ liệu cho bảng `airplane`
+DELETE FROM airplane;
+INSERT INTO airplane () VALUES (), (), (); -- Chỉ cần thêm các dòng trống vì `idAirplane` tự tăng
 
--- -- Dữ liệu cho bảng `airport`
--- DELETE FROM airport;
--- INSERT INTO airport (name, country, city, code) VALUES 
---     ('Tan Son Nhat International Airport', 'Vietnam', 'Ho Chi Minh City', 'SGN'),
---     ('Noi Bai International Airport', 'Vietnam', 'Hanoi', 'HAN'),
---     ('Da Nang International Airport', 'Vietnam', 'Da Nang', 'DAD'),
---     ('Cam Ranh International Airport', 'Vietnam', 'Nha Trang', 'CXR'),
---     ('Changi Airport', 'Singapore', 'Singapore', 'SIN'),
---     ('Incheon International Airport', 'South Korea', 'Incheon', 'ICN');
+-- Dữ liệu cho bảng `airport`
+DELETE FROM airport;
+INSERT INTO airport (name, country, city, code) VALUES 
+    ('Tan Son Nhat International Airport', 'Vietnam', 'Ho Chi Minh City', 'SGN'),
+    ('Noi Bai International Airport', 'Vietnam', 'Hanoi', 'HAN'),
+    ('Da Nang International Airport', 'Vietnam', 'Da Nang', 'DAD'),
+    ('Cam Ranh International Airport', 'Vietnam', 'Nha Trang', 'CXR'),
+    ('Changi Airport', 'Singapore', 'Singapore', 'SIN'),
+    ('Incheon International Airport', 'South Korea', 'Incheon', 'ICN');
 
--- -- Dữ liệu cho bảng `admin`
--- DELETE FROM admin;
--- INSERT INTO admin (email, password, username) VALUES 
---     ('admin@gmail.com', 'admin', 'admin1'),
---     ('admin2@qairline.com', 'admin2', 'admin2');
+-- Dữ liệu cho bảng `admin`
+DELETE FROM admin;
+INSERT INTO admin (email, password, username) VALUES 
+    ('admin@gmail.com', 'admin', 'admin1'),
+    ('admin2@qairline.com', 'admin2', 'admin2');
 
--- -- Dữ liệu cho bảng `flight`
--- DELETE FROM flight;
--- INSERT INTO flight (timeStart, timeEnd, idbeginAirport, idendAirport, idAirplane, idAdmin_created) VALUES 
---     ('2023-12-01 08:00:00', '2023-12-01 10:00:00', 1, 2, 1, 1),
---     ('2023-12-05 09:00:00', '2023-12-05 12:30:00', 2, 5, 2, 1),
---     ('2023-12-10 14:00:00', '2023-12-10 18:00:00', 3, 4, 1, 2),
---     ('2023-12-15 17:00:00', '2023-12-15 21:30:00', 6, 1, 1, 1);
+-- Dữ liệu cho bảng `flight`
+DELETE FROM flight;
+INSERT INTO flight (timeStart, timeEnd, idbeginAirport, idendAirport, idAirplane, idAdmin_created) VALUES 
+    ('2023-12-01 08:00:00', '2023-12-01 10:00:00', 1, 2, 1, 1),
+    ('2023-12-05 09:00:00', '2023-12-05 12:30:00', 2, 5, 2, 1),
+    ('2023-12-10 14:00:00', '2023-12-10 18:00:00', 3, 4, 1, 2),
+    ('2023-12-15 17:00:00', '2023-12-15 21:30:00', 6, 1, 1, 1);
 
--- -- Dữ liệu cho bảng `classflight`
--- DELETE FROM classflight;
--- INSERT INTO classflight (class, seatAmount, seatBooked, currentPrice, idFlight) VALUES 
---     ('Economy', 150, 50, 4000000, 1),
---     ('Business', 20, 5, 8000000, 1),
---     ('Economy', 150, 60, 5500000, 2),
---     ('Business', 20, 8, 12000000, 2),
---     ('Economy', 180, 70, 5000000, 3),
---     ('Business', 25, 10, 9000000, 3),
---     ('Economy', 160, 80, 6000000, 4),
---     ('Business', 20, 9, 14000000, 4),
---     ('First-Class', 10, 2, 15000000, 1),
---     ('First-Class', 10, 1, 18000000, 2),
---     ('First-Class', 12, 3, 17000000, 3),
---     ('First-Class', 10, 4, 20000000, 4);
+-- Dữ liệu cho bảng `classflight`
+DELETE FROM classflight;
+INSERT INTO classflight (class, seatAmount, seatBooked, currentPrice, idFlight) VALUES 
+    ('Economy', 150, 50, 4000000, 1),
+    ('Business', 20, 5, 8000000, 1),
+    ('Economy', 150, 60, 5500000, 2),
+    ('Business', 20, 8, 12000000, 2),
+    ('Economy', 180, 70, 5000000, 3),
+    ('Business', 25, 10, 9000000, 3),
+    ('Economy', 160, 80, 6000000, 4),
+    ('Business', 20, 9, 14000000, 4),
+    ('First-Class', 10, 2, 15000000, 1),
+    ('First-Class', 10, 1, 18000000, 2),
+    ('First-Class', 12, 3, 17000000, 3),
+    ('First-Class', 10, 4, 20000000, 4);
 
--- -- Dữ liệu cho bảng `customer`
--- DELETE FROM customer;
--- INSERT INTO customer (username, email, password, numberPhone) VALUES 
---     ('nguyenphuc', 'phuc.nguyen@qairline.com', 'password123', '0901234567'),
---     ('lethithanh', 'thanh.le@qairline.com', 'password456', '0902345678'),
---     ('phamvanminh', 'minh.pham@qairline.com', 'password789', '0903456789'),
---     ('tranthihuyen', 'huyen.tran@qairline.com', 'password101', '0904567890');
+-- Dữ liệu cho bảng `customer`
+DELETE FROM customer;
+INSERT INTO customer (username, email, password, numberPhone) VALUES 
+    ('nguyenphuc', 'phuc.nguyen@qairline.com', 'password123', '0901234567'),
+    ('lethithanh', 'thanh.le@qairline.com', 'password456', '0902345678'),
+    ('phamvanminh', 'minh.pham@qairline.com', 'password789', '0903456789'),
+    ('tranthihuyen', 'huyen.tran@qairline.com', 'password101', '0904567890');
 
--- -- Dữ liệu cho bảng `ticket`
--- DELETE FROM ticket;
--- INSERT INTO ticket (idclassFlight, idCustomer, price, status) VALUES 
---     (1, 1, 4000000, 'Paid'),
---     (2, 1, 8000000, 'Paid'),
---     (3, 2, 5500000, 'Paid'),
---     (4, 3, 12000000, 'Unpaid'),
---     (5, 1, 5000000, 'Paid'),
---     (6, 2, 9000000, 'Unpaid'),
---     (7, 3, 6000000, 'Paid'),
---     (8, 4, 14000000, 'Unpaid');
+-- Dữ liệu cho bảng `ticket`
+DELETE FROM ticket;
+INSERT INTO ticket (idclassFlight, idCustomer, price, status) VALUES 
+    (1, 1, 4000000, 'Paid'),
+    (2, 1, 8000000, 'Paid'),
+    (3, 2, 5500000, 'Paid'),
+    (4, 3, 12000000, 'Unpaid'),
+    (5, 1, 5000000, 'Paid'),
+    (6, 2, 9000000, 'Unpaid'),
+    (7, 3, 6000000, 'Paid'),
+    (8, 4, 14000000, 'Unpaid');
 
--- -- Dữ liệu cho bảng `notification`
--- DELETE FROM notification;
--- INSERT INTO notification (content, unRead, idCustomer) VALUES 
---     ('Your flight from Ho Chi Minh City to Hanoi has been successfully booked.', 1, 1),
---     ('Your payment for the Hanoi to Singapore flight is successful.', 1, 2),
---     ('Booking not confirmed. Please try again.', 1, 3),
---     ('Your ticket has been updated. Please check your booking details.', 0, 4);
+-- Dữ liệu cho bảng `notification`
+DELETE FROM notification;
+INSERT INTO notification (content, unRead, idCustomer) VALUES 
+    ('Your flight from Ho Chi Minh City to Hanoi has been successfully booked.', 1, 1),
+    ('Your payment for the Hanoi to Singapore flight is successful.', 1, 2),
+    ('Booking not confirmed. Please try again.', 1, 3),
+    ('Your ticket has been updated. Please check your booking details.', 0, 4);
 
--- -- Dữ liệu cho bảng `advertisement`
--- -- INSERT INTO advertisement (description, type, image_url, target_url, created_at, idAdmin_created) VALUES 
--- --     ('20% off all international flights in December!', 'banner', 'https://example.com/image1.jpg', 'https://qairline.com/promotion', NOW(), 1),
--- --     ('Special deals on flights to Singapore!', 'popup', 'https://example.com/image2.jpg', 'https://qairline.com/singapore-sale', NOW(), 2);
+-- Dữ liệu cho bảng `advertisement`
+INSERT INTO advertisement (description, type, image_url, target_url, created_at, idAdmin_created) VALUES 
+    ('20% off all international flights in December!', 'banner', 'https://example.com/image1.jpg', 'https://qairline.com/promotion', NOW(), 1),
+    ('Special deals on flights to Singapore!', 'popup', 'https://example.com/image2.jpg', 'https://qairline.com/singapore-sale', NOW(), 2);
