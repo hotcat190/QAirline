@@ -55,10 +55,11 @@ function FAQ() {
                   <div className="question-box">
                     <p className="question">{faq.question}</p>
                     <button
+                    style={{color: "black"}}
                       className="operator"
                       onClick={() => toggleAnswer(index + columnIndex * 3)}
                     >
-                      {activeIndexes.includes(index + columnIndex * 3) ? "-" : "+"}
+                      {activeIndexes.includes(index + columnIndex * 3) ? "x" : "+"}
                     </button>
                   </div>
                   {activeIndexes.includes(index + columnIndex * 3) && (

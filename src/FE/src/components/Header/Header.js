@@ -1,9 +1,6 @@
 import React from 'react';
 import * as rd from 'react-router-dom'
-// import Home from '../pages/Home'; 
-// import About from '../pages/About';
-// import Destination from '../pages/Destination';
-// import Offers from '../pages/Offers';
+
 
 import './Header.css';
 
@@ -39,15 +36,15 @@ function Header() {
               />
             </svg>
           </label>
-          <a href="/">
-            <img className="logo" src="img/logo.svg" alt="Besnik." />
-          </a>
+          <rd.Link to="/">
+            <img className="logo" src="img/LOGO.png" alt="Besnik." />
+          </rd.Link>
 
           <ul id="pc-nav">
             <li><rd.Link to="/">Home</rd.Link></li>
             <li><rd.Link to="/myflights">My flights</rd.Link></li>
-            <li><rd.Link to="/about">About</rd.Link></li>
-            <li><rd.Link to="/destination">Destination</rd.Link></li>
+            <li><rd.Link to="/news">News</rd.Link></li>
+            <li><rd.Link to="/destination">Destinations</rd.Link></li>
           </ul>
 
           <div className="actions">

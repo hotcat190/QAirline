@@ -108,4 +108,9 @@
     max-width: 130px;
     display: block;
     margin-top: 70px;
+    transition: all 0.3s ease;
+}
+
+.num-stats .btn:hover {
+    transform: translateY(-5px);
 }

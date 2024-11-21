@@ -37,6 +37,23 @@ main .main-content .cloud {
     position: absolute;
     top: -50px;
     left: -120px;
+    width: 100px;
+    height: 100px;
+    animation: moveCloud 2s ease-in-out infinite alternate,
+            scaleCloud 2s ease-in-out infinite alternate;
+
+    
+
+}
+
+@keyframes moveCloud {
+    0% { transform: translateX(-20px); }
+    100% { transform: translateX(20px); }
+}
+
+@keyframes scaleCloud {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
 }
 
 
@@ -48,9 +65,19 @@ main .main-rightcontent {
 
 main .main-rightcontent .plane {
     position: absolute;
-    top: -60px;
+    top: -70px;
     right: -110px;
-    transform: rotate(20deg);
+    transform: rotate(25deg);
+    /* animation: movePlanee 7s linear infinite; */
+}
+
+@keyframes movePlane {
+    0% {
+        transform: translateX(100vw); /* Bắt đầu từ ngoài màn hình bên phải */
+    }
+    100% {
+        transform: translateX(-100vw); /* Kết thúc tại ngoài màn hình bên trái */
+    }
 }
 
 
@@ -178,7 +205,6 @@ main .main-rightcontent img {
 }
 
 .detail label {
-    margin-right: 10px;
     font-weight: bold;
 }
 
@@ -195,12 +221,7 @@ main .main-rightcontent img {
     align-items: center;
 }
 
-.icon {
-    margin-right: 5px;
-    color: #555;
-}
-
-.search-btn {
+.search-flights {
     background-color: #e40f27;
     color: #fff;
     border: none;
@@ -208,6 +229,7 @@ main .main-rightcontent img {
     border-radius: 30px;
     cursor: pointer;
     font-size: 16px;
+    transition: all 0.3s;
 }
 
 h1 {
@@ -222,8 +244,9 @@ h1 {
     color: #e30613;
 }
 
-.search-btn:hover {
-    background-color: #d40d24;
+.search-flights:hover {
+    opacity: 0.8;
+    transform: translateY(-5px);
 }
 
 
@@ -238,4 +261,10 @@ h1 {
 
 .icon-rotate {
     transform: rotate(180deg);
+}
+
+.main-booking .from, .main-booking .to, .main-booking .depart, .main-booking .return {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
