@@ -58,7 +58,7 @@ export const bookTicket = async (req, res) => {
 };
 
 export const getTicketByCode = async (req, res) => {
-  const { code } = req.body;
+  const { code } = req.query;
 
   try {
     const query = `SELECT 
