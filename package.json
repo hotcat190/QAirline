@@ -6,7 +6,9 @@
   },
   "scripts": {
     "server": "npm run dev --prefix src\\server",
-    "client": "npm start --prefix src\\FE",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "FE": "npm start --prefix src\\FE",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+
+    "postinstall": "(cd src\\server && npm install) && (cd ..\\..\\src\\FE && npm install)"
   }
 }
