@@ -2,52 +2,108 @@ import React from "react";
 import "./ActionForm.css";
 
 function ActionForm() {
+
     function closeForms() {
         document.querySelector('.overlay').style.display = 'none';
         document.body.classList.remove('no-scroll');
+
         const signinForm = document.querySelector('.signin-form');
-        const signupFrom = document.querySelector('.signup-form');
-    
+        const signupForm = document.querySelector('.signup-form');
+        const emailLogin = document.querySelector('.email-login');
+
         signinForm.classList.remove('showSign');
-        signupFrom.classList.remove('showSign');
-    
-    
+        signupForm.classList.remove('showSign');
+        emailLogin.classList.remove('showEmail');
+
         setTimeout(() => {
             signinForm.style.display = 'none';
-            signupFrom.style.display = 'none';
+            signupForm.style.display = 'none';
         }, 300);
+
+        emailLogin.style.display = 'none';
     }
 
     function openSignin() {
         document.querySelector('.overlay').style.display = 'block';
         const signinForm = document.querySelector('.signin-form');
         const signupForm = document.querySelector('.signup-form');
-        signinForm.style.display = 'flex';
+        const emailLogin = document.querySelector('.email-login');
+        const emailLogup = document.querySelector('.email-logup');
+
         signupForm.style.display = 'none';
-        setTimeout(() => {
-          signinForm.classList.add("showSign");
-        }, 10);
+        emailLogin.style.display = 'none';
+        signinForm.style.display = 'flex';
+        emailLogup.style.display = 'none';
+
+        signinForm.classList.add("showSign");
+
         document.body.classList.add('no-scroll');
-      }
+    }
+
     
-      function openSignup() {
+
+    function openSignup() {
         document.querySelector('.overlay').style.display = 'block';
         const signupForm = document.querySelector('.signup-form');
         const signinForm = document.querySelector('.signin-form');
-        signupForm.style.display = 'flex';
+        const emailLogin = document.querySelector('.email-login');
+
         signinForm.style.display = 'none';
-        setTimeout(() => {
-          signupForm.classList.add("showSign");
-        }, 10);
+        emailLogin.style.display = 'none';
+        signupForm.style.display = 'flex';
+
+        signupForm.classList.add("showSign");
+        
         document.body.classList.add('no-scroll');
-      }
+    }
+
+    function openEmailLogin() {
+        const emailLogin = document.querySelector('.email-login');
+        const signinForm = document.querySelector('.signin-form');
+
+        signinForm.classList.remove('showSign');
+        signinForm.style.display = 'none';
+        emailLogin.style.display = 'flex';
+        emailLogin.classList.add('showEmail');
+    }
+
+    function backToSignin() {
+        const emailLogin = document.querySelector('.email-login');
+        const signinForm = document.querySelector('.signin-form');
+
+        emailLogin.classList.remove('showEmail');
+        emailLogin.style.display = 'none';
+        signinForm.style.display = 'flex';
+        signinForm.classList.add('showSign');
+    }
+
+    function openEmailLogup() {
+        const emailLogup = document.querySelector('.email-logup');
+        const signupForm = document.querySelector('.signup-form');
+
+        signupForm.classList.remove('showSign');
+        signupForm.style.display = 'none';
+        emailLogup.style.display = 'flex';
+        emailLogup.classList.add('showEmail');
+    }
+
+    function backToSignup() {
+        const emailLogup = document.querySelector('.email-logup');
+        const signupForm = document.querySelector('.signup-form');
+
+        emailLogup.classList.remove('showEmail');
+        emailLogup.style.display = 'none';
+        signupForm.style.display = 'flex';
+        signupForm.classList.add('showSign');
+    }
+
     return (
         <div className="main-actions-container">
             <div className="overlay" onClick={closeForms}></div>
-            <div className="signin-form">
+            <div className="signin-form login-options" id="login-options">
                 <button className="close-btn" onClick={closeForms}><span>×</span></button>
                 <a href="#">
-                    <img className="logo" src="img/logo.svg" alt="Besnik." />
+                    <img className="logo" src="img/LOGO.png" alt="Besnik." />
                 </a>
                 <h2 className="signin-title">Sign in Into QAirline</h2>
                 <div className="main-signin">
@@ -65,7 +121,7 @@ function ActionForm() {
                         />
                         <span>Sign in with Facebook</span>
                     </button>
-                    <button className="common-btn email-or-phone">
+                    <button className="common-btn emailphone-btn" onClick={openEmailLogin}>
                         <img
                             src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%2011c-2.67%200-8%201.34-8%204v3h16v-3c0-2.66-5.33-4-8-4m0-9C7.79%202%206%203.79%206%206s1.79%204%204%204%204-1.79%204-4-1.79-4-4-4m0%2010.9c2.97%200%206.1%201.46%206.1%202.1v1.1H3.9V15c0-.64%203.13-2.1%206.1-2.1m0-9a2.1%202.1%200%20110%204.2%202.1%202.1%200%20010-4.2'%20fill-opacity='.54'%20fill-rule='evenodd'%3e%3c/path%3e%3c/svg%3e"
                             alt=""
@@ -82,10 +138,55 @@ function ActionForm() {
                 </div>
             </div>
 
+            <div className="email-login hidden-login">
+                <a href="#">
+                    <img className="logo newlogo" src="img/LOGO.png" alt="Besnik." />
+                </a>
+                <h2>Sign in Into QAirline</h2>
+                <form id="email-formlogin">
+                    <input type="email" placeholder="Type email or smartphone" required />
+                    <input type="password" placeholder="Type password" required />
+                </form>
+                <div class="form-group remember-me">
+                    <input type="checkbox" id="remember" name="remember" />
+                    <label for="remember">Remember me for later sign in</label>
+                </div>
+                <button type="submit" className="login-btn">Sign in</button>
+                <button className="backlogin-btn" onClick={backToSignin}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
+                <div className="actions-container">
+                    <p>
+                        Don't you have an account?<a href="#" className="action-link-mobile" onClick={openSignup}
+                        >Sign up</a>
+                    </p>
+                    <a href="#" className="forget-pw">Forget password</a>
+                </div>
+            </div>
+
+            <div className="email-logup hidden-logup">
+                <a href="#">
+                    <img className="logo newlogo" src="img/LOGO.png" alt="Besnik." />
+                </a>
+                <h2>Sign up Into QAirline</h2>
+                <form id="email-formlogup">
+                    <input type="text" placeholder="Type your name" required />
+                    <input type="email" placeholder="Type email or smartphone" required />
+                    <input type="password" placeholder="Type password" required />
+                </form>
+                <button type="submit" className="logup-btn">Sign up</button>
+                <button className="backlogup-btn" onClick={backToSignup}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
+                <div className="actions-container difference">
+                    <p>
+                        Do you have an account?<a href="#" className="action-link-mobile" onClick={openSignin}
+                        >Sign in</a>
+                    </p>
+                    <a href="#" className="forget-pw">Forget password</a>
+                </div>
+            </div>
+
             <div className="signup-form">
                 <button className="close-btn" onClick={closeForms}><span>×</span></button>
                 <a href="#">
-                    <img className="logo" src="img/logo.svg" alt="Besnik." />
+                    <img className="logo" src="img/LOGO.png" alt="Besnik." />
                 </a>
                 <h2 className="signup-title">Sign up Into QAirline</h2>
                 <div className="main-signup">
@@ -103,7 +204,7 @@ function ActionForm() {
                         />
                         <span>Sign up with Facebook</span>
                     </button>
-                    <button className="common-btn email-or-phone">
+                    <button className="common-btn emailphone-btn" onClick={openEmailLogup}>
                         <img
                             src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%2011c-2.67%200-8%201.34-8%204v3h16v-3c0-2.66-5.33-4-8-4m0-9C7.79%202%206%203.79%206%206s1.79%204%204%204%204-1.79%204-4-1.79-4-4-4m0%2010.9c2.97%200%206.1%201.46%206.1%202.1v1.1H3.9V15c0-.64%203.13-2.1%206.1-2.1m0-9a2.1%202.1%200%20110%204.2%202.1%202.1%200%20010-4.2'%20fill-opacity='.54'%20fill-rule='evenodd'%3e%3c/path%3e%3c/svg%3e"
                             alt=""

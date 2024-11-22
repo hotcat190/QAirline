@@ -42,7 +42,7 @@ function MainContent() {
                   <div className="flight-details-from">
                     <div className="detail">
                       <div className="from">
-                        <span className="icon">✈️</span>
+                        <img src="img/airplane-takeoff-16.png" />
                         <label htmlFor="from">From</label>
                       </div>
                       <div className="location">
@@ -59,7 +59,7 @@ function MainContent() {
                         <label htmlFor="depart">Depart</label>
                       </div>
                       <div className="date">
-                        <input type="date" id="depart" value="2024-09-12" />
+                        <input type="date" id="depart" />
                       </div>
                     </div>
                   </div>
@@ -67,7 +67,7 @@ function MainContent() {
                   <div className="flight-details-to">
                     <div className="detail">
                       <div className="to">
-                        <span className="icon">✈️</span>
+                        <img src="img/airplane-landing-16.png" />
                         <label htmlFor="to">To</label>
                       </div>
                       <div className="location">
@@ -85,13 +85,13 @@ function MainContent() {
                         <label htmlFor="return">Return</label>
                       </div>
                       <div className="date">
-                        <input type="date" id="return" value="2024-09-20" />
+                        <input type="date" id="return" />
                       </div>
                     </div>
                   </div>
 
                   <div className="bottom">
-                    <button className="search-btn">Search</button>
+                    <button className="search-flights">Search</button>
                   </div>
                 </div>
               </div>
@@ -103,7 +103,7 @@ function MainContent() {
               src="img/plane.svg"
               alt=""
               className="plane"
-              width="90px"
+              width="110px"
             />
             <img
               src="img/cloud.svg"
@@ -113,7 +113,7 @@ function MainContent() {
             />
             <img
               className="person"
-              src="img/person1.jpeg"
+              src="img/main_image.jpeg"
               alt=""
               width="425px"
             />

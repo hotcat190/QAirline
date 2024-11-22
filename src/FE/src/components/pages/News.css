@@ -1,0 +1,126 @@
+.news-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: rgb(224, 54, 54);
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ticker {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.ticker span {
+    display: inline-block;
+    padding-left: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    animation: ticker-move 20s linear infinite;
+}
+
+@keyframes ticker-move {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.live-clock {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.news-carousel {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.news-slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.news-slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.news-image {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.news-content {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+.news-content h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.news-content p {
+    margin: 5px 0 0;
+    font-size: 16px;
+}
+
+.dots-news {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.dot-news {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot-news.active {
+    background-color: rgb(224, 54, 54);
+}
+
+
+@media screen and (max-width: 991px) {
+    .news-image {
+        background-position: center center;
+        background-size: cover;
+        background-clip: border-box;
+    }
+    
+}

@@ -27,6 +27,67 @@
     border: none;
 }
 
+.login-btn {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgb(224, 54, 54);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: opacity .2s;
+    min-width: 100px;
+}
+
+.logup-btn {
+    display: block;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: rgb(224, 54, 54);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: opacity .2s;
+    min-width: 100px;
+}
+
+
+/* .newlogo {
+    margin-bottom: 98px;
+} */
+
+.backlogin-btn,
+.backlogup-btn {
+    position: fixed;
+    top: 7px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 20px;
+    font-size: 1.6rem;
+    transition: opacity .2s;
+}
+
+.svg-inline--fa {
+    display: inline-block;
+    height: 1em;
+}
+
+.backlogin-btn:hover,
+.backlogup-btn:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.login-btn:hover,
+.logup-btn:hover {
+    opacity: 0.9;
+}
+
+
 .close-btn:hover {
     opacity: 0.9;
 }
@@ -47,6 +108,34 @@
     z-index: 41;
     border-radius: 20px;
     transition: transform 0.3s ease;
+}
+
+.email-login,
+.email-logup {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background-image: linear-gradient(to top, #fddb92 0%, #d1fdff 100%);
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 41;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+}
+
+.hidden-login,
+.hidden-logup {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.showEmail {
+    opacity: 1;
 }
 
 .showSign {
@@ -118,11 +207,54 @@
 }
 
 
-.signin-form h2,
-.signup-form h2 {
+h2 {
     text-align: center;
     margin-top: 10px;
     font-size: 2.7rem;
     font-weight: 550;
     color: black;
+}
+
+#email-formlogin {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 60%;
+    margin-top: 20px;
+}
+
+#email-formlogup {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 60%;
+    margin-top: 10px;
+}
+
+#email-formlogin input {
+    position: relative;
+    width: 100%;
+    height: 44px;
+    padding-left: 16px;
+    border: 2px solid #dce0e3;
+    border-radius: 44px;
+    background-color: #fff;
+}
+
+#email-formlogup input {
+    position: relative;
+    width: 100%;
+    height: 44px;
+    padding-left: 16px;
+    border: 2px solid #dce0e3;
+    border-radius: 44px;
+    background-color: #fff;
+}
+
+.remember-me {
+    margin-top: 10px;
+}
+
+.difference {
+    margin-top: 13px;
 }

@@ -1,9 +1,14 @@
 .fixed-header {
     background: #f8f4f7;
-    padding-top: 26px;
+    padding-top: 17px;
     position: sticky;
-    top: -26px;
+    top: -17px;
     z-index: 20;
+}
+
+.logo {
+    width: 110px;
+    height: auto;
 }
 
 .fixed-header .navbar {
@@ -21,12 +26,15 @@
 }
 
 .fixed-header #pc-nav a {
-    color: #6c6a6a;
+    color: #535353;
+    background-position: left;
+    transition: all 0.3s ease;
 }
 
 .fixed-header #pc-nav a:hover {
     color: var(--primary-color);
     position: relative;
+    background-position: right;
 }
 
 .fixed-header #pc-nav a:hover::before {
