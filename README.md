@@ -61,17 +61,14 @@
 # clone project
 git clone https://github.com/dluong1210/QAirline
 cd QAirline
+npm install
 
 # run both server and frontend concurrently
 npm run dev
 
 # run server
-cd src/server
-npm install
-npm run dev
+npm run server
 
 # run frontend
-cd src/FE
-npm install
-npm start
+npm run FE
 ```
