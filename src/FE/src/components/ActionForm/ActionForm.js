@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ActionForm.css";
+import { useLoginForm } from "hooks/useLoginForm";
 
 function ActionForm() {
+    const { email, setEmail, password, setPassword, onLoginSubmit } = useLoginForm();
 
     function closeForms() {
         document.querySelector('.overlay').style.display = 'none';
@@ -40,7 +42,7 @@ function ActionForm() {
         document.body.classList.add('no-scroll');
     }
 
-    
+
 
     function openSignup() {
         document.querySelector('.overlay').style.display = 'block';
@@ -53,7 +55,7 @@ function ActionForm() {
         signupForm.style.display = 'flex';
 
         signupForm.classList.add("showSign");
-        
+
         document.body.classList.add('no-scroll');
     }
 
@@ -143,15 +145,25 @@ function ActionForm() {
                     <img className="logo newlogo" src="img/LOGO.png" alt="Besnik." />
                 </a>
                 <h2>Sign in Into QAirline</h2>
-                <form id="email-formlogin">
-                    <input type="email" placeholder="Type email or smartphone" required />
-                    <input type="password" placeholder="Type password" required />
+                <form id="email-formlogin" onSubmit={onLoginSubmit}>
+                    <input
+                        type="email"
+                        placeholder="Type email or smartphone"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required />
+                    <input
+                        type="password"
+                        placeholder="Type password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required />
                 </form>
                 <div class="form-group remember-me">
                     <input type="checkbox" id="remember" name="remember" />
                     <label for="remember">Remember me for later sign in</label>
                 </div>
-                <button type="submit" className="login-btn">Sign in</button>
+                <button type="submit" className="login-btn" form="email-formlogin">Sign in</button>
                 <button className="backlogin-btn" onClick={backToSignin}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
                 <div className="actions-container">
                     <p>

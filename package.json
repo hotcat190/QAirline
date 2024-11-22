@@ -1,6 +1,12 @@
 {
   "type": "module",
   "dependencies": {
+    "concurrently": "^9.1.0",
     "mysql2": "^3.11.3"
+  },
+  "scripts": {
+    "server": "npm run dev --prefix src\\server",
+    "client": "npm start --prefix src\\FE",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   }
 }
