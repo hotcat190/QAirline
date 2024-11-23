@@ -29,6 +29,6 @@ app.use("/api/user", userRouter);
 app.use("/api/flight", flightRouter);
 app.use("/api/booking", bookingRouter);
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
   console.log("Server listen in port " + port);
 });

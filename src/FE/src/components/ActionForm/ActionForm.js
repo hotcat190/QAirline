@@ -1,9 +1,22 @@
 import React from "react";
 import "./ActionForm.css";
-import { useLoginForm } from "hooks/useLoginForm";
+import { useLogin } from "hooks/auth/useLogin";
+import { useRegister } from "hooks/auth/useRegister";
 
 function ActionForm() {
-    const { email, setEmail, password, setPassword, onLoginSubmit } = useLoginForm();
+    const { 
+        onLoginSubmit,
+        value: loginEmailFieldValue, setEmail: setLoginEmailField, 
+        password: loginPasswordFieldValue, setPassword: setLoginPasswordFieldValue, 
+    } = useLogin();
+    
+    const { 
+        onRegisterSubmit,
+        username: registerUsernameFieldValue, setUsername: setRegisterUsernameFieldValue, 
+        email: registerEmailFieldValue, setEmail: setRegisterEmailField, 
+        password: registerPasswordFieldValue, setPassword: setRegisterPasswordFieldValue, 
+        retypePassword: registerRetypePasswordFieldValue, setRetypePassword: setRegisterRetypePasswordField,
+    } = useRegister();
 
     function closeForms() {
         document.querySelector('.overlay').style.display = 'none';
@@ -12,10 +25,12 @@ function ActionForm() {
         const signinForm = document.querySelector('.signin-form');
         const signupForm = document.querySelector('.signup-form');
         const emailLogin = document.querySelector('.email-login');
+        const emailLogup = document.querySelector('.email-logup');
 
         signinForm.classList.remove('showSign');
         signupForm.classList.remove('showSign');
         emailLogin.classList.remove('showEmail');
+        emailLogup.classList.remove('showEmail');
 
         setTimeout(() => {
             signinForm.style.display = 'none';
@@ -23,6 +38,7 @@ function ActionForm() {
         }, 300);
 
         emailLogin.style.display = 'none';
+        emailLogup.style.display = 'none';
     }
 
     function openSignin() {
@@ -147,16 +163,16 @@ function ActionForm() {
                 <h2>Sign in Into QAirline</h2>
                 <form id="email-formlogin" onSubmit={onLoginSubmit}>
                     <input
-                        type="email"
+                        type="text"
                         placeholder="Type email or smartphone"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={loginEmailFieldValue}
+                        onChange={(e) => setLoginEmailField(e.target)}
                         required />
                     <input
                         type="password"
                         placeholder="Type password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={loginPasswordFieldValue}
+                        onChange={(e) => setLoginPasswordFieldValue(e.target.value)}
                         required />
                 </form>
                 <div class="form-group remember-me">
@@ -179,12 +195,13 @@ function ActionForm() {
                     <img className="logo newlogo" src="img/LOGO.png" alt="Besnik." />
                 </a>
                 <h2>Sign up Into QAirline</h2>
-                <form id="email-formlogup">
-                    <input type="text" placeholder="Type your name" required />
-                    <input type="email" placeholder="Type email or smartphone" required />
-                    <input type="password" placeholder="Type password" required />
+                <form id="email-formlogup" onSubmit={onRegisterSubmit}>
+                    <input type="text" placeholder="Type your name" value={registerUsernameFieldValue} onChange={(e) => setRegisterUsernameFieldValue(e.target.value)} required />
+                    <input type="text" placeholder="Type email or smartphone" value={registerEmailFieldValue} onChange={(e) => setRegisterEmailField(e.target)} required />
+                    <input type="password" placeholder="Type password" value={registerPasswordFieldValue} onChange={(e) => setRegisterPasswordFieldValue(e.target.value)} required />
+                    <input type="password" placeholder="Retype password" value={registerRetypePasswordFieldValue} onChange={(e) => setRegisterRetypePasswordField(e.target)} required />
                 </form>
-                <button type="submit" className="logup-btn">Sign up</button>
+                <button type="submit" className="logup-btn" form="email-formlogup">Sign up</button>
                 <button className="backlogup-btn" onClick={backToSignup}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
                 <div className="actions-container difference">
                     <p>

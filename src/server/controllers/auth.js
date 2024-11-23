@@ -68,7 +68,7 @@ export const login = async (req, res) => {
     });
 
     console.log(accessToken, refreshToken);
-    res.send({ role, info: user[0] });
+    res.send({ role, idCustomer: user[0].username });
   } catch (e) {
     res.status(500).send(e.message);
     console.log(e);
@@ -78,9 +78,12 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
   const { email, password, numberPhone, username } = req.body;
   try {
-    const [existingUser] = await pool.query(
-      "SELECT * FROM customer WHERE email = ? OR numberPhone = ?",
-      [email, numberPhone]
+    const [existingUser] = (email) ? await pool.query(
+      "SELECT * FROM customer WHERE email = ?",
+      [email]
+    ) : await pool.query(
+      "SELECT * FROM customer WHERE numberPhone = ?",
+      [numberPhone]
     );
     console.log(existingUser);
 

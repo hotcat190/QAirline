@@ -7,7 +7,7 @@
   "scripts": {
     "server": "npm run dev --prefix src\\server",
     "FE": "npm start --prefix src\\FE",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"npm run FE\"",
 
     "postinstall": "(cd src\\server && npm install) && (cd ..\\..\\src\\FE && npm install)"
   }
