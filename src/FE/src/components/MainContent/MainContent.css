@@ -42,8 +42,6 @@ main .main-content .cloud {
     animation: moveCloud 2s ease-in-out infinite alternate,
             scaleCloud 2s ease-in-out infinite alternate;
 
-    
-
 }
 
 @keyframes moveCloud {
@@ -55,7 +53,6 @@ main .main-content .cloud {
     0% { transform: scale(1); }
     100% { transform: scale(1.1); }
 }
-
 
 
 main .main-rightcontent {
@@ -145,7 +142,10 @@ main .main-rightcontent img {
     background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .dropdown-container {
@@ -157,10 +157,10 @@ main .main-rightcontent img {
 .flight-options {
     background: #e40f27;
     display: flex;
-    justify-content: space-evenly;
+    gap: 65px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    padding: 5px 0;
+    padding: 15px 20px;
     width: 100%;
 }
 
@@ -188,7 +188,7 @@ main .main-rightcontent img {
     flex-direction: column;
     align-items: center;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 10px;
 }
 
 .flight-details-from,
@@ -267,4 +267,8 @@ h1 {
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.hidden-return {
+    display: none;
 }
