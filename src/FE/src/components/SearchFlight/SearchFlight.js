@@ -1,39 +1,53 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './SearchFlight.css';
 
 const SearchFlight = () => {
     const location = useLocation();
-    const { flightData, selectedType } = location.state || {}; // Lấy dữ liệu từ state trong URL
-    flightData.push(flightData[0]);
-    flightData.push(flightData[0]);
-    const startDestination = flightData[ 0 ].beginAirport.name.replace("International Airport", "")
-    const endDestination = flightData[ 0 ].endAirport.name.replace("International Airport", "");
-    const [ selectedClass, setSelectedClass ] = useState(null);
-
-    const handleSelectFlight = (flight, flightClass) => {
-        setSelectedFlight(flight);
-        setSelectedClass(flightClass);
-    };
-
-    const booking = {
-        from: startDestination,
-        to: endDestination,
-        date: "T5, 28/11/2024",
-        time: "05:20 - 07:30",
-        flightCode: "VJ198",
-        class: "Skyboss",
-        ticketPrice: "3,229,200",
-        tax: "583,400",
+    const navigate = useNavigate();
+    const { flightForwardData, flightBackwardData, selectedType, startAirport, endAirport } = location.state || {};
+    const [ booking, setBooking ] = useState({
+        from: startAirport,
+        to: endAirport,
+        date: "--",
+        time: "--",
+        flightCode: "--",
+        class: "--",
+        ticketPrice: "--",
+        tax: "--",
         serviceFee: "0",
-        totalPrice: "3,812,600",
+        totalPrice: "0",
+    });
+
+    const handleClassCardClick = (flight, classInfo) => {
+        setBooking({
+            from: flight.fromAirport,
+            to: flight.toAirport,
+            date: new Date(flight.timeStart).toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            }),
+            time: `${new Date(flight.timeStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${new Date(flight.timeEnd).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`,
+            flightCode: 'VJ198',
+            class: classInfo.class,
+            ticketPrice: (classInfo.currentPrice).toLocaleString('vi-VN'),
+            tax: (classInfo.currentPrice / 20).toLocaleString('vi-VN'),
+            serviceFee: '0',
+            totalPrice: (classInfo.currentPrice + classInfo.currentPrice / 20 + 0).toLocaleString('vi-VN'),
+        });
     };
+
+    const handleContinue = () => {
+        navigate("/passenger", { state: { booking: booking, startAirport, endAirport } });
+    }
+
 
     return (
         <div className="search-flight-container">
             <div className="content">
-                <div className='right-search-fs'>
+                <div className='left-search-fs'>
                     <div className="main-fs-content">
                         <div className="left-fs-main-content">
                             {selectedType === 'oneWay' ? (
@@ -41,16 +55,52 @@ const SearchFlight = () => {
                             ) : (
                                 <h2 className="title">Round-way flight</h2>
                             )}
-                            <div className='route-info'>
-                                <div class="jss2412"><img src="img/departure-icon.25d3557e.svg" alt="Departure Icon" style={{width: "12px"}}/><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>Start Airport</span><span>{startDestination}</span></p></div>
-                                <div class="jss2412"><img src="img/arrival-icon.a05c5d78.svg" alt="Departure Icon" style={{width: "12px"}} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>End Airport</span><span>{endDestination}</span></p></div>
-                            </div>
-
+                            {selectedType === 'oneWay' ? (
+                                <div className='route-info'>
+                                    <div class="jss2412"><img src="img/departure-icon.25d3557e.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>Start Destination</span><span>{startAirport}</span></p></div>
+                                    <div className='fs-arrow'>
+                                        <svg
+                                            width="57"
+                                            height="55"
+                                            viewBox="0 0 57 55"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            style={{ height: '100%' }}
+                                        >
+                                            <path d="M8 18H41L45.8182 21H8V18Z" fill="rgb(224, 54, 54)"></path>
+                                            <path d="M36.8835 21H48.5C39 16 40 17 33 11V18L36.8835 21Z" fill="rgb(224, 54, 54)"></path>
+                                            <path d="M48 37L15 37L10.1818 34L48 34V37Z" fill="#ddd"></path>
+                                            <path d="M19.1165 34L7.5 34C17 39 16 38 23 44V37L19.1165 34Z" fill="#ddd"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="jss2412"><img src="img/arrival-icon.a05c5d78.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>End Destination</span><span>{endAirport}</span></p></div>
+                                </div>
+                            ) : (
+                                <div className='route-info'>
+                                    <div class="jss2412"><img src="img/departure-icon.25d3557e.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>Start Destination</span><span>{startAirport}</span></p></div>
+                                    <div className='fs-arrow'>
+                                        <svg
+                                            width="57"
+                                            height="55"
+                                            viewBox="0 0 57 55"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            style={{ height: '100%' }}
+                                        >
+                                            <path d="M8 18H41L45.8182 21H8V18Z" fill="rgb(224, 54, 54)"></path>
+                                            <path d="M36.8835 21H48.5C39 16 40 17 33 11V18L36.8835 21Z" fill="rgb(224, 54, 54)"></path>
+                                            <path d="M48 37L15 37L10.1818 34L48 34V37Z" fill="rgb(224, 54, 54)"></path>
+                                            <path d="M19.1165 34L7.5 34C17 39 16 38 23 44V37L19.1165 34Z" fill="rgb(224, 54, 54)"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="jss2412"><img src="img/arrival-icon.a05c5d78.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>End Destination</span><span>{endAirport}</span></p></div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="right-fs-main-content">
                             <div className="fs-icon1" style={{
-                                width: "40px", height: "40px", background: "linear-gradient(72.74deg, #459B02 -15.27%, #AAFA6B 113.22%)",
+                                background: "linear-gradient(72.74deg, #459B02 -15.27%, #AAFA6B 113.22%)",
                                 display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "999px"
                             }}>
                                 <svg className="MuiSvgIcon-root jss276 jss277" style={{ rotate: "90deg", fill: "white" }} focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"></path></svg>
@@ -68,68 +118,151 @@ const SearchFlight = () => {
 
                     </div>
 
-                    <div className="flight-list">
-                        {flightData.map((flight) => (
-                            <div className="flight-card" key={flight.idFlight}>
-                                <div className="flight-info">
-                                    <p className="time">
-                                        <span className='time-text'>{new Date(flight.timeStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                        <span className='span-special'>to</span>
-                                        <span className='time-text'>{new Date(flight.timeEnd).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                    </p>
+
+                    <div className='flight-list-container'>
+                        <div className="MuiBox-root jss8422 jss7837">
+                            <div className="jss7838"></div>
+                            <div className="MuiBox-root jss8423 jss7836">
+                                <div
+                                    className="MuiBox-root jss8427"
+                                    style={{
+                                        border: '1px solid rgb(106, 183, 46)',
+                                        backgroundColor: 'rgb(106, 183, 46)',
+                                    }}
+                                >
+                                    <img
+                                        src="https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/weco-1642435135644.svg"
+                                        alt=""
+                                    />
+                                </div>
+                                <div
+                                    className="MuiBox-root jss8424"
+                                    style={{
+                                        border: '1px solid rgb(175, 137, 3)',
+                                        backgroundColor: 'rgb(175, 137, 3)',
+                                    }}
+                                >
+                                    <img
+                                        src="https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/businesswhite-1689220127310.svg"
+                                        alt=""
+                                    />
+                                </div>
+                                <div
+                                    className="MuiBox-root jss8425"
+                                    style={{
+                                        border: '1px solid rgb(218, 33, 40)',
+                                        backgroundColor: 'rgb(224, 54, 54)',
+                                    }}
+                                >
+                                    <img
+                                        src="https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/wskyboss-1642435135647.svg"
+                                        alt=""
+                                    />
                                 </div>
 
-                                <div className="class-info">
-                                    {Object.values(flight.classes).map((classInfo, index) => (
-                                        <div className={`class-card ${classInfo.seatBooked >= classInfo.seatAmount ? 'sold-out' : ''}`} key={index}>
-                                            <p className={`class-name ${classInfo.class.toLowerCase()}`}>{classInfo.class}</p>
-                                            {classInfo.seatBooked >= classInfo.seatAmount ? (
-                                                <p className="status">Hết chỗ</p>
-                                            ) : (
-                                                <p className="price">{classInfo.currentPrice.toLocaleString('vi-VN')} VND</p>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
-                        ))}
+                        </div>
+                        <div className="flight-list">
+                            {flightForwardData.map((flight) => (
+                                <div className="flight-card" key={flight.idFlight}>
+                                    <div className="flight-info">
+                                        <p className='flight-code'>VJ198</p>
+                                        <div className='time'>
+                                            <span className='time-text'>{new Date(flight.timeStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                            <span className='span-special'>to</span>
+                                            <span className='time-text'>{new Date(flight.timeEnd).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                        </div>
+                                        <div className='more-flight-info'>
+                                            <p className='airbus'>Airbus A321 - <span>Direct flight</span></p>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="class-info">
+                                        {Object.values(flight.classes).map((classInfo, index) => (
+                                            <div className={`class-card ${classInfo.seatBooked >= classInfo.seatAmount ? 'sold-out' : ''}`} key={index} onClick={() => handleClassCardClick(flight, classInfo)}>
+                                                {classInfo.seatBooked >= classInfo.seatAmount ? (
+                                                    <p className="status">All tickets booked!!!</p>
+                                                ) : (
+                                                    <div className='price-info'>
+                                                        <p className="price">{(classInfo.currentPrice / 1000).toLocaleString('vi-VN')}</p>
+                                                        <p className='residue'>000 VND</p>
+                                                    </div>
+
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                 </div>
 
-                <div className="sidebar-fs">
-                    <div className="sidebar-fs-header">
-                        <h3>THÔNG TIN ĐẶT CHỖ</h3>
-                        <button>Thông tin hành khách</button>
-                    </div>
-                    <div className="sidebar-fs-summary">
-                        <h4>Chuyến đi</h4>
-                        <span className="sidebar-fs-total-price">{booking.totalPrice} VND</span>
-                    </div>
-                    <div className="sidebar-fs-details">
-                        <p>
-                            <strong>{booking.from}</strong> ✈ <strong>{booking.to}</strong>
-                        </p>
-                        <p>{booking.date} | {booking.time} | {booking.flightCode} | {booking.class}</p>
-                    </div>
-                    <div className="sidebar-fs-breakdown">
-                        <div>
-                            <span>Giá vé</span>
-                            <span>{booking.ticketPrice} VND</span>
+                <div className='right-search-fs'>
+                    <div className="sidebar-fs">
+                        <div className="sidebar-fs-header">
+                            <h3>BOOKING INFORMATION</h3>
                         </div>
-                        <div>
-                            <span>Thuế, phí</span>
-                            <span>{booking.tax} VND</span>
+                        <div className="sidebar-fs-customer">
+                            <div>
+                                <p>Customer information</p>
+                            </div>
                         </div>
-                        <div>
-                            <span>Dịch vụ</span>
-                            <span>{booking.serviceFee} VND</span>
+                        <div className='sidebar-fs-startTrip'>
+                            <span>Start Trip</span>
+                            <span>{booking.totalPrice} VND
+                                <svg width="14" height="18" viewBox="0 0 14 18" fill="none" className="jss4289">
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M13.1249 2.625L10.4999 0L8.49878 2.002L11.1238 4.627L13.1249 2.625ZM0 13.1144V10.4894L7.26162 3.23828L9.88663 5.86328L2.625 13.1144H0ZM14 15.7394H0V17.4894H14V15.7394Z"
+                                        fill="#EC2029"
+                                    />
+                                </svg>
+                            </span>
+                        </div>
+                        <div className="sidebar-fs-details">
+                            <p>
+                                <strong>{startAirport}</strong><img src='img/colorful_plane.svg' style={{ marginLeft: "10px", marginRight: "10px" }} /><strong>{endAirport}</strong>
+                            </p>
+                            <p>{booking.date} | {booking.time} | {booking.flightCode} | {booking.class}</p>
+                        </div>
+                        <div className="sidebar-fs-breakdown">
+                            <div>
+                                <span>Price</span>
+                                <span>{booking.ticketPrice} VND</span>
+                            </div>
+                            <div>
+                                <span>Tax, fare</span>
+                                <span>{booking.tax} VND</span>
+                            </div>
+                            <div>
+                                <span>Services</span>
+                                <span>{booking.serviceFee} VND</span>
+                            </div>
+                        </div>
+                        <div className="sidebar-fs-footer">
+                            <strong>Total price</strong>
+                            <strong>{booking.totalPrice} VND</strong>
                         </div>
                     </div>
-                    <div className="sidebar-fs-footer">
-                        <strong>Tổng tiền</strong>
-                        <strong>{booking.totalPrice} VND</strong>
+
+                </div>
+            </div>
+
+            <div className='fs-continue'>
+                <div className='continue-container'>
+                    <div className='summary-price'>
+                        <span className='special-des-price'>
+                            Total price
+                        </span>
+                        <span className='special-price'>
+                            {booking.totalPrice} VND
+                        </span>
                     </div>
+                    <button className='fs-btn-continue' onClick={handleContinue}>Continue</button>
                 </div>
             </div>
         </div>

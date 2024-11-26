@@ -40,18 +40,28 @@ main .main-content .cloud {
     width: 100px;
     height: 100px;
     animation: moveCloud 2s ease-in-out infinite alternate,
-            scaleCloud 2s ease-in-out infinite alternate;
+        scaleCloud 2s ease-in-out infinite alternate;
 
 }
 
 @keyframes moveCloud {
-    0% { transform: translateX(-20px); }
-    100% { transform: translateX(20px); }
+    0% {
+        transform: translateX(-20px);
+    }
+
+    100% {
+        transform: translateX(20px);
+    }
 }
 
 @keyframes scaleCloud {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.1); }
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.1);
+    }
 }
 
 
@@ -70,17 +80,20 @@ main .main-rightcontent .plane {
 
 @keyframes movePlane {
     0% {
-        transform: translateX(100vw); /* Bắt đầu từ ngoài màn hình bên phải */
+        transform: translateX(100vw);
+        /* Bắt đầu từ ngoài màn hình bên phải */
     }
+
     100% {
-        transform: translateX(-100vw); /* Kết thúc tại ngoài màn hình bên trái */
+        transform: translateX(-100vw);
+        /* Kết thúc tại ngoài màn hình bên trái */
     }
 }
 
 
 main .main-content .rating-container {
     position: absolute;
-    bottom: -20px;
+    bottom: -6px;
     right: -55px;
     width: 160px;
     padding: 10px 5px 10px 20px;
@@ -90,7 +103,6 @@ main .main-content .rating-container {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
-
 
 
 main .main-content .avatars {
@@ -157,10 +169,14 @@ main .main-rightcontent img {
 .flight-options {
     background: #e40f27;
     display: flex;
-    gap: 65px;
+    gap: 30px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     padding: 15px 20px;
+    width: 100%;
+}
+
+.input-group input {
     width: 100%;
 }
 
@@ -183,43 +199,13 @@ main .main-rightcontent img {
 }
 
 .flight-details {
-
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 25px;
 }
 
-.flight-details-from,
-.flight-details-to {
-    display: flex;
-    gap: 10px;
-}
-
-.detail {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 14px;
-}
-
-.detail label {
-    font-weight: bold;
-}
-
-.detail input {
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    width: 200px;
-}
-
-.detail .location,
-.detail .date {
-    display: flex;
-    align-items: center;
-}
 
 .search-flights {
     background-color: #e40f27;
@@ -251,24 +237,91 @@ h1 {
 
 
 .main-booking {
+    max-width: 350px;
     margin-top: 40px;
     display: inline-block;
 }
 
-.fa-magnifying-glass {
-    font-size: 18px;
+
+
+
+.people-button {
+    background-color: rgb(224, 54, 54);
+    color: #fff;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s;
 }
 
-.icon-rotate {
-    transform: rotate(180deg);
+
+.people-button:hover {
+    opacity: 0.9;
 }
 
-.main-booking .from, .main-booking .to, .main-booking .depart, .main-booking .return {
+
+.flight-search-bar {
     display: flex;
     align-items: center;
-    gap: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.input-group {
+    width: 170px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+}
+
+.input-group-date {
+    display: flex;
+    text-align: left;
+    padding-right: 20px;
+}
+
+.input-group:last-child {
+    border-right: none;
+}
+
+.icon {
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-field {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+    background-color: transparent;
+}
+
+.date-field {
+    text-align: right;
+}
+
+.input-field::placeholder {
+    color: #999;
+}
+
+.main-content svg {
+    width: 1.5em;
 }
 
 .hidden-return {
     display: none;
+}
+
+.hidden-end {
+    width: 319px;
 }

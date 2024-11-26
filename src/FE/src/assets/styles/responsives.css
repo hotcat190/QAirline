@@ -228,6 +228,38 @@
 
 @media screen and (max-width: 767px) {
 
+    .main-booking {
+        width: 300px;
+    }
+    .flight-options {
+        justify-content: space-between;
+    }
+
+    .flight-options label {
+        font-size: 1.4rem;
+    }
+
+    .input-group-date {
+        padding-right: 3px;
+    }
+
+    .input-group-date input {
+        width: 113px;
+    }
+
+    .input-group {
+        width: 160px;
+    }
+
+    .input-group input {
+        width: 100%;
+    }
+
+    .hidden-end {
+        width: 278px;
+    }
+
+
     .flight-details {
         gap: 30px;
     }

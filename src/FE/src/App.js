@@ -10,6 +10,7 @@ import News from './components/pages/News';
 import Destination from './components/pages/Destination';
 import MyFlight from './components/pages/MyFlights';
 import SearchFlight from './components/SearchFlight/SearchFlight';
+import Passenger from './components/Passenger/Passenger';
 import './assets/styles/responsives.css';
 
 
@@ -27,6 +28,7 @@ class App extends Component {
           <rd.Route path="/news" element={<News />}></rd.Route>
           <rd.Route path="/destination" element={<Destination />}></rd.Route>
           <rd.Route path="/searchflights" element={<SearchFlight />}></rd.Route>
+          <rd.Route path="/passenger" element={<Passenger />}></rd.Route>
         </rd.Routes>
         </div>
         
