@@ -91,7 +91,6 @@
 
     .num-stats .btn {
         margin: 70px auto 0px auto;
-        ;
     }
 
     .flight-details {
@@ -229,6 +228,10 @@
 
 @media screen and (max-width: 767px) {
 
+    .flight-details {
+        gap: 30px;
+    }
+
     button > div {
         font-size: 13px;
     }
@@ -293,13 +296,10 @@
         margin-left: 0%;
     }
 
-    .flight-details {
-        gap: 10px;
-    }
 
     .flight-options {
-        width: 100%;
-        display: flex;
+        padding: 15px 35px;
+        gap: 75px;
     }
 
     .dropdown {
@@ -426,9 +426,9 @@
 
     .operator {
         padding-bottom: 2px;
-        font-size: 1.3rem;
-        width: 15px;
-        height: 15px;
+        font-size: 1.5rem;
+        width: 20px;
+        height: 20px;
     }
 
     .dot {
@@ -449,13 +449,8 @@
         margin-top: 10px;
     }
 
-    .flight-details-from,
-    .flight-details-to {
-        flex-direction: column;
-    }
-
-    .main-booking {
-        display: block;
+    .detail {
+        gap: 0px;
     }
 
     .feature-card {
@@ -485,6 +480,22 @@
         padding: 10px 20px;
     }
 }
+
+@media screen and (max-width: 700px) {
+    .flight-details-from, .flight-details-to {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .flight-details {
+        gap: 20px;
+    }
+
+    .flight-options {
+        gap: 0px;
+    }
+
+} 
 
 @media screen and (max-width: 530px) {
 

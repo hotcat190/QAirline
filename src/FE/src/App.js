@@ -9,6 +9,7 @@ import Home from './components/pages/Home';
 import News from './components/pages/News';
 import Destination from './components/pages/Destination';
 import MyFlight from './components/pages/MyFlights';
+import SearchFlight from './components/SearchFlight/SearchFlight';
 import './assets/styles/responsives.css';
 
 
@@ -20,12 +21,12 @@ class App extends Component {
           <ActionForm />
           <MobileHeader />
           <Header />
-       
           <rd.Routes>
           <rd.Route path="/" element={<Home />}></rd.Route>
           <rd.Route path="/myflights" element={<MyFlight />}></rd.Route>
           <rd.Route path="/news" element={<News />}></rd.Route>
           <rd.Route path="/destination" element={<Destination />}></rd.Route>
+          <rd.Route path="/searchflights" element={<SearchFlight />}></rd.Route>
         </rd.Routes>
         </div>
         

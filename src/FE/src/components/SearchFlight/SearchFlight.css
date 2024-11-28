@@ -1,0 +1,287 @@
+body {
+    overflow-y: scroll;
+}
+
+.search-flight-container {
+    display: flex;
+}
+
+.search-flight-container .main-fs-content {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(28.91deg, #F9A51A 2.24%, #FBB612 31.03%, #FBF300 97.21%);
+}
+
+.jss2412 {
+    display: flex;
+    gap: 5px;
+}
+
+.search-flight-container .content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.search-flight-container .route-info {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.search-flight-container svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.search-flight-container .right-search-fs {
+    width: 70%;
+}
+
+.search-flight-container strong {
+    font-size: 18px;
+}
+
+
+.search-flight-container .fs-icon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 999px;
+    rotate: 0deg;
+}
+
+.search-flight-container .right-fs-main-content {
+    display: flex;
+    gap: 15px;
+}
+
+.search-flight-container span:nth-child(2) {
+    margin-left: 10px;
+    color: rgb(224, 54, 54);
+    font-size: 1.8rem;
+    font-weight: 550;
+}
+
+.search-flight-container .airport {
+    color: #686565;
+}
+
+.search-flight-container .flight-list .span-special {
+    margin: 0;
+    font-size: 13px;
+    margin: 0 5px;
+}
+
+.search-flight-container .title {
+    font-size: 24px;
+    font-weight: 550;
+}
+
+
+.search-flight-container .sidebar-fs {
+    width: 300px;
+    height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.search-flight-container .sidebar-fs-header {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-flight-container .sidebar-fs-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-flight-container .sidebar-fs-summary {
+    background-color: #e6f4ff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.search-flight-container .sidebar-fs-details {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.search-flight-container .sidebar-fs-breakdown {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.search-flight-container .sidebar-fs-breakdown div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.search-flight-container .sidebar-fs-footer {
+    padding: 10px;
+    background-color: #f8f8f8;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.search-flight-container .flight-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+.search-flight-container .flight-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+}
+
+
+.search-flight-container .flight-info {
+    width: 27%;
+    background-color: #ffcc00;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+
+
+.search-flight-container .flight-info .details {
+    font-size: 14px;
+    color: red;
+}
+
+
+.search-flight-container .class-info {
+    width:  73%;    
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: #f9f9f9;
+}
+
+
+.search-flight-container .class-card {
+    text-align: center;
+    flex: 1;
+    padding: 8px;
+    border-right: 1px solid #ccc;
+}
+
+
+.search-flight-container .class-card:last-child {
+    border-right: none;
+}
+
+
+.search-flight-container .class-card .class-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.search-flight-container .class-card.economy .class-name {
+    color: green;
+}
+
+
+.search-flight-container .class-card.skyboss .class-name {
+    color: red;
+}
+
+
+.search-flight-container .class-card.deluxe .class-name {
+    color: orange;
+}
+
+
+.search-flight-container .class-card .price {
+    font-size: 16px;
+    color: black;
+}
+
+
+.search-flight-container .class-card .status {
+    font-size: 14px;
+    color: grey;
+}
+
+
+.search-flight-container .class-card.sold-out {
+    background: #f0f0f0;
+    color: grey;
+}
+
+
+.search-flight-container .class-card.sold-out .price {
+    display: none;
+}
+
+.search-flight-container .time-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+
+@media screen and (max-width: 1100px) {
+    .search-flight-container .flight-info .time span {
+        display: block;
+    }
+    .search-flight-container .flight-info .time {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-flight-container .left-fs-main-content {
+        width: 100%;
+    }
+
+
+    .search-flight-container .route-info {
+        gap: 100px;
+    }
+
+    .search-flight-container .right-fs-main-content {
+        display: none;
+    }
+
+    .search-flight-container .content {
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    
+    .search-flight-container .sidebar-fs {
+        display: none;
+    }
+
+    .search-flight-container .right-search-fs {
+        width: 100%;
+    }
+}
