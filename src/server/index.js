@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:3000" }))
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -31,6 +32,6 @@ app.use("/api/flight", flightRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/airport", airportRouter);
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
   console.log("Server listen in port " + port);
 });
