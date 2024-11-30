@@ -267,3 +267,21 @@
 .difference {
     margin-top: 13px;
 }
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+  
+.password-container input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.password-container .eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
