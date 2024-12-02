@@ -1,0 +1,185 @@
+.container {
+}
+
+.bookingsPage {
+    padding: 24px;
+}
+
+.header {
+    margin-bottom: 24px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    flex: 1;
+}
+
+.searchBar input {
+    border: none;
+    outline: none;
+    margin-left: 8px;
+    width: 100%;
+}
+
+.filters {
+    display: flex;
+    gap: 16px;
+}
+
+.filterButton, .statusFilter, .dateFilter {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+}
+
+.statsCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.statCard {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.statCard h3 {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.statCard p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.tableContainer {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: auto;
+}
+
+.bookingsTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bookingsTable th,
+.bookingsTable td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.bookingsTable th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.confirmed {
+    background-color: #e3fcef;
+    color: #00a854;
+}
+
+.pending {
+    background-color: #fff7e6;
+    color: #fa8c16;
+}
+
+.cancelled {
+    background-color: #fff1f0;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+}
+
+.viewButton, .updateButton {
+    background-color: #f8d7da; /* Light red color */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;    
+    margin-right: 0px; /* Overlap the border */
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.viewButton {
+    border-radius: 10px 0 0 10px; /* Rounded corners for the left button */
+}
+
+.updateButton {
+    min-width: 150px;
+    border-radius: 0 10px 10px 0; /* Rounded corners for the right button */
+}
+
+.viewButton + .updateButton {
+    border-left: 1px solid #f5c6cb; /* Line in the middle */
+}
+
+.viewButton:hover, .updateButton:hover {
+    background-color: #f5c6cb; /* Slightly darker on hover */
+}
+
+.columnFilters {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.columnFilters input,
+.columnFilters select {
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.columnFilters input:focus,
+.columnFilters select:focus {
+    outline: none;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+
+.columnFilters input::placeholder {
+    color: #6c757d;
+}
+
+.columnFilters input[type="date"] {
+    min-width: 150px;
+}
