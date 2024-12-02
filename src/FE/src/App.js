@@ -12,6 +12,11 @@ import MyFlight from './components/pages/MyFlights';
 import SearchFlight from './components/SearchFlight/SearchFlight';
 import './assets/styles/responsives.css';
 
+import AdminLayout from './components/admin/layout/AdminLayout';
+import AdminDashboard from './components/admin/pages/AdminDashboard';
+import AdminAircrafts from './components/admin/pages/AdminAircrafts';
+import AdminFlights from './components/admin/pages/AdminFlights';
+import AdminAdvertisements from './components/admin/pages/AdminAdvertisements';
 
 class App extends Component {
   render() {
@@ -27,6 +32,14 @@ class App extends Component {
           <rd.Route path="/news" element={<News />}></rd.Route>
           <rd.Route path="/destination" element={<Destination />}></rd.Route>
           <rd.Route path="/searchflights" element={<SearchFlight />}></rd.Route>
+
+          <rd.Route path="/admin" element={<AdminLayout />}>
+            <rd.Route index element={<rd.Navigate to="/admin/dashboard" replace />} />
+            <rd.Route path="dashboard" element={<AdminDashboard />}></rd.Route>
+            <rd.Route path="aircrafts" element={<AdminAircrafts />}></rd.Route>
+            <rd.Route path="flights" element={<AdminFlights />}></rd.Route>
+            <rd.Route path="advertisements" element={<AdminAdvertisements />}></rd.Route>
+          </rd.Route>
         </rd.Routes>
         </div>
         
