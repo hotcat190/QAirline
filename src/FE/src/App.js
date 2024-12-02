@@ -13,10 +13,11 @@ import SearchFlight from './components/SearchFlight/SearchFlight';
 import './assets/styles/responsives.css';
 
 import AdminLayout from './components/admin/layout/AdminLayout';
-import AdminDashboard from './components/admin/pages/AdminDashboard';
-import AdminAircrafts from './components/admin/pages/AdminAircrafts';
-import AdminFlights from './components/admin/pages/AdminFlights';
-import AdminAdvertisements from './components/admin/pages/AdminAdvertisements';
+import AdminDashboard from './components/admin/pages/dashboard/AdminDashboard';
+import AdminAircrafts from './components/admin/pages/aircrafts/AdminAircrafts';
+import AdminFlights from './components/admin/pages/flights/AdminFlights';
+import AdminAdvertisements from './components/admin/pages/advertisements/AdminAdvertisements';
+import AdminBookings from './components/admin/pages/bookings/AdminBookings';
 
 class App extends Component {
   render() {
@@ -39,6 +40,7 @@ class App extends Component {
             <rd.Route path="aircrafts" element={<AdminAircrafts />}></rd.Route>
             <rd.Route path="flights" element={<AdminFlights />}></rd.Route>
             <rd.Route path="advertisements" element={<AdminAdvertisements />}></rd.Route>
+            <rd.Route path="bookings" element={<AdminBookings />}></rd.Route>
           </rd.Route>
         </rd.Routes>
         </div>

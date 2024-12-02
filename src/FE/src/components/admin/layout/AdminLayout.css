@@ -1,6 +1,6 @@
 .admin-layout {
     display: flex;
-    flex-direction: row;
+    min-width: 600px;
 }
 
 .admin-navbar {
@@ -13,3 +13,4 @@
     overflow: auto;
     background-color: #f5f5f5;
 } 
+
