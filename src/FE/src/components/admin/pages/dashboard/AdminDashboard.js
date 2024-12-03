@@ -160,6 +160,32 @@ export default function AdminDashboard() {
                     <Line data={flightsScheduledData} options={flightsScheduledChartOptions} />
                 </div>
             </div>
+            {/* 2 */}
+            <br />
+            <div className={styles.statsGrid}>
+                {dashboardStats.map((stat, index) => (
+                    <div className={styles.statCard} key={index}>
+                        <div className={styles.statIcon} style={{ backgroundColor: stat.color }}>
+                            {stat.icon}
+                        </div>
+                        <div className={styles.statInfo}>
+                            <h3>{stat.title}</h3>
+                            <div className={styles.statValue}>
+                                <span>{stat.value}</span>
+                                <span className={styles.trend}>{stat.trend}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}                
+            </div>
+            <div className={styles.chartsFlex}>
+                <div className={styles.chartContainer}>
+                    <Bar data={ticketsSoldData} options={ticketsSoldChartOptions} />
+                </div>
+                <div className={styles.chartContainer}>
+                    <Line data={flightsScheduledData} options={flightsScheduledChartOptions} />
+                </div>
+            </div>
         </div>
     );
 }

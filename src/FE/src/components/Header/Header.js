@@ -37,7 +37,7 @@ function Header() {
             </svg>
           </label>
           <rd.Link to="/">
-            <img className="logo" src="img/LOGO.png" alt="Besnik." />
+            <img className="logo" id="logo" src="img/LOGO.png" alt="Besnik." />
           </rd.Link>
 
           <ul id="pc-nav">

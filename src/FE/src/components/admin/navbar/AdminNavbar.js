@@ -1,3 +1,4 @@
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './AdminNavbar.module.css';
 
@@ -45,7 +46,14 @@ export default function AdminNavbar() {
                         </div>
                     </NavLink>
                 </li>
-                
+                <li className={styles.returnHome}>
+                    <NavLink to="/" className={styles.homeLink}>
+                        <div className={styles.cardContent}>
+                            <i className="fas fa-home"></i>
+                            <span>Return to Home</span>
+                        </div>
+                    </NavLink>
+                </li>
             </ul>
         </nav>
     )

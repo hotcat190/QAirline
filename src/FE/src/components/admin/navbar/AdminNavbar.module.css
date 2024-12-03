@@ -1,13 +1,18 @@
+:root {
+    --admin-navbar-width: 250px;
+}
+
 .adminSidebar {
-    width: 250px;
-    height: 100vh;
+    width: var(--admin-navbar-width);
+    /* height: calc(100vh - 50px); */
     background-color: #f8f4f7;
     color: #666666;
-    position: fixed;
+    position: sticky;
+    top: 50px;
     display: flex;
     flex-direction: column;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
 }
 
 .sidebarHeader {
@@ -61,9 +66,8 @@
     background-color: #db3434;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center;
-    animation: cardSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: cardSlide 0.3s ease;
 }
 
 .cardContent {
@@ -89,3 +93,32 @@
 .active .cardContent {
     color: white;
 }
+
+.returnHome {
+    position: fixed;
+    bottom: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.homeLink {
+    color: #ff0000;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.homeLink:hover {
+    opacity: 1;
+}
+
+/* Make sure the parent sidebar has these styles */
+.adminSidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+/*
+.sidebarMenu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+} */
