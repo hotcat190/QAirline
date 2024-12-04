@@ -58,7 +58,7 @@ function MyFlight() {
                             <div className="tabs">
                                 <button className="tab active">All flights (0)</button>
                                 <button className="tab">Unpaid flights (0)</button>
-                                <button className="tab">Coming fLights (0)</button>
+                                <button className="tab">Coming fights (0)</button>
                             </div>
 
                             <div className="empty-state">
