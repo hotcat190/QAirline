@@ -26,7 +26,7 @@ app.use(cookieParser())
 const allowedOrigins = [LOCALHOST, AWS_IP];
 app.use(cors({ origin: allowedOrigins }));
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Hello World!");
 });
 
