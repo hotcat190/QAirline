@@ -12,6 +12,7 @@ import MyFlight from './components/pages/MyFlights';
 import SearchFlight from './components/SearchFlight/SearchFlight';
 import Passenger from './components/Passenger/Passenger';
 import './assets/styles/responsives.css';
+import Footer from './components/Footer/Footer';
 
 
 class App extends Component {
@@ -23,13 +24,14 @@ class App extends Component {
           <MobileHeader />
           <Header />
           <rd.Routes>
-          <rd.Route path="/" element={<Home />}></rd.Route>
-          <rd.Route path="/myflights" element={<MyFlight />}></rd.Route>
-          <rd.Route path="/news" element={<News />}></rd.Route>
-          <rd.Route path="/destination" element={<Destination />}></rd.Route>
-          <rd.Route path="/searchflights" element={<SearchFlight />}></rd.Route>
-          <rd.Route path="/passenger" element={<Passenger />}></rd.Route>
-        </rd.Routes>
+            <rd.Route path="/" element={<Home />}></rd.Route>
+            <rd.Route path="/myflights" element={<MyFlight />}></rd.Route>
+            <rd.Route path="/news" element={<News />}></rd.Route>
+            <rd.Route path="/destination" element={<Destination />}></rd.Route>
+            <rd.Route path="/searchflights" element={<SearchFlight />}></rd.Route>
+            <rd.Route path="/passenger" element={<Passenger />}></rd.Route>
+          </rd.Routes>
+          <Footer />
         </div>
         
       </BrowserRouter>

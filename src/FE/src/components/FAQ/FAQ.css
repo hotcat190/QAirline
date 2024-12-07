@@ -30,6 +30,9 @@
     justify-content: space-between;
     align-items: center;
 }
+.faq-section .answer {
+    line-height: 1.2;
+}
 
 .operator {
     width: 25px;
