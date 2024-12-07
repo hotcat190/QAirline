@@ -18,38 +18,37 @@ export const useRegister = () => {
   );
 
   const onRegisterSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-
-    const jsonData = (isEmail(email)) ? { 
-      email,
-      password, 
-      username,
-      numberPhone: "",
-    } : {
-      email: "",
-      numberPhone: email,
-      password,
-      username,
-    }; // Prepare JSON payload
-
+    e.preventDefault();
+    
     try {
-      const response = await fetch(`${BACKEND_BASE_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(jsonData),
-      });
+        const jsonData = (isEmail(email)) ? { 
+          email,
+          password, 
+          username,
+          numberPhone: "",
+        } : {
+          email: "",
+          numberPhone: email,
+          password,
+          username,
+        }; // Prepare JSON payload
 
-      if (response.ok) {
-        const result = response.body;
-        console.log("Register successful:", result);
-        // Handle success
-      } else {
-        console.error("Register failed:", response.status);
-        // Handle error
-      }
+        const response = await fetch(`${BACKEND_BASE_URL}/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData),
+        });
+
+        if (response.ok) {
+            return { success: true }; // Registration successful
+        } else {
+            console.error("Registration failed");
+            const errorMessage = await response.json();
+            return { success: false, message: errorMessage.message };
+        }
     } catch (error) {
-      console.error("An error occurred:", error);
-      // Handle network errors
+        console.error("An error occurred:", error);
+        return false;
     }
   };
 
