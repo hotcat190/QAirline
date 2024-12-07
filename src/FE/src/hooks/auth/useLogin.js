@@ -28,7 +28,7 @@ export const useLogin = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Login failed');
+        return { success: false, message: 'Login failed' };
       }
 
       const userData = await response.json();
@@ -43,6 +43,7 @@ export const useLogin = () => {
     } catch (error) {
       console.error('Login error:', error);
       // Handle error (show error message to user)
+      return { success: false, message: error.message };
     }
   };
 
