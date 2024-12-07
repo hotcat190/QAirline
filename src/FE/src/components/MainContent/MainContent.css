@@ -272,7 +272,7 @@ h1 {
     background-color: #fff;
 }
 
-.input-group {
+.booking-container .input-group {
     width: 170px;
     display: flex;
     align-items: center;
