@@ -49,6 +49,9 @@
       ],
       "utils/*": [
         "utils/*"
+      ],
+      "contexts/*": [
+        "contexts/*"
       ]
     }
   }

@@ -70,3 +70,44 @@
 .fixed-header .actions {
     margin-left: auto;
 }
+
+/* Dropdown */
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-container #user-avatar {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 150px;
+    z-index: 1000;
+}
+
+.dropdown-menu { 
+    a {
+        display: block;
+        padding: 8px 16px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+
+    a:hover {
+        background-color: #f5f5f5;
+    }    
+}
+
+
