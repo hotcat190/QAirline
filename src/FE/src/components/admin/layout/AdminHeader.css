@@ -1,0 +1,107 @@
+.adminHeader > .fixed-header {
+    box-shadow: calc(var(--admin-navbar-width)) 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.adminHeader {   
+
+    .fixed-header .content {
+        margin-left: 70px;
+        margin-right: auto;
+        width: calc(100% - 110px);  
+    }
+
+    @media screen and (min-width: 0) {
+        .fixed-header #pc-nav {
+            display: none;
+        }
+    }
+
+    /* .mobile-header .menu-drawer {
+        display: block;
+        position: fixed;
+        background-color: white;
+        inset: 0 40% 0 0;
+        z-index: 40;
+        transform: translateX(-100%);
+        transition: .5s ease;
+    } */
+
+    /* .logo {
+        position: absolute;
+        right: 50%;
+        top: 50%;
+        transform: translate(50%, -50%);
+    }
+
+    .fixed-header #pc-nav {
+        display: none;
+    }
+
+    .toggle-menu {
+        display: block;
+        width: 20px;
+        cursor: pointer;
+    }
+
+    .navbar {
+        position: relative;
+    }
+
+    .navbar .logo {
+        position: absolute;
+        right: 50%;
+        top: 50%;
+        transform: translate(50%, -50%);
+    }
+
+    .toggle-menu {
+        width: 20px;
+        cursor: pointer;
+    }
+
+    .menu-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 30;
+        opacity: 0;
+        visibility: hidden;
+        transition: .5s ease;
+    }
+
+    .menu-drawer {
+        position: fixed;
+        background-color: white;
+        inset: 0 40% 0 0;
+        z-index: 40;
+        transform: translateX(-100%);
+        transition: .5s ease;
+    }
+
+    #menu-checkbox:checked~.menu-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    #menu-checkbox:checked~.menu-drawer {
+        transform: translateX(0);
+    }
+
+    .mobile-header ul {
+        margin-left: 50px;
+        margin-top: 50px;
+    }
+
+    .mobile-header a {
+        display: block;
+        color: black;
+        padding: 20px 0;
+        font-size: 2rem;
+        transition: transform .3s ease;
+    }
+
+    .mobile-header a:hover {
+        color: rgb(224, 54, 54);
+        transform: translateX(10px);
+    } */
+}

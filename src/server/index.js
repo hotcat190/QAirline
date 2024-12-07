@@ -8,16 +8,19 @@ import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
 import flightRouter from "./routes/flight.js";
 import bookingRouter from "./routes/booking.js";
+import airportRouter from "./routes/airport.js";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8000;
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:3000" }))
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -27,7 +30,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/flight", flightRouter);
 app.use("/api/booking", bookingRouter);
+app.use("/api/airport", airportRouter);
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
   console.log("Server listen in port " + port);
 });

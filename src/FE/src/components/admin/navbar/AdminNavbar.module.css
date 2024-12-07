@@ -1,0 +1,124 @@
+:root {
+    --admin-navbar-width: 250px;
+}
+
+.adminSidebar {
+    width: var(--admin-navbar-width);
+    /* height: calc(100vh - 50px); */
+    background-color: #f8f4f7;
+    color: #666666;
+    position: sticky;
+    top: 50px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    
+}
+
+.sidebarHeader {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #db3434;
+}
+
+.sidebarMenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebarMenu li {
+    transition: background-color 0.3s;
+}
+
+.sidebarMenu li:hover {
+    background-color: #e8e4e7;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.sidebarMenu a {
+    color: #666666;
+    text-decoration: none;
+    display: flex;
+    padding: 20px;
+    margin: 5px 0; 
+}
+
+.sidebarMenu i {
+    width: 20px;
+}
+
+.sidebarMenu .active {
+    background-color: #e8e4e7;
+    color: #db3434;
+    position: relative;
+}
+
+.sidebarMenu .active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    background-color: #db3434;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform-origin: center;
+    animation: cardSlide 0.3s ease;
+}
+
+.cardContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+@keyframes cardSlide {
+    0% {
+        transform: scale(0.97);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.active .cardContent {
+    color: white;
+}
+
+.returnHome {
+    position: fixed;
+    bottom: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.homeLink {
+    color: #ff0000;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.homeLink:hover {
+    opacity: 1;
+}
+
+/* Make sure the parent sidebar has these styles */
+.adminSidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+/*
+.sidebarMenu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+} */

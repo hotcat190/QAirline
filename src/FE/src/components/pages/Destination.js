@@ -15,7 +15,7 @@ function Destination() {
         { from: "Đà Nẵng (DAD)", to: "New York (JFK)", date: "01/05/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
         { from: "Tp. Hồ Chí Minh (SGN)", to: "Dubai (DXB)", date: "11/03/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
         { from: "Hà Nội (HAN)", to: "Berlin (BER)", date: "30/03/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
-    ];
+    ]
     return (
         <div className="destination-container">
             <div className="content">
@@ -67,7 +67,7 @@ function Destination() {
                                     <i class="fa-solid fa-plane-arrival"></i>
                                     <strong>{item.to}</strong>
                                 </p>
-                                <p className="date">Departure Date: {item.date}</p>
+                                <p className="date-des">Departure Date: {item.date}</p>
                             </div>
                             <div className="card-bottom">
                                 <p className="price">
