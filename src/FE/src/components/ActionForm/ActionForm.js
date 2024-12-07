@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import "./ActionForm.css";
 import { useLogin } from "hooks/auth/useLogin";
 import { useRegister } from "hooks/auth/useRegister";
-import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
+import { EyeOutlined, EyeInvisibleOutlined, LoadingOutlined } from "@ant-design/icons";
 
 function ActionForm() {
     const { 
-        onLoginSubmit,
+        onLoginSubmit: handleLoginSubmit,
         value: loginEmailFieldValue, setEmail: setLoginEmailField, 
         password: loginPasswordFieldValue, setPassword: setLoginPasswordFieldValue, 
     } = useLogin();
     
     const { 
-        onRegisterSubmit,
+        onRegisterSubmit: handleRegisterSubmit,
         username: registerUsernameFieldValue, setUsername: setRegisterUsernameFieldValue, 
         email: registerEmailFieldValue, setEmail: setRegisterEmailField, 
         password: registerPasswordFieldValue, setPassword: setRegisterPasswordFieldValue, 
@@ -22,6 +22,10 @@ function ActionForm() {
     const [signInPasswordVisible, setSignInPasswordVisible] = useState(false);
     const [signUpPasswordVisible, setSignUpPasswordVisible] = useState(false);
     const [signUpRetypePasswordVisible, setSignUpRetypePasswordVisible] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
+    const [loginError, setLoginError] = useState('');
+    const [registerError, setRegisterError] = useState('');
 
     function closeForms() {
         document.querySelector('.overlay').style.display = 'none';
@@ -120,6 +124,40 @@ function ActionForm() {
         signupForm.classList.add('showSign');
     }
 
+    const onLoginSubmit = async (e) => {
+        setIsLoggingIn(true);
+        setLoginError('');
+        try {
+            const result = await handleLoginSubmit(e);
+            if (result?.success) {
+                closeForms();
+            } else {
+                setLoginError(result.message || 'Login failed. Please try again.');
+            }
+        } catch (error) {
+            setLoginError(error.message || 'An unexpected error occurred.');
+        } finally {
+            setIsLoggingIn(false);
+        }
+    };
+
+    const onRegisterSubmit = async (e) => {
+        setIsRegistering(true);
+        setRegisterError('');
+        try {
+            const result = await handleRegisterSubmit(e);
+            if (result.success) {
+                openSignin();
+            } else {
+                setRegisterError(result.message || 'Registration failed. Please try again.');
+            }
+        } catch (error) {
+            setRegisterError(error.message || 'An unexpected error occurred.');
+        } finally {
+            setIsRegistering(false);
+        }
+    };
+
     return (
         <div className="main-actions-container">
             <div className="overlay" onClick={closeForms}></div>
@@ -154,8 +192,7 @@ function ActionForm() {
                 </div>
                 <div className="actions-container">
                     <p>
-                        Don't you have an account?<a href="#" className="action-link-mobile" onClick={openSignup}
-                        >Sign up</a>
+                        Don't you have an account? <a href="#" className="action-link-mobile" onClick={openSignup}>Sign up</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>
@@ -189,12 +226,30 @@ function ActionForm() {
                     <input type="checkbox" id="remember" name="remember" />
                     <label for="remember">Remember me for later sign in</label>
                 </div>
-                <button type="submit" className="login-btn" form="email-formlogin">Sign in</button>
+                {loginError && (
+                    <div className="error-message">
+                        {loginError}
+                    </div>
+                )}
+                <button 
+                    type="submit" 
+                    className="login-btn" 
+                    form="email-formlogin"
+                    disabled={isLoggingIn}
+                >
+                    {isLoggingIn ? (
+                        <>
+                            <LoadingOutlined style={{ marginRight: '8px' }} />
+                            Signing in...
+                        </>
+                    ) : (
+                        'Sign in'
+                    )}
+                </button>
                 <button className="backlogin-btn" onClick={backToSignin}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
                 <div className="actions-container">
                     <p>
-                        Don't you have an account?<a href="#" className="action-link-mobile" onClick={openSignup}
-                        >Sign up</a>
+                        Don't you have an account? <a href="#" className="action-link-mobile" onClick={openSignup}>Sign up</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>
@@ -221,12 +276,30 @@ function ActionForm() {
                         </div>
                     </div>
                 </form>
-                <button type="submit" className="logup-btn" form="email-formlogup">Sign up</button>
+                {registerError && (
+                    <div className="error-message">
+                        {registerError}
+                    </div>
+                )}
+                <button 
+                    type="submit" 
+                    className="logup-btn" 
+                    form="email-formlogup"
+                    disabled={isRegistering}
+                >
+                    {isRegistering ? (
+                        <>
+                            <LoadingOutlined style={{ marginRight: '8px' }} />
+                            Signing up...
+                        </>
+                    ) : (
+                        'Sign up'
+                    )}
+                </button>
                 <button className="backlogup-btn" onClick={backToSignup}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
                 <div className="actions-container difference">
                     <p>
-                        Do you have an account?<a href="#" className="action-link-mobile" onClick={openSignin}
-                        >Sign in</a>
+                        Do you have an account? <a href="#" className="action-link-mobile" onClick={openSignin}> Sign in</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>
@@ -263,7 +336,7 @@ function ActionForm() {
                 </div>
                 <div className="actions-container">
                     <p>
-                        Do you have an account?<a href="#" className="action-btn" onClick={openSignin}>Sign in</a>
+                        Do you have an account? <a href="#" className="action-btn" onClick={openSignin}>Sign in</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>
