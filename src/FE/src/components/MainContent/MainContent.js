@@ -4,8 +4,8 @@ import "./MainContent.css";
 import AirportSearch from "./AirportSearch.js";
 
 const PassengerSelector = () => {
-  const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
-  const [ passengers, setPassengers ] = useState({
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [passengers, setPassengers] = useState({
     adults: 1,
     children: 0,
     infants: 0,
@@ -63,12 +63,19 @@ const PassengerSelector = () => {
           display: "flex",
           alignItems: "center",
           backgroundColor: "white",
-          height: "40px"
+          height: "40px",
         }}
       >
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M8.5 0C9.62717 0 10.7082 0.447766 11.5052 1.2448C12.3022 2.04183 12.75 3.12283 12.75 4.25C12.75 5.37717 12.3022 6.45817 11.5052 7.2552C10.7082 8.05223 9.62717 8.5 8.5 8.5C7.37283 8.5 6.29183 8.05223 5.4948 7.2552C4.69777 6.45817 4.25 5.37717 4.25 4.25C4.25 3.12283 4.69777 2.04183 5.4948 1.2448C6.29183 0.447766 7.37283 0 8.5 0ZM8.5 10.625C13.1962 10.625 17 12.5269 17 14.875V17H0V14.875C0 12.5269 3.80375 10.625 8.5 10.625Z" fill="#333333"></path></svg>
-        <span style={{marginLeft: "10px", fontSize: "14px"}}>{getPassengerSummary()}</span>
-        <span style={{marginLeft: "auto"}}>▼</span>
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+          <path
+            d="M8.5 0C9.62717 0 10.7082 0.447766 11.5052 1.2448C12.3022 2.04183 12.75 3.12283 12.75 4.25C12.75 5.37717 12.3022 6.45817 11.5052 7.2552C10.7082 8.05223 9.62717 8.5 8.5 8.5C7.37283 8.5 6.29183 8.05223 5.4948 7.2552C4.69777 6.45817 4.25 5.37717 4.25 4.25C4.25 3.12283 4.69777 2.04183 5.4948 1.2448C6.29183 0.447766 7.37283 0 8.5 0ZM8.5 10.625C13.1962 10.625 17 12.5269 17 14.875V17H0V14.875C0 12.5269 3.80375 10.625 8.5 10.625Z"
+            fill="#333333"
+          ></path>
+        </svg>
+        <span style={{ marginLeft: "10px", fontSize: "14px" }}>
+          {getPassengerSummary()}
+        </span>
+        <span style={{ marginLeft: "auto" }}>▼</span>
       </div>
 
       {isDropdownOpen && (
@@ -86,27 +93,58 @@ const PassengerSelector = () => {
           }}
         >
           <div style={{ marginBottom: "20px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div className='adult-container' style={{ display: "flex" }}>
-                <div className='adult-image'>
-                  <img src='img/adult.svg' />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div className="adult-container" style={{ display: "flex" }}>
+                <div className="adult-image">
+                  <img src="img/adult.svg" />
                 </div>
-                <div className='people-des' style={{ display: "flex", flexDirection: "column", gap: "2px"}}>
-                  <span style={{ textAlign: "left", fontSize: "12px", fontWeight: "550" }}>Adult</span>
-                  <span style={{ textAlign: "left", fontSize: "12px" }}>More than 12 years old</span>
+                <div
+                  className="people-des"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "2px",
+                  }}
+                >
+                  <span
+                    style={{
+                      textAlign: "left",
+                      fontSize: "12px",
+                      fontWeight: "550",
+                    }}
+                  >
+                    Adult
+                  </span>
+                  <span style={{ textAlign: "left", fontSize: "12px" }}>
+                    More than 12 years old
+                  </span>
                 </div>
               </div>
               <div>
-                <button 
-                className='people-button'
+                <button
+                  className="people-button"
                   onClick={() => handleDecrement("adults")}
                 >
                   -
                 </button>
-                <span style={{display: "inline-block", margin: "0px 10px", width: "10px"}}>{passengers.adults}</span>
+                <span
+                  style={{
+                    display: "inline-block",
+                    margin: "0px 10px",
+                    width: "10px",
+                  }}
+                >
+                  {passengers.adults}
+                </span>
                 <button
                   onClick={() => handleIncrement("adults")}
-                  className='people-button'
+                  className="people-button"
                 >
                   +
                 </button>
@@ -114,27 +152,58 @@ const PassengerSelector = () => {
             </div>
           </div>
           <div style={{ marginBottom: "20px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div className='children-container' style={{ display: "flex" }}>
-                <div className='children-image'>
-                  <img src='img/children.svg' />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div className="children-container" style={{ display: "flex" }}>
+                <div className="children-image">
+                  <img src="img/children.svg" />
                 </div>
-                <div className='people-des' style={{ display: "flex", flexDirection: "column" , gap: "2px"}}>
-                  <span style={{ textAlign: "left", fontSize: "12px", fontWeight: "550" }}>Children</span>
-                  <span style={{ textAlign: "left", fontSize: "12px" }}>2-11 years old</span>
+                <div
+                  className="people-des"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "2px",
+                  }}
+                >
+                  <span
+                    style={{
+                      textAlign: "left",
+                      fontSize: "12px",
+                      fontWeight: "550",
+                    }}
+                  >
+                    Children
+                  </span>
+                  <span style={{ textAlign: "left", fontSize: "12px" }}>
+                    2-11 years old
+                  </span>
                 </div>
               </div>
               <div>
                 <button
                   onClick={() => handleDecrement("children")}
-               className='people-button'
+                  className="people-button"
                 >
                   -
                 </button>
-                <span style={{display: "inline-block", margin: "0px 10px", width: "10px"}}>{passengers.children}</span>
+                <span
+                  style={{
+                    display: "inline-block",
+                    margin: "0px 10px",
+                    width: "10px",
+                  }}
+                >
+                  {passengers.children}
+                </span>
                 <button
                   onClick={() => handleIncrement("children")}
-                 className='people-button'
+                  className="people-button"
                 >
                   +
                 </button>
@@ -142,27 +211,58 @@ const PassengerSelector = () => {
             </div>
           </div>
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div className='infant-container' style={{ display: "flex" }}>
-                <div className='infant-image'>
-                  <img src='img/infant.svg' />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div className="infant-container" style={{ display: "flex" }}>
+                <div className="infant-image">
+                  <img src="img/infant.svg" />
                 </div>
-                <div className='people-des' style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                  <span style={{ textAlign: "left", fontSize: "12px", fontWeight: "550" }}>Infant</span>
-                  <span style={{ textAlign: "left", fontSize: "12px" }}>less than 2 years old</span>
+                <div
+                  className="people-des"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "2px",
+                  }}
+                >
+                  <span
+                    style={{
+                      textAlign: "left",
+                      fontSize: "12px",
+                      fontWeight: "550",
+                    }}
+                  >
+                    Infant
+                  </span>
+                  <span style={{ textAlign: "left", fontSize: "12px" }}>
+                    less than 2 years old
+                  </span>
                 </div>
               </div>
               <div>
                 <button
                   onClick={() => handleDecrement("infants")}
-                  className='people-button'
+                  className="people-button"
                 >
                   -
                 </button>
-                <span style={{display: "inline-block", margin: "0px 10px", width: "10px"}}>{passengers.infants}</span>
+                <span
+                  style={{
+                    display: "inline-block",
+                    margin: "0px 10px",
+                    width: "10px",
+                  }}
+                >
+                  {passengers.infants}
+                </span>
                 <button
                   onClick={() => handleIncrement("infants")}
-                  className='people-button'
+                  className="people-button"
                 >
                   +
                 </button>
@@ -226,13 +326,12 @@ function MainContent() {
   // console.log(airports);
 
   const handleSelectAirport = (type, id) => {
-    if (type === "begin") {
+    if (type === "Start") {
       setIdBeginAirport(id);
-    }
-    else {
+    } else {
       setIdEndAirport(id);
     }
-  }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -295,14 +394,14 @@ function MainContent() {
         }
       }
     } else {
-      if (!startAirport || !endAirport || !startDate) {
+      if (!idBeginAirport || !endAirport || !startDate) {
         alert("Please fill in all fields");
       } else {
         const startDay = parseInt(startDate.split("-")[2], 10);
         const startMonth = parseInt(startDate.split("-")[1], 10);
         const startYear = parseInt(startDate.split("-")[0], 10);
-        const idBeginAirport = airport2Id[startAirport];
-        const idEndAirport = airport2Id[endAirport];
+        // const idBeginAirport = airport2Id[startAirport];
+        // const idEndAirport = airport2Id[endAirport];
         // setLoading(true);
         // setError(null);
 
@@ -355,72 +454,138 @@ function MainContent() {
 
           <div className="main-booking">
             <div className="flight-options">
-              <label style={{ display: "flex", alignItems: "center", marginRight: "20px", cursor: "pointer", fontWeight: "600", color: "white" }}>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: "20px",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                  color: "white",
+                }}
+              >
                 <input
                   type="radio"
                   name="flightType"
                   value="roundTrip"
                   checked={selectedType === "roundTrip"}
                   onChange={() => handleFlightTypeChange("roundTrip")}
-                  style={{ marginRight: "5px", marginBottom: "5px", width: "17px", height: "17px", cursor: "pointer" }}
+                  style={{
+                    marginRight: "5px",
+                    marginBottom: "5px",
+                    width: "17px",
+                    height: "17px",
+                    cursor: "pointer",
+                  }}
                 />
                 Round Way
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", cursor: "pointer", fontWeight: "600", color: "white" }}>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                  color: "white",
+                }}
+              >
                 <input
                   type="radio"
                   name="flightType"
                   value="oneWay"
                   checked={selectedType === "oneWay"}
                   onChange={() => handleFlightTypeChange("oneWay")}
-                  style={{ marginRight: "5px", marginBottom: "5px", width: "17px", height: "17px", cursor: "pointer" }}
+                  style={{
+                    marginRight: "5px",
+                    marginBottom: "5px",
+                    width: "17px",
+                    height: "17px",
+                    cursor: "pointer",
+                  }}
                 />
                 One Way
               </label>
             </div>
             <div className="booking-container">
               <div className="flight-details">
-              <div className="flight-search-bar">
+                <div className="flight-search-bar">
                   <div className="input-group">
                     <span className="icon">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                      >
                         <path
                           d="M6 19.5456L8 19.5456L13 11.4172L18.5 11.4172C18.8978 11.4172 19.2794 11.2566 19.5607 10.9708C19.842 10.685 20 10.2974 20 9.89314C20 9.48894 19.842 9.10128 19.5607 8.81546C19.2794 8.52965 18.8978 8.36908 18.5 8.36908L13 8.36908L8 0.240722L6 0.240722L8.5 8.36908L3 8.36908L1.5 6.33699L-2.62268e-07 6.33699L1 9.89314L-5.68248e-07 13.4493L1.5 13.4493L3 11.4172L8.5 11.4172L6 19.5456Z"
                           fill="#333333"
                         />
                       </svg>
                     </span>
-                    <AirportSearch airports={airports} type="begin" onSelectAirport={handleSelectAirport}></AirportSearch>
+                    <AirportSearch
+                      airports={airports}
+                      type="Start"
+                      idOther={idEndAirport}
+                      onSelectAirport={handleSelectAirport}
+                    />
                   </div>
 
                   <div className="input-group-date">
-                    <input type="date" className="input-field date-field" name="startDate" onChange={handleChange}/>
+                    <input
+                      type="date"
+                      className="input-field date-field"
+                      name="startDate"
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
 
                 <div className="flight-search-bar input-enddes">
                   <div className="input-group">
                     <span className="icon">
-                    <svg width="13" height="19" viewBox="0 0 13 19" fill="none"><path d="M10.6161 1.85455C9.44983 0.6671 7.86807 0 6.21875 0C4.56944 0 2.98767 0.6671 1.82143 1.85455C0.655188 3.04199 0 4.65252 0 6.33182C0 11.0807 6.21875 18.0909 6.21875 18.0909C6.21875 18.0909 12.4375 11.0807 12.4375 6.33182C12.4375 4.65252 11.7823 3.04199 10.6161 1.85455Z" fill="#333333"></path><circle cx="6.21879" cy="6.21879" r="2.8267" fill="white"></circle></svg>
+                      <svg
+                        width="13"
+                        height="19"
+                        viewBox="0 0 13 19"
+                        fill="none"
+                      >
+                        <path
+                          d="M10.6161 1.85455C9.44983 0.6671 7.86807 0 6.21875 0C4.56944 0 2.98767 0.6671 1.82143 1.85455C0.655188 3.04199 0 4.65252 0 6.33182C0 11.0807 6.21875 18.0909 6.21875 18.0909C6.21875 18.0909 12.4375 11.0807 12.4375 6.33182C12.4375 4.65252 11.7823 3.04199 10.6161 1.85455Z"
+                          fill="#333333"
+                        ></path>
+                        <circle
+                          cx="6.21879"
+                          cy="6.21879"
+                          r="2.8267"
+                          fill="white"
+                        ></circle>
+                      </svg>
                     </span>
-                    <input
-                      type="text"
-                      name='endAirport'
-                      placeholder="End destination"
-                      className="input-field"
-                      onChange={handleChange}
+                    <AirportSearch
+                      airports={airports}
+                      type="End"
+                      idOther={idBeginAirport}
+                      onSelectAirport={handleSelectAirport}
                     />
                   </div>
 
                   <div className="input-group-date input-enddate">
-                    <input type="date" className="input-field date-field end-date" name="endDate" onChange={handleChange}/>
+                    <input
+                      type="date"
+                      className="input-field date-field end-date"
+                      name="endDate"
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
 
                 <PassengerSelector />
                 <div className="bottom">
-                  <button className="search-flights" onClick={handleSubmit}>Search</button>
+                  <button className="search-flights" onClick={handleSubmit}>
+                    Search
+                  </button>
                 </div>
               </div>
             </div>
