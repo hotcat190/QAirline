@@ -188,7 +188,7 @@
 .main-signup {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18.5px;
     margin-top: 20px;
     width: 60%;
 }

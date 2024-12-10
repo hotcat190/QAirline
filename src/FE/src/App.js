@@ -10,6 +10,7 @@ import News from './components/pages/News';
 import Destination from './components/pages/Destination';
 import MyFlight from './components/pages/MyFlights';
 import SearchFlight from './components/SearchFlight/SearchFlight';
+import Passenger from './components/Passenger/Passenger';
 import './assets/styles/responsives.css';
 
 import AdminLayout from './components/admin/layout/AdminLayout';
@@ -19,6 +20,7 @@ import AdminFlights from './components/admin/pages/flights/AdminFlights';
 import AdminAdvertisements from './components/admin/pages/advertisements/AdminAdvertisements';
 import AdminBookings from './components/admin/pages/bookings/AdminBookings';
 import { AuthProvider } from 'contexts/AuthContext';
+import Footer from 'components/Footer/Footer';
 
 const DefaultLayout = () => {
   return (
@@ -27,6 +29,7 @@ const DefaultLayout = () => {
       <MobileHeader />
       <Header />
       <rd.Outlet />
+      <Footer />
     </> 
   )
 }
