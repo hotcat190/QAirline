@@ -267,3 +267,46 @@
 .difference {
     margin-top: 13px;
 }
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+  
+.password-container input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.password-container .eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.login-btn:disabled,
+.logup-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.login-btn,
+.logup-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-btn .anticon,
+.logup-btn .anticon {
+    font-size: 16px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}

@@ -1,0 +1,44 @@
+.adminLayout {
+    max-width: 100vw;
+}
+
+.adminBody {
+    display: flex;
+}
+
+/* @media (min-width: 1360px) {
+    .admin-body {
+        width: 1360px;
+        margin: 0 auto; 
+    }
+} */
+
+.adminNavbar > * {
+    z-index: 1;
+    box-shadow: 0px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.adminContent {
+    flex-grow: 1;
+    padding: 20px;
+    overflow: auto;
+    background-color: #fdf6f6;
+    height: 100vh;
+    box-shadow: 0px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.adminLayout .fixed-header .content {
+    margin-left: 70px;
+    margin-right: auto;
+    width: calc(100% - 110px);
+}
+
+
+
+
+
+
+
+
+

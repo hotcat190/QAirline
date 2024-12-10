@@ -1,10 +1,15 @@
 import React from 'react';
 import * as rd from 'react-router-dom'
 
+import { useAuth } from 'contexts/AuthContext';
 
 import './Header.css';
 
 function Header() {
+  const { user, logout } = useAuth();
+  const [showDropdown, setShowDropdown] = React.useState(false);
+  const navigate = rd.useNavigate();
+
   function openSignin() {
     document.querySelector('.overlay').style.display = 'block';
     const signinForm = document.querySelector('.signin-form');
@@ -25,6 +30,12 @@ function Header() {
     document.body.classList.add('no-scroll');
   }
 
+  const handleLogout = () => {
+    logout();
+    setShowDropdown(false);
+    navigate('/');
+  };
+
   return (
     <header className="fixed-header">
       <div className="content">
@@ -37,7 +48,7 @@ function Header() {
             </svg>
           </label>
           <rd.Link to="/">
-            <img className="logo" src="img/LOGO.png" alt="Besnik." />
+            <img className="logo" id="logo" src="img/LOGO.png" alt="Besnik." />
           </rd.Link>
 
           <ul id="pc-nav">
@@ -46,11 +57,25 @@ function Header() {
             <li><rd.Link to="/news">News</rd.Link></li>
             <li><rd.Link to="/destination">Destinations</rd.Link></li>
           </ul>
-
-          <div className="actions">
-            <a href="#!" className="action-link" onClick={openSignup}>Sign up</a>
-            <a href="#!" className="btn action-btn" onClick={openSignin}>Sign in</a>
-          </div>
+          {user ? (
+            <div className="actions">
+              <div className="dropdown-container">
+                <img className="user-avatar" id="user-avatar" alt="User" src="img/default_avatar.png" onClick={() => setShowDropdown(!showDropdown)}/>
+                {showDropdown && (
+                  <div className="dropdown-menu">
+                    <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
+                    <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
+                    <a href="#!" onClick={handleLogout}>Logout</a>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="actions">
+              <a href="#!" className="action-link" onClick={openSignup}>Sign up</a>
+              <a href="#!" className="btn action-btn" onClick={openSignin}>Sign in</a>
+            </div>
+          )}
 
         </nav>
       </div>

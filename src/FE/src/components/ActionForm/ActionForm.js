@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ActionForm.css";
+import { useLogin } from "hooks/auth/useLogin";
+import { useRegister } from "hooks/auth/useRegister";
+import { EyeOutlined, EyeInvisibleOutlined, LoadingOutlined } from "@ant-design/icons";
 
 function ActionForm() {
+    const { 
+        onLoginSubmit: handleLoginSubmit,
+        value: loginEmailFieldValue, setEmail: setLoginEmailField, 
+        password: loginPasswordFieldValue, setPassword: setLoginPasswordFieldValue, 
+    } = useLogin();
+    
+    const { 
+        onRegisterSubmit: handleRegisterSubmit,
+        username: registerUsernameFieldValue, setUsername: setRegisterUsernameFieldValue, 
+        email: registerEmailFieldValue, setEmail: setRegisterEmailField, 
+        password: registerPasswordFieldValue, setPassword: setRegisterPasswordFieldValue, 
+        retypePassword: registerRetypePasswordFieldValue, setRetypePassword: setRegisterRetypePasswordField,
+    } = useRegister();
+
+    const [signInPasswordVisible, setSignInPasswordVisible] = useState(false);
+    const [signUpPasswordVisible, setSignUpPasswordVisible] = useState(false);
+    const [signUpRetypePasswordVisible, setSignUpRetypePasswordVisible] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
+    const [loginError, setLoginError] = useState('');
+    const [registerError, setRegisterError] = useState('');
 
     function closeForms() {
         document.querySelector('.overlay').style.display = 'none';
@@ -10,10 +34,12 @@ function ActionForm() {
         const signinForm = document.querySelector('.signin-form');
         const signupForm = document.querySelector('.signup-form');
         const emailLogin = document.querySelector('.email-login');
+        const emailLogup = document.querySelector('.email-logup');
 
         signinForm.classList.remove('showSign');
         signupForm.classList.remove('showSign');
         emailLogin.classList.remove('showEmail');
+        emailLogup.classList.remove('showEmail');
 
         setTimeout(() => {
             signinForm.style.display = 'none';
@@ -21,6 +47,7 @@ function ActionForm() {
         }, 300);
 
         emailLogin.style.display = 'none';
+        emailLogup.style.display = 'none';
     }
 
     function openSignin() {
@@ -40,7 +67,7 @@ function ActionForm() {
         document.body.classList.add('no-scroll');
     }
 
-    
+
 
     function openSignup() {
         document.querySelector('.overlay').style.display = 'block';
@@ -53,7 +80,7 @@ function ActionForm() {
         signupForm.style.display = 'flex';
 
         signupForm.classList.add("showSign");
-        
+
         document.body.classList.add('no-scroll');
     }
 
@@ -97,6 +124,40 @@ function ActionForm() {
         signupForm.classList.add('showSign');
     }
 
+    const onLoginSubmit = async (e) => {
+        setIsLoggingIn(true);
+        setLoginError('');
+        try {
+            const result = await handleLoginSubmit(e);
+            if (result?.success) {
+                closeForms();
+            } else {
+                setLoginError(result.message || 'Login failed. Please try again.');
+            }
+        } catch (error) {
+            setLoginError(error.message || 'An unexpected error occurred.');
+        } finally {
+            setIsLoggingIn(false);
+        }
+    };
+
+    const onRegisterSubmit = async (e) => {
+        setIsRegistering(true);
+        setRegisterError('');
+        try {
+            const result = await handleRegisterSubmit(e);
+            if (result.success) {
+                openSignin();
+            } else {
+                setRegisterError(result.message || 'Registration failed. Please try again.');
+            }
+        } catch (error) {
+            setRegisterError(error.message || 'An unexpected error occurred.');
+        } finally {
+            setIsRegistering(false);
+        }
+    };
+
     return (
         <div className="main-actions-container">
             <div className="overlay" onClick={closeForms}></div>
@@ -131,8 +192,7 @@ function ActionForm() {
                 </div>
                 <div className="actions-container">
                     <p>
-                        Don't you have an account?<a href="#" className="action-link-mobile" onClick={openSignup}
-                        >Sign up</a>
+                        Don't you have an account? <a href="#" className="action-link-mobile" onClick={openSignup}>Sign up</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>
@@ -143,20 +203,53 @@ function ActionForm() {
                     <img className="logo newlogo" src="img/LOGO.png" alt="Besnik." />
                 </a>
                 <h2>Sign in Into QAirline</h2>
-                <form id="email-formlogin">
-                    <input type="email" placeholder="Type email or smartphone" required />
-                    <input type="password" placeholder="Type password" required />
+                <form id="email-formlogin" onSubmit={onLoginSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Type email or smartphone"
+                        value={loginEmailFieldValue}
+                        onChange={(e) => setLoginEmailField(e.target)}
+                        required />
+                    <div className="password-container">
+                        <input
+                            type={signInPasswordVisible ? "text" : "password"}
+                            placeholder="Type password"
+                            value={loginPasswordFieldValue}
+                            onChange={(e) => setLoginPasswordFieldValue(e.target.value)}
+                            required />
+                        <div className="eye-icon" onClick={() => setSignInPasswordVisible(!signInPasswordVisible)}>                            
+                            {signInPasswordVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                        </div>
+                    </div>
                 </form>
-                <div class="form-group remember-me">
+                <div className="form-group remember-me">
                     <input type="checkbox" id="remember" name="remember" />
                     <label for="remember">Remember me for later sign in</label>
                 </div>
-                <button type="submit" className="login-btn">Sign in</button>
+                {loginError && (
+                    <div className="error-message">
+                        {loginError}
+                    </div>
+                )}
+                <button 
+                    type="submit" 
+                    className="login-btn" 
+                    form="email-formlogin"
+                    disabled={isLoggingIn}
+                >
+                    {isLoggingIn ? (
+                        <>
+                            <LoadingOutlined style={{ marginRight: '8px' }} />
+                            Signing in...
+                        </>
+                    ) : (
+                        'Sign in'
+                    )}
+                </button>
                 <button className="backlogin-btn" onClick={backToSignin}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
                 <div className="actions-container">
                     <p>
-                        Don't you have an account?<a href="#" className="action-link-mobile" onClick={openSignup}
-                        >Sign up</a>
+                        Don't you have an account? <a href="#" className="action-link-mobile" onClick={openSignup}>Sign up</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>
@@ -167,17 +260,46 @@ function ActionForm() {
                     <img className="logo newlogo" src="img/LOGO.png" alt="Besnik." />
                 </a>
                 <h2>Sign up Into QAirline</h2>
-                <form id="email-formlogup">
-                    <input type="text" placeholder="Type your name" required />
-                    <input type="email" placeholder="Type email or smartphone" required />
-                    <input type="password" placeholder="Type password" required />
+                <form id="email-formlogup" onSubmit={onRegisterSubmit}>
+                    <input type="text" placeholder="Type your name" value={registerUsernameFieldValue} onChange={(e) => setRegisterUsernameFieldValue(e.target.value)} required />
+                    <input type="text" placeholder="Type email or smartphone" value={registerEmailFieldValue} onChange={(e) => setRegisterEmailField(e.target)} required />
+                    <div className="password-container">
+                        <input type={signUpPasswordVisible ? "text" : "password"} placeholder="Type password" value={registerPasswordFieldValue} onChange={(e) => setRegisterPasswordFieldValue(e.target.value)} required />
+                        <div className="eye-icon" onClick={() => setSignUpPasswordVisible(!signUpPasswordVisible)}>                            
+                            {signUpPasswordVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                        </div>
+                    </div>
+                    <div className="password-container">
+                        <input type={signUpRetypePasswordVisible ? "text" : "password"} placeholder="Retype password" value={registerRetypePasswordFieldValue} onChange={(e) => setRegisterRetypePasswordField(e.target)} required />
+                        <div className="eye-icon" onClick={() => setSignUpRetypePasswordVisible(!signUpRetypePasswordVisible)}>                            
+                            {signUpRetypePasswordVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                        </div>
+                    </div>
                 </form>
-                <button type="submit" className="logup-btn">Sign up</button>
+                {registerError && (
+                    <div className="error-message">
+                        {registerError}
+                    </div>
+                )}
+                <button 
+                    type="submit" 
+                    className="logup-btn" 
+                    form="email-formlogup"
+                    disabled={isRegistering}
+                >
+                    {isRegistering ? (
+                        <>
+                            <LoadingOutlined style={{ marginRight: '8px' }} />
+                            Signing up...
+                        </>
+                    ) : (
+                        'Sign up'
+                    )}
+                </button>
                 <button className="backlogup-btn" onClick={backToSignup}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-left" className="svg-inline--fa fa-chevron-left " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"></path></svg>Back</button>
                 <div className="actions-container difference">
                     <p>
-                        Do you have an account?<a href="#" className="action-link-mobile" onClick={openSignin}
-                        >Sign in</a>
+                        Do you have an account? <a href="#" className="action-link-mobile" onClick={openSignin}> Sign in</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>
@@ -214,7 +336,7 @@ function ActionForm() {
                 </div>
                 <div className="actions-container">
                     <p>
-                        Do you have an account?<a href="#" className="action-btn" onClick={openSignin}>Sign in</a>
+                        Do you have an account? <a href="#" className="action-btn" onClick={openSignin}>Sign in</a>
                     </p>
                     <a href="#" className="forget-pw">Forget password</a>
                 </div>

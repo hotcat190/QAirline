@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './MainContent.css';
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import "./MainContent.css";
+import AirportSearch from "./AirportSearch.js";
 
 const PassengerSelector = () => {
   const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
@@ -176,119 +177,152 @@ const PassengerSelector = () => {
 
 function MainContent() {
   const airport2Id = {
-    'Ho Chi Minh': 1,
-    'Ha Noi': 2,
-    'Da Nang': 3,
-    "Sydney": 4,
-    "Los Angeles": 5,
-    "Singapore": 6
-  }
-  const [ formData, setFormData ] = useState({
+    "Tan Son Nhat": 1,
+    "Noi Bai": 2,
+  };
+  const [formData, setFormData] = useState({
     startAirport: "",
     endAirport: "",
     startDate: "",
     endDate: "",
   });
-  const [ flightForwardData, setFlightForwardData ] = useState(null);
-  const [ flightBackwardData, setFlightBackwardData ] = useState(null);
-  const [ loading, setLoading ] = useState(false);
-  const [ error, setError ] = useState(null);
-  const [ selectedType, setSelectedType ] = useState("roundTrip");
+  const [flightForwardData, setFlightForwardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedType, setSelectedType] = useState("roundTrip");
+  const [airports, setAirports] = useState([]);
+  const [query, setQuery] = useState("");
+
+  const [idBeginAirport, setIdBeginAirport] = useState(null);
+  const [idEndAirport, setIdEndAirport] = useState(null);
+
+  const beginAirportRef = useRef();
+  const endAirportRef = useRef();
+
   const navigate = useNavigate();
+
+  // load all airport
+  useEffect(() => {
+    const fetchAirport = async () => {
+      try {
+        const res = await fetch("https://qairline.onrender.com/api/airport/", {
+          method: "GET",
+        });
+        if (res.ok) {
+          const result = await res.json();
+          setAirports(result);
+        } else {
+          throw new Error("Failed to fetch airport data!");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAirport();
+  }, []);
+  // console.log(airports);
+
+  const handleSelectAirport = (type, id) => {
+    if (type === "begin") {
+      setIdBeginAirport(id);
+    }
+    else {
+      setIdEndAirport(id);
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [ name ]: value,
+      [name]: value,
     });
   };
 
   const handleFlightTypeChange = (type) => {
     setSelectedType(type);
-    const returnDate = document.querySelector('.input-enddate');
-    const endDes = document.querySelector('.input-enddes');
+    const returnDate = document.querySelector(".detail-return");
     if (type === "oneWay") {
       returnDate.classList.add("hidden-return");
-      endDes.classList.add("hidden-end");
     }
 
     if (type === "roundTrip") {
       returnDate.classList.remove("hidden-return");
-      endDes.classList.remove("hidden-end");
     }
   };
 
-
   const handleSubmit = async () => {
     const { startAirport, endAirport, startDate, endDate } = formData;
-    console.log(startAirport, endAirport, startDate, endDate);
-    if (selectedType === 'roundTrip') {
-      if (!startAirport || !endAirport || !startDate || !endDate) {
-        alert('Please fill in all fields');
+
+    if (selectedType === "roundTrip") {
+      if (!idBeginAirport || !idEndAirport || !startDate || !endDate) {
+        alert("Please fill in all fields");
       } else {
-        const startDay = parseInt(startDate.split('-')[ 2 ], 10);
-        const startMonth = parseInt(startDate.split('-')[ 1 ], 10);
-        const startYear = parseInt(startDate.split('-')[ 0 ], 10);
-        const endDay = parseInt(endDate.split('-')[ 2 ], 10);
-        const endMonth = parseInt(endDate.split('-')[ 1 ], 10);
-        const endYear = parseInt(endDate.split('-')[ 0 ], 10);
-        const idBeginAirport = airport2Id[ startAirport ];
-        const idEndAirport = airport2Id[ endAirport ];
+        const startDay = parseInt(startDate.split("-")[2], 10);
+        const startMonth = parseInt(startDate.split("-")[1], 10);
+        const startYear = parseInt(startDate.split("-")[0], 10);
+        const endDay = parseInt(endDate.split("-")[2], 10);
+        const endMonth = parseInt(endDate.split("-")[1], 10);
+        const endYear = parseInt(endDate.split("-")[0], 10);
+        // const idBeginAirport = airport2Id[startAirport];
+        // const idEndAirport = airport2Id[endAirport];
         // setLoading(true);
         // setError(null);
 
-        const url_forward = `http://localhost:8000/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
-        const url_backward = `http://localhost:8000/api/flight/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
+        const url_forward = `https://qairline.onrender.com/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+        const url_backward = `https://qairline.onrender.com/api/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
 
         try {
-          const response_forward = await fetch(url_forward, { method: 'GET' });
-          const response_backward = await fetch(url_backward, { method: 'GET' });
+          const response_forward = await fetch(url_forward, { method: "GET" });
 
-          if (response_forward.ok && response_backward.ok) {
+          if (response_forward.ok) {
             const data_forward = await response_forward.json();
-            const data_backward = await response_backward.json();
-            // console.log(data_forward)
             setFlightForwardData(data_forward);
-            setFlightBackwardData(data_backward);
-            navigate('/searchflights', { state: { flightForwardData: data_forward, flightBackwardData: data_backward, selectedType, startAirport, endAirport } });
+
+            navigate("/searchflights", {
+              state: { flightForwardData: data_forward, selectedType },
+            });
           } else {
-            setError('No flights found or an error occurred.');
+            setError("No flights found or an error occurred.");
           }
         } catch (err) {
-          setError('An error occurred: ' + err.message);
+          setError("An error occurred: " + err.message);
         } finally {
           setLoading(false);
         }
       }
     } else {
       if (!startAirport || !endAirport || !startDate) {
-        alert('Please fill in all fields');
+        alert("Please fill in all fields");
       } else {
-        const startDay = parseInt(startDate.split('-')[ 2 ], 10);
-        const startMonth = parseInt(startDate.split('-')[ 1 ], 10);
-        const startYear = parseInt(startDate.split('-')[ 0 ], 10);
-        const idBeginAirport = airport2Id[ startAirport ];
-        const idEndAirport = airport2Id[ endAirport ];
+        const startDay = parseInt(startDate.split("-")[2], 10);
+        const startMonth = parseInt(startDate.split("-")[1], 10);
+        const startYear = parseInt(startDate.split("-")[0], 10);
+        const idBeginAirport = airport2Id[startAirport];
+        const idEndAirport = airport2Id[endAirport];
         // setLoading(true);
         // setError(null);
 
-        const url_forward = `http://localhost:8000/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+        const url = `http://localhost:8000/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
 
         try {
-          const response_forward = await fetch(url_forward, { method: 'GET' });
+          const response = await fetch(url, { method: "GET" });
 
-          if (response_forward.ok) {
-            const data_forward = await response_forward.json();
-            console.log(data_forward)
-            setFlightForwardData(data_forward);
+          if (response.ok) {
+            const data = await response.json();
+            setFlightForwardData(data);
 
-            navigate('/searchflights', { state: { flightForwardData: data_forward, flightBackwardData: null, selectedType, startAirport, endAirport } });
+            navigate("/searchflights", {
+              state: { flightForwardData: data, selectedType },
+            });
           } else {
-            setError('No flights found or an error occurred.');
+            setError("No flights found or an error occurred.");
           }
         } catch (err) {
-          setError('An error occurred: ' + err.message);
+          setError("An error occurred: " + err.message);
         } finally {
           setLoading(false);
         }
@@ -310,12 +344,13 @@ function MainContent() {
             World No.1 Flight Booking Platform
           </button>
           <h1 className="animate__animated animate__bounce">
-            DISCOVER <span className="red-text">PREMIUM</span><br />
+            DISCOVER <span className="red-text">PREMIUM</span>
+            <br />
             <span className="red-text">FLIGHTS</span> WITH EASE!
           </h1>
           <p className="des">
-            Find top destination and look effortlessly with out seamless
-            flight search and booking experience
+            Find top destination and look effortlessly with out seamless flight
+            search and booking experience
           </p>
 
           <div className="main-booking">
@@ -356,13 +391,7 @@ function MainContent() {
                         />
                       </svg>
                     </span>
-                    <input
-                      type="text"
-                      name="startAirport"
-                      placeholder="Start destination"
-                      className="input-field"
-                      onChange={handleChange}
-                    />
+                    <AirportSearch airports={airports} type="begin" onSelectAirport={handleSelectAirport}></AirportSearch>
                   </div>
 
                   <div className="input-group-date">
@@ -399,18 +428,8 @@ function MainContent() {
         </div>
 
         <div className="main-rightcontent">
-          <img
-            src="img/plane.svg"
-            alt=""
-            className="plane"
-            width="110px"
-          />
-          <img
-            src="img/cloud.svg"
-            alt=""
-            width="100px"
-            className="cloud"
-          />
+          <img src="img/plane.svg" alt="" className="plane" width="110px" />
+          <img src="img/cloud.svg" alt="" width="100px" className="cloud" />
           <img
             className="person"
             src="img/main_image.jpeg"
@@ -440,7 +459,7 @@ function MainContent() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default MainContent;

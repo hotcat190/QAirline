@@ -35,8 +35,8 @@ export const getTickets = async (req, res) => {
   try {
     const query = `SELECT 
                       ticket.idTicket,
-                      classFlight.idclassFlight,
-                      classFlight.class,
+                      idclassFlight,
+                      cf.class,
                       ticket.code,
                       ticket.price,
                       ticket.status,
@@ -49,7 +49,7 @@ export const getTickets = async (req, res) => {
                     JOIN 
                         ticket USING(idCustomer)
                     JOIN 
-                        classFlight USING(idclassFlight)
+                        classFlight AS cf USING(idclassFlight)
                     JOIN 
                         flight USING(idFlight)
                     JOIN 

@@ -176,7 +176,7 @@ main .main-rightcontent img {
     width: 100%;
 }
 
-.input-group input {
+.input-group .input-field {
     width: 100%;
 }
 
@@ -273,6 +273,7 @@ h1 {
 }
 
 .booking-container .input-group {
+    position: relative;
     width: 170px;
     display: flex;
     align-items: center;
