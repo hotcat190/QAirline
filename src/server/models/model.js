@@ -184,7 +184,11 @@ const Ticket = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    idclassFlight: { type: DataTypes.INTEGER, allowNull: false },
+    idClassFlight: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: "idclassFlight",
+    },
     idCustomer: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     price: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     status: {
@@ -229,8 +233,14 @@ Notification.belongsTo(Customer, { foreignKey: "idCustomer" });
 Customer.hasMany(Ticket, { foreignKey: "idCustomer" });
 Ticket.belongsTo(Customer, { foreignKey: "idCustomer" });
 
-ClassFlight.hasMany(Ticket, { foreignKey: "idclassFlight" });
-Ticket.belongsTo(ClassFlight, { foreignKey: "idclassFlight" });
+ClassFlight.hasMany(Ticket, {
+  foreignKey: "idClassFlight",
+  targetKey: "idclassFlight",
+});
+Ticket.belongsTo(ClassFlight, {
+  foreignKey: "idClassFlight",
+  targetKey: "idclassFlight",
+});
 
 export {
   Admin,
