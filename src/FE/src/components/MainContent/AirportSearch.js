@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import "./AirportSearch.css";
 
 const airports = [
@@ -22,15 +22,22 @@ const groupByCountry = (data) => {
   }, {});
 };
 
-function AirportSearch({ airports, onSelectAirport, type }) {
+
+function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef, inputRef }) {
   const [query, setQuery] = useState("");
   const [showList, setShowList] = useState(false);
   const [filteredAirports, setFilteredAirports] = useState({});
   const [countryVisibilityState, setCountryVisibilityState] = useState({});
   const [selected, setSelected] = useState(false);
-  const inputRef = useRef(null);
   const listRef = useRef(null);
 
+  useEffect(() => {
+    if (airports && Array.isArray(airports)) {
+      const filteredAirports = airports.filter((a) => a.idairport !== idOther);
+      setFilteredAirports(groupByCountry(filteredAirports));
+    }
+  }, [idOther, airports]);
+  
   const handleClickOutside = (e) => {
     if (
       inputRef.current &&
@@ -72,15 +79,14 @@ function AirportSearch({ airports, onSelectAirport, type }) {
   };
   //   console.log(filteredAirports.length())
   const handleSearch = (e) => {
-    console.log(e);
+    const searchQuery = e.target.value.toLowerCase();
+    setQuery(e.target.value);
+    
     if (selected) {
       setQuery("");
       setSelected(false);
       setFilteredAirports(groupByCountry(airports));
     } else {
-      setQuery(e.target.value);
-      const searchQuery = query.toLowerCase();
-
       const filtered = airports.filter(
         (airport) =>
           airport.name.toLowerCase().includes(searchQuery) ||
@@ -93,7 +99,6 @@ function AirportSearch({ airports, onSelectAirport, type }) {
   };
 
   const handleSelect = (idAirport) => {
-    // setSelected(idAirport);
     if (onSelectAirport) {
       onSelectAirport(type, idAirport);
     }
@@ -102,17 +107,21 @@ function AirportSearch({ airports, onSelectAirport, type }) {
     setShowList(false);
     setSelected(true);
 
-    // console.log(airport);
+    if (nextInputRef?.current) {
+      nextInputRef.current.focus();
+      // nextInputRef.current.click();
+    }
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div className="airport-search" style={{ position: "relative" }}>
       <input
         type="text"
         id="from"
         name="startAirport"
-        placeholder="Start Airport"
+        placeholder={`${type} Destination`}
         value={query}
+        className="input-field"
         onFocus={() => setShowList(true)}
         onChange={handleSearch}
         ref={inputRef}
@@ -167,7 +176,7 @@ function AirportSearch({ airports, onSelectAirport, type }) {
                         paddingBottom: "15px",
                         cursor: "pointer",
                         borderBottom: "1px solid #ddd",
-                        fontSize: "20px",
+                        fontSize: "16px",
                       }}
                       onClick={() => handleSelect(airport.idairport)}
                     >
@@ -193,5 +202,3 @@ function AirportSearch({ airports, onSelectAirport, type }) {
 }
 
 export default AirportSearch;
-
-const style = StyleSheet;
