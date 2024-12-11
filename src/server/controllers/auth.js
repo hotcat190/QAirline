@@ -78,8 +78,8 @@ export const register = async (req, res) => {
   const { email, password, numberPhone, username } = req.body;
   try {
     const existingUser = email
-      ? await Customer.findAll({ where: email })
-      : await Customer.findAll({ where: numberPhone });
+      ? await Customer.findAll({ where: { email } })
+      : await Customer.findAll({ where: { numberPhone } });
     console.log(existingUser);
 
     if (existingUser.length > 0) {

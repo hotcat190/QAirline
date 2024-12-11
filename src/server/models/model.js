@@ -141,9 +141,9 @@ const Customer = sequelize.define(
       primaryKey: true,
     },
     username: { type: DataTypes.STRING(16), allowNull: false },
-    email: { type: DataTypes.STRING(255), allowNull: false },
+    email: { type: DataTypes.STRING(255), allowNull: true },
     password: { type: DataTypes.STRING(100), allowNull: false },
-    numberPhone: { type: DataTypes.STRING(11), allowNull: false },
+    numberPhone: { type: DataTypes.STRING(11), allowNull: true },
   },
   {
     tableName: "customer",
