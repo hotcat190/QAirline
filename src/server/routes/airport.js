@@ -1,8 +1,8 @@
 import express from "express";
-import { getAllAirport } from "../controllers/airport.js";
+import { getAirport } from "../controllers/airport.js";
 
 const router = express.Router();
 
-router.get("/", getAllAirport);
+router.get("/", getAirport);
 
 export default router;

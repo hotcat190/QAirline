@@ -5,7 +5,7 @@ import {
   createFlight,
   changeInfoFlight,
   deleteFlight,
-} from "../controllers2/flight.js";
+} from "../controllers/flight.js";
 import {
   authenticateToken,
   authenticateAdmin,

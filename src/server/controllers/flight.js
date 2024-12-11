@@ -1,105 +1,69 @@
-import pool from "../database/database.js";
+import { Op } from "sequelize";
+
+import { Flight, Airport, ClassFlight } from "../models/model.js";
+import { sequelize } from "../models/config.model.js";
 
 export const getFlightByTimeAndAirport = async (req, res) => {
   const { day, month, year, idBeginAirport, idEndAirport } = req.query;
 
   try {
-    const query = `SELECT f.*, c.*, a1.name AS beginAirportName, a2.name AS endAirportName
-                  FROM 
-                    flight f
-                  JOIN 
-                    airport a1 ON f.idbeginAirport = a1.idairport
-                  JOIN 
-                    airport a2 ON f.idendAirport = a2.idairport
-                  JOIN 
-                    classflight c ON f.idFlight = c.idFlight
-                  WHERE a1.idairport = ? AND a2.idairport = ? AND DATE(f.timeStart) = ?`;
-    const [rows] = await pool.query(query, [
-      idBeginAirport,
-      idEndAirport,
-      `${year}-${month}-${day}`,
-    ]);
-    if (rows.length > 0) {
-      const flightData = {}; // Đối tượng chứa thông tin tất cả chuyến bay
+    const date = new Date(year, month - 1, day);
 
-      rows.forEach((row) => {
-        // Nếu chưa có chuyến bay này trong flightData, khởi tạo nó
-        if (!flightData[row.idFlight]) {
-          flightData[row.idFlight] = {
-            idFlight: row.idFlight,
-            timeStart: row.timeStart,
-            timeEnd: row.timeEnd,
-            beginAirport: {
-              id: row.idbeginAirport,
-              name: row.beginAirportName,
-            },
-            endAirport: {
-              id: row.idendAirport,
-              name: row.endAirportName,
-            },
-            idAirplane: row.idAirplane,
-            classes: [], // Đối tượng chứa thông tin về các lớp của chuyến bay
+    const flights = await Flight.findAll({
+      where: {
+        idbeginAirport: idBeginAirport,
+        idendAirport: idEndAirport,
+        timeStart: {
+          [Op.between]: [
+            new Date(date.setHours(0, 0, 0, 0)),
+            new Date(date.setHours(23, 59, 59, 999)),
+          ],
+        },
+      },
+      include: [
+        {
+          model: Airport,
+          as: "beginAirport",
+          attributes: ["idairport", "name"],
+        },
+        {
+          model: Airport,
+          as: "endAirport",
+          attributes: ["idairport", "name"],
+        },
+        {
+          model: ClassFlight,
+          as: "ClassFlights",
+        },
+      ],
+    });
+
+    if (flights.length > 0) {
+      const flightData = flights.map((flight) => {
+        const flightClasses = {};
+
+        flight.ClassFlights.forEach((classFlight) => {
+          flightClasses[classFlight.class] = {
+            seatAmount: classFlight.seatAmount,
+            seatBooked: classFlight.seatBooked,
+            currentPrice: classFlight.currentPrice,
           };
-        }
-
-        flightData[row.idFlight].classes.push({
-          id: row.idclassFlight,
-          class: row.class,
-          seatAmount: row.seatAmount,
-          seatBooked: row.seatBooked,
-          currentPrice: row.currentPrice,
         });
-      });
 
-      const flights = Object.values(flightData);
-
-      res.send(flights);
-    } else {
-      res.status(404).json({ message: "No flight found with the given id." });
-    }
-  } catch (err) {
-    res.status(500).send(err.message);
-    console.log(err);
-  }
-};
-
-export const getInfoFlight = async (req, res) => {
-  const { idFlight } = req.query;
-  try {
-    const query = `SELECT f.*, c.*, a1.name AS beginAirportName, a2.name AS endAirportName
-                  FROM 
-                    flight f
-                  JOIN 
-                    airport a1 ON f.idbeginAirport = a1.idairport
-                  JOIN 
-                    airport a2 ON f.idendAirport = a2.idairport
-                  JOIN 
-                    classflight c ON f.idFlight = c.idFlight
-                  WHERE 
-                    f.idFlight = ?`;
-    const [rows] = await pool.query(query, idFlight);
-    if (rows.length > 0) {
-      const flightData = {
-        idFlight: rows[0].idFlight,
-        timeStart: rows[0].timeStart,
-        timeEnd: rows[0].timeEnd,
-        beginAirport: {
-          id: rows[0].idbeginAirport,
-          name: rows[0].beginAirportName,
-        },
-        endAirport: {
-          id: rows[0].idendAirport,
-          name: rows[0].endAirportName,
-        },
-        idAirplane: rows[0].idAirplane,
-        classes: {},
-      };
-
-      rows.forEach((row) => {
-        flightData.classes[row.class] = {
-          seatAmount: row.seatAmount,
-          seatBooked: row.seatBooked,
-          currentPrice: row.currentPrice,
+        return {
+          idFlight: flight.idFlight,
+          timeStart: flight.timeStart,
+          timeEnd: flight.timeEnd,
+          beginAirport: {
+            id: flight.beginAirport.idairport,
+            name: flight.beginAirport.name,
+          },
+          endAirport: {
+            id: flight.endAirport.idairport,
+            name: flight.endAirport.name,
+          },
+          idAirplane: flight.idAirplane,
+          classes: flightClasses,
         };
       });
 
@@ -108,6 +72,65 @@ export const getInfoFlight = async (req, res) => {
       res.status(404).json({ message: "No flight found with the given id." });
     }
   } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+};
+
+export const getInfoFlight = async (req, res) => {
+  const { idFlight } = req.query;
+  try {
+    const flight = await Flight.findOne({
+      where: {
+        idFlight,
+      },
+      include: [
+        {
+          model: Airport,
+          as: "beginAirport",
+          attributes: ["idairport", "name"],
+        },
+        {
+          model: Airport,
+          as: "endAirport",
+          attributes: ["idairport", "name"],
+        },
+        {
+          model: ClassFlight,
+        },
+      ],
+    });
+    if (flight) {
+      const flightData = {
+        idFlight: flight.idFlight,
+        timeStart: flight.timeStart,
+        timeEnd: flight.timeEnd,
+        beginAirport: {
+          id: flight.beginAirport.idairport,
+          name: flight.beginAirport.name,
+        },
+        endAirport: {
+          id: flight.endAirport.idairport,
+          name: flight.endAirport.name,
+        },
+        idAirplane: flight.idAirplane,
+        classes: {},
+      };
+
+      flight.ClassFlights.forEach((classFlight) => {
+        flightData.classes[classFlight.class] = {
+          seatAmount: classFlight.seatAmount,
+          seatBooked: classFlight.seatBooked,
+          currentPrice: classFlight.currentPrice,
+        };
+      });
+
+      res.send(flightData);
+    } else {
+      res.status(404).json({ message: "No flight found with the given id." });
+    }
+  } catch (err) {
+    console.error(err);
     res.status(500).send(err.message);
   }
 };
@@ -123,35 +146,46 @@ export const createFlight = async (req, res) => {
     idAirplane,
   } = req.body;
 
-  const connection = await pool.getConnection();
+  const transaction = await sequelize.transaction();
 
   try {
-    await connection.beginTransaction();
-
-    const [result] = await connection.query(
-      `INSERT INTO flight (timeStart, timeEnd, idbeginAirport, idendAirport, idAirplane, idAdmin_created) VALUE (?, ?, ?, ?, ?, ?)`,
-      [timeStart, timeEnd, idBeginAirport, idEndAirport, idAirplane, idAdmin]
+    const flight = await Flight.create(
+      {
+        timeStart,
+        timeEnd,
+        idbeginAirport: idBeginAirport,
+        idendAirport: idEndAirport,
+        idAirplane,
+        idAdmin_created: idAdmin,
+      },
+      { transaction }
     );
-    const idFlight = result.insertId;
+
+    const idFlight = flight.idFlight;
 
     for (const classType in classes) {
       if (classes.hasOwnProperty(classType)) {
         const { seatAmount, currentPrice } = classes[classType];
 
-        await connection.query(
-          "INSERT INTO classflight (class, seatAmount, seatBooked, currentPrice, idFlight) VALUE (?, ?, ?, ?, ?)",
-          [classType, seatAmount, 0, currentPrice, idFlight]
+        await ClassFlight.create(
+          {
+            class: classType,
+            seatAmount,
+            seatBooked: 0,
+            currentPrice,
+            idFlight,
+          },
+          { transaction }
         );
       }
     }
 
-    await connection.commit();
+    await transaction.commit();
     res.send({ idFlight: `${idFlight}` });
   } catch (err) {
-    await connection.rollback();
+    await transaction.rollback();
+    console.error(err);
     res.status(500).send(err.message);
-  } finally {
-    connection.release();
   }
 };
 
@@ -163,31 +197,24 @@ export const changeInfoFlight = async (req, res) => {
     return res.status(400).json({ message: "idFlight is required." });
   }
 
-  const connection = await pool.getConnection();
+  const transaction = await sequelize.transaction();
+
   try {
-    await connection.beginTransaction();
+    let flightUpdateData = {
+      idAdmin_created: idAdmin,
+    };
 
-    let query = "UPDATE flight SET idAdmin_created = ?";
-    const updateValues = [idAdmin];
+    if (timeStart) flightUpdateData.timeStart = timeStart;
+    if (timeEnd) flightUpdateData.timeEnd = timeEnd;
+    if (idAirplane) flightUpdateData.idAirplane = idAirplane;
 
-    if (timeStart) {
-      query += ", timeStart = ?";
-      updateValues.push(timeStart);
-    }
-    if (timeEnd) {
-      query += ", timeEnd = ?";
-      updateValues.push(timeEnd);
-    }
-    if (idAirplane) {
-      query += ", idAirplane = ?";
-      updateValues.push(idAirplane);
-    }
-    query += " WHERE idFlight = ?";
-    updateValues.push(idFlight);
+    const [updatedRows] = await Flight.update(flightUpdateData, {
+      where: { idFlight },
+      transaction,
+    });
 
-    const [result] = await connection.query(query, updateValues);
-
-    if (result.affectedRows === 0) {
+    if (updatedRows === 0) {
+      await transaction.rollback();
       return res.status(404).json({ message: "Flight not found." });
     }
 
@@ -196,14 +223,39 @@ export const changeInfoFlight = async (req, res) => {
         if (classes.hasOwnProperty(classType)) {
           const { seatAmount, currentPrice } = classes[classType];
 
-          const [result] = await connection.query(
-            `UPDATE classflight
-             SET seatAmount = ?, currentPrice = ?
-             WHERE idFlight = ? AND class = ?`,
-            [seatAmount, currentPrice, idFlight, classType]
-          );
+          // Kiểm tra xem giá trị có thực sự thay đổi hay không
+          const classFlight = await ClassFlight.findOne({
+            where: { idFlight, class: classType },
+            transaction,
+          });
 
-          if (result.affectedRows === 0) {
+          if (classFlight) {
+            // Kiểm tra sự thay đổi giữa dữ liệu mới và dữ liệu cũ
+            const seatAmountChanged = classFlight.seatAmount !== seatAmount;
+            const currentPriceChanged =
+              classFlight.currentPrice !== currentPrice;
+
+            if (seatAmountChanged || currentPriceChanged) {
+              const [classUpdateRows] = await ClassFlight.update(
+                {
+                  seatAmount,
+                  currentPrice,
+                },
+                {
+                  where: { idFlight, class: classType },
+                  transaction,
+                }
+              );
+
+              if (classUpdateRows === 0) {
+                await transaction.rollback();
+                return res.status(404).json({
+                  message: `Class ${classType} not found for the flight.`,
+                });
+              }
+            }
+          } else {
+            await transaction.rollback();
             return res.status(404).json({
               message: `Class ${classType} not found for the flight.`,
             });
@@ -212,43 +264,47 @@ export const changeInfoFlight = async (req, res) => {
       }
     }
 
-    await connection.commit();
+    await transaction.commit();
     res.json({ message: "Flight information updated successfully." });
   } catch (err) {
-    await connection.rollback();
+    await transaction.rollback();
     console.error(err);
     res.status(500).json({ message: "Server error." });
-  } finally {
-    connection.release();
   }
 };
 
 export const deleteFlight = async (req, res) => {
-  // const { idAdmin, role } = req.user;
   const { idFlight } = req.query;
 
   if (!idFlight) {
     return res.status(400).json({ message: "idFlight is required." });
   }
 
-  try {
-    const [classResult] = await pool.query(
-      "DELETE FROM classflight WHERE idFlight = ?",
-      [idFlight]
-    );
+  const transaction = await sequelize.transaction();
 
-    const [flightResult] = await pool.query(
-      "DELETE FROM flight WHERE idFlight = ?",
-      [idFlight]
-    );
-    if (flightResult.affectedRows === 0) {
+  try {
+    await ClassFlight.destroy({
+      where: { idFlight },
+      transaction,
+    });
+
+    const deletedRows = await Flight.destroy({
+      where: { idFlight },
+      transaction,
+    });
+
+    if (deletedRows === 0) {
+      await transaction.rollback();
       return res.status(404).json({
         message: `Flight not found`,
       });
     }
 
+    await transaction.commit();
     res.send("Delete successfully");
   } catch (err) {
+    await transaction.rollback();
+    console.error(err);
     res.status(500).send(err.message);
   }
 };

@@ -4,8 +4,8 @@ import { authenticateToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/customer", authenticateToken, getInfo);
+router.get("/", authenticateToken, getInfo);
 router.get("/getTickets", authenticateToken, getTickets);
-router.put("/customer", authenticateToken, changeInfo);
+router.put("/", authenticateToken, changeInfo);
 
 export default router;
