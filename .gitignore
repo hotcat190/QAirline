@@ -26,3 +26,6 @@ logs
 
 # Compiled binary addons
 build/Release
+
+# other
+src/server/controllers_t
