@@ -22,6 +22,7 @@ const groupByCountry = (data) => {
   }, {});
 };
 
+
 function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef, inputRef }) {
   const [query, setQuery] = useState("");
   const [showList, setShowList] = useState(false);
@@ -36,7 +37,7 @@ function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef,
       setFilteredAirports(groupByCountry(filteredAirports));
     }
   }, [idOther, airports]);
-
+  
   const handleClickOutside = (e) => {
     if (
       inputRef.current &&
@@ -80,7 +81,7 @@ function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef,
   const handleSearch = (e) => {
     const searchQuery = e.target.value.toLowerCase();
     setQuery(e.target.value);
-
+    
     if (selected) {
       setQuery("");
       setSelected(false);

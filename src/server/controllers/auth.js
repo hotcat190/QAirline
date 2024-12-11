@@ -1,5 +1,5 @@
 import * as argon2 from "argon2";
-import pool from "../database/database.js";
+import { Customer, Admin } from "../models/model.js";
 import { createAccessToken, createRefreshToken } from "./jwt.js";
 
 export const login = async (req, res) => {
@@ -8,17 +8,16 @@ export const login = async (req, res) => {
   let accessToken, refreshToken;
 
   try {
-    let [user] = await pool.query("SELECT * FROM admin WHERE email = ?", [
-      email,
-    ]);
+    let user = await Admin.findAll({
+      where: { email },
+    });
 
     if (user.length !== 0) {
       role = "admin";
     } else {
-      [user] = await pool.query(
-        "SELECT * FROM customer WHERE email = ? OR numberPhone = ?",
-        [email, numberPhone]
-      );
+      user = await Customer.findAll({
+        where: { email, numberPhone },
+      });
 
       if (user.length === 0) {
         return res.status(400).json({ message: "User does not exist." });
@@ -78,13 +77,9 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
   const { email, password, numberPhone, username } = req.body;
   try {
-    const [existingUser] = (email) ? await pool.query(
-      "SELECT * FROM customer WHERE email = ?",
-      [email]
-    ) : await pool.query(
-      "SELECT * FROM customer WHERE numberPhone = ?",
-      [numberPhone]
-    );
+    const existingUser = email
+      ? await Customer.findAll({ where: email })
+      : await Customer.findAll({ where: numberPhone });
     console.log(existingUser);
 
     if (existingUser.length > 0) {
@@ -92,13 +87,37 @@ export const register = async (req, res) => {
     }
     var passwordHash = await argon2.hash(password);
 
-    await pool.query(
-      "INSERT INTO customer (username, email, password, numberPhone) VALUES (?, ?, ?, ?)",
-      [username, email, passwordHash, numberPhone]
-    );
+    await Customer.create({
+      username,
+      email,
+      password: passwordHash,
+      numberPhone,
+    });
   } catch (e) {
     res.status(500).send(e.message);
     console.log(e);
   }
   res.send(username);
+};
+
+export const logout = async (req, res) => {
+  try {
+    // Xóa cookie chứa token access và refresh
+    res.clearCookie("access", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+    res.clearCookie("refresh", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
+    // Trả về phản hồi thành công sau khi logout
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (e) {
+    res.status(500).send(e.message);
+    console.log(e);
+  }
 };
