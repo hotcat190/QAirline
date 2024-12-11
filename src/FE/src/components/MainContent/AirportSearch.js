@@ -22,13 +22,12 @@ const groupByCountry = (data) => {
   }, {});
 };
 
-function AirportSearch({ airports, onSelectAirport, type, idOther }) {
+function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef, inputRef }) {
   const [query, setQuery] = useState("");
   const [showList, setShowList] = useState(false);
   const [filteredAirports, setFilteredAirports] = useState({});
   const [countryVisibilityState, setCountryVisibilityState] = useState({});
   const [selected, setSelected] = useState(false);
-  const inputRef = useRef(null);
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -107,11 +106,14 @@ function AirportSearch({ airports, onSelectAirport, type, idOther }) {
     setShowList(false);
     setSelected(true);
 
-    // console.log(airport);
+    if (nextInputRef?.current) {
+      nextInputRef.current.focus();
+      // nextInputRef.current.click();
+    }
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div className="airport-search" style={{ position: "relative" }}>
       <input
         type="text"
         id="from"
@@ -173,7 +175,7 @@ function AirportSearch({ airports, onSelectAirport, type, idOther }) {
                         paddingBottom: "15px",
                         cursor: "pointer",
                         borderBottom: "1px solid #ddd",
-                        fontSize: "20px",
+                        fontSize: "16px",
                       }}
                       onClick={() => handleSelect(airport.idairport)}
                     >

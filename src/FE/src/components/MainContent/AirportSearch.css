@@ -1,10 +1,11 @@
-.list-airports {
+.airport-search .list-airports {
   position: absolute; /* Hiện ngay bên dưới ô input */
   top: 100%; /* Hiện ngay dưới ô input */
   margin-top: 10px; /* fix cứng */
-  left: -40px; /* fix cứng */
-  width: 305px; /* fix cứng */
+  left: -43px; /* fix cứng */
+  width: 319px; /* fix cứng */
   border: 1px solid #ddd;
+  border-radius: 5px;
   max-height: 500px;
   overflow-y: auto;
   background-color: #fff;
@@ -15,49 +16,51 @@
   padding-right: 15px;
 }
 
-.input-field {
+.airport-search .input-field {
   border: none;
   outline: none;
   flex: 1;
   font-size: 14px;
-  color: #333;
+  color: black;
   background-color: transparent;
+  font-family: "Poppins", sans-serif;
 }
 
-.row {
-  display: flex; /* Thiết lập chế độ Flexbox */
-  flex-direction: row; /* Xác định chiều xếp theo hàng ngang */
-  justify-content: space-between; /* Căn lề sát hai bên */
-  align-items: center; /* Căn giữa theo chiều dọc */
+.airport-search .row {
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-between; 
+  align-items: center;
 }
 
-.country-cell {
-  font-weight: bold; /* In đậm */
-  font-size: 16px; /* Thay đổi kích thước chữ */
+.airport-search .country-cell {
+  font-weight: bold; 
+  font-size: 14px; 
 }
 
-.city-cell {
-  font-size: 12px;
+.airport-search .city-cell {
+  font-size: 14px;
   margin-top: 5px;
+  text-align: left;
 }
 
-span {
+.airport-search span {
   display: inline-block;
   transition: transform 0.3s ease; /* Thêm animation mượt */
 }
 
-.rotated {
+.airport-search .rotated {
   transform: rotate(180deg);
 }
 
 /* Animation container */
-.airport-list {
+.airport-search .airport-list {
   max-height: 0; /* Start with 0 height */
   overflow: hidden; /* Hide overflowing elements */
   transition: max-height 0.5s ease-in-out; /* Add a smooth transition */
 }
 
 /* When visible, expand the max-height */
-.airport-list.show {
+.airport-search .airport-list.show {
   max-height: 1300px; /* Enough height to show the list items */
 }

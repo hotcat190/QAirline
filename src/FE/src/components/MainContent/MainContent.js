@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainContent.css";
 import AirportSearch from "./AirportSearch.js";
+import DatePicker from "./DatePicker";
 
 const PassengerSelector = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -280,12 +281,11 @@ function MainContent() {
     "Tan Son Nhat": 1,
     "Noi Bai": 2,
   };
-  const [formData, setFormData] = useState({
-    startAirport: "",
-    endAirport: "",
-    startDate: "",
-    endDate: "",
-  });
+
+  const startAirportInputRef = useRef(null);
+  const endAirportInputRef = useRef(null);
+  const startDatePickerRef = useRef(null);
+  const endDatePickerRef = useRef(null);
   const [flightForwardData, setFlightForwardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -298,6 +298,12 @@ function MainContent() {
 
   const beginAirportRef = useRef();
   const endAirportRef = useRef();
+  const [formData, setFormData] = useState({
+    startAirport: "",
+    endAirport: "",
+    startDate: "",
+    endDate: "",
+  });
 
   const navigate = useNavigate();
 
@@ -343,13 +349,16 @@ function MainContent() {
 
   const handleFlightTypeChange = (type) => {
     setSelectedType(type);
-    const returnDate = document.querySelector(".detail-return");
+    const returnDate = document.querySelector('.input-enddate');
+    const endDes = document.querySelector('.input-enddes');
     if (type === "oneWay") {
       returnDate.classList.add("hidden-return");
+      endDes.classList.add("hidden-end");
     }
 
     if (type === "roundTrip") {
       returnDate.classList.remove("hidden-return");
+      endDes.classList.remove("hidden-end");
     }
   };
 
@@ -455,6 +464,7 @@ function MainContent() {
           <div className="main-booking">
             <div className="flight-options">
               <label
+                className="radio-label"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -465,6 +475,7 @@ function MainContent() {
                 }}
               >
                 <input
+                  className="custom-radio"
                   type="radio"
                   name="flightType"
                   value="roundTrip"
@@ -473,8 +484,6 @@ function MainContent() {
                   style={{
                     marginRight: "5px",
                     marginBottom: "5px",
-                    width: "17px",
-                    height: "17px",
                     cursor: "pointer",
                   }}
                 />
@@ -482,6 +491,7 @@ function MainContent() {
               </label>
 
               <label
+                className="radio-label"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -492,6 +502,7 @@ function MainContent() {
               >
                 <input
                   type="radio"
+                  className="custom-radio"
                   name="flightType"
                   value="oneWay"
                   checked={selectedType === "oneWay"}
@@ -499,8 +510,6 @@ function MainContent() {
                   style={{
                     marginRight: "5px",
                     marginBottom: "5px",
-                    width: "17px",
-                    height: "17px",
                     cursor: "pointer",
                   }}
                 />
@@ -529,17 +538,12 @@ function MainContent() {
                       type="Start"
                       idOther={idEndAirport}
                       onSelectAirport={handleSelectAirport}
+                      nextInputRef={startDatePickerRef}
+                      inputRef={startAirportInputRef}    
                     />
                   </div>
 
-                  <div className="input-group-date">
-                    <input
-                      type="date"
-                      className="input-field date-field"
-                      name="startDate"
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <DatePicker type="Departure Date" ref={startDatePickerRef} nextInputRef={endAirportInputRef} isEnd={false}  />
                 </div>
 
                 <div className="flight-search-bar input-enddes">
@@ -568,17 +572,12 @@ function MainContent() {
                       type="End"
                       idOther={idBeginAirport}
                       onSelectAirport={handleSelectAirport}
+                      nextInputRef={endDatePickerRef}
+                      inputRef={endAirportInputRef}
                     />
                   </div>
 
-                  <div className="input-group-date input-enddate">
-                    <input
-                      type="date"
-                      className="input-field date-field end-date"
-                      name="endDate"
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <DatePicker type="Return Date" ref={endDatePickerRef} nextInputRef={null} isEnd={true}/>
                 </div>
 
                 <PassengerSelector />

@@ -18,7 +18,7 @@ main .main-leftcontent {
 
 main .main-leftcontent .des {
   font-size: 1.6rem;
-  margin-top: 30px;
+  margin-top: 20px;
   line-height: 1.4;
 }
 
@@ -90,7 +90,7 @@ main .main-rightcontent .plane {
 
 main .main-content .rating-container {
   position: absolute;
-  bottom: -6px;
+  bottom: -20px;
   right: -55px;
   width: 160px;
   padding: 10px 5px 10px 20px;
@@ -232,7 +232,7 @@ h1 {
 
 .main-booking {
   max-width: 350px;
-  margin-top: 40px;
+  margin-top: 25px;
   display: inline-block;
 }
 
@@ -253,6 +253,7 @@ h1 {
 }
 
 .flight-search-bar {
+  position: relative;
   display: flex;
   align-items: center;
   border: 1px solid #ddd;
@@ -262,8 +263,7 @@ h1 {
 }
 
 .booking-container .input-group {
-  position: relative;
-  width: 170px;
+  width: 175px;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -313,5 +313,28 @@ h1 {
 }
 
 .hidden-end {
-  width: 319px;
+  width: 324px;
+}
+
+#from::placeholder {
+  color: black;
+}
+
+/* Custom radio button */
+.custom-radio {
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  appearance: none; 
+  border: 2px solid white;
+  border-radius: 50%; 
+  position: relative; 
+  outline: none; 
+  transition: background-color 0.3s, border-color 0.3s; 
+}
+
+.custom-radio:checked {
+  background-color: yellow; 
+  border-color: white
 }
