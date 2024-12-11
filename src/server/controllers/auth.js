@@ -1,4 +1,5 @@
 import * as argon2 from "argon2";
+import { Op } from "sequelize";
 import { Customer, Admin } from "../models/model.js";
 import { createAccessToken, createRefreshToken } from "./jwt.js";
 
@@ -8,16 +9,14 @@ export const login = async (req, res) => {
   let accessToken, refreshToken;
 
   try {
-    let user = await Admin.findAll({
-      where: { email },
-    });
+    let user = email ? await Admin.findAll({ where: { email } }) : [];
 
     if (user.length !== 0) {
       role = "admin";
     } else {
-      user = await Customer.findAll({
-        where: { email, numberPhone },
-      });
+      user = email
+        ? await Customer.findAll({ where: { email } })
+        : await Customer.findAll({ where: { numberPhone } });
 
       if (user.length === 0) {
         return res.status(400).json({ message: "User does not exist." });
