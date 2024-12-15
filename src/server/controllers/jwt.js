@@ -28,17 +28,20 @@ export const refreshAccessToken = async (req, res) => {
         return res.status(403).json({ message: "Invalid token. " });
       }
       const role = decoded.role;
-      var userId = role === "admin" ? decoded.idAdmin : decoded.idCustomer;
+      const username = decoded.username;
+      const userId = role === "admin" ? decoded.idAdmin : decoded.idCustomer;
       const payload =
         role === "admin"
           ? {
               idAdmin: `${userId}`,
               role: `${role}`,
+              username: `${username}`,
               createAt: new Date(),
             }
           : {
               idCustomer: `${userId}`,
               role: `${role}`,
+              username: `${username}`,
               createAt: new Date(),
             };
       const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, {

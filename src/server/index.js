@@ -9,6 +9,7 @@ import userRouter from "./routes/user.js";
 import flightRouter from "./routes/flight.js";
 import bookingRouter from "./routes/booking.js";
 import airportRouter from "./routes/airport.js";
+import airplaneRouter from "./routes/airplane.js";
 
 dotenv.config();
 
@@ -24,7 +25,10 @@ app.use(helmet());
 app.use(cookieParser())
 
 const allowedOrigins = [LOCALHOST, AWS_IP];
-app.use(cors({ origin: allowedOrigins }));
+app.use(cors({ 
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 app.get("/api", (req, res) => {
   res.send("Hello World!");
@@ -35,6 +39,7 @@ app.use("/api/user", userRouter);
 app.use("/api/flight", flightRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/airport", airportRouter);
+app.use("/api/airplane", airplaneRouter);
 
 let server = app.listen(port, () => {
   console.log("Server listen in port " + port);
