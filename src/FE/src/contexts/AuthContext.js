@@ -1,4 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { BACKEND_BASE_URL } from '../services/api';
+
+export const AuthState = {
+  LOADING: 'loading',
+  VERIFIED: 'verified',
+  UNAUTHORIZED: 'unauthorized',
+  SERVER_ERROR: 'server_error',
+  SERVER_UNAVAILABLE: 'server_unavailable',
+}
 
 const AuthContext = createContext();
 
@@ -8,6 +17,7 @@ export function AuthProvider({ children }) {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
+  const [authStatus, setAuthStatus] = useState(AuthState.LOADING);
 
   // Update localStorage whenever user state changes
   useEffect(() => {
@@ -18,18 +28,70 @@ export function AuthProvider({ children }) {
     }
   }, [user]);
 
+  const verifyAuth = async () => {
+    try {
+      setAuthStatus(AuthState.LOADING);
+      const response = await fetch(`${BACKEND_BASE_URL}/auth/verify`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        console.log(`Verified failed: ${((await response.json()).message)}`);
+        return;
+      }
+      const data = await response.json();
+      setUser(data);
+      setAuthStatus(AuthState.VERIFIED);
+    } catch (error) { 
+      if (error instanceof TypeError) {
+        setAuthStatus(AuthState.SERVER_UNAVAILABLE);
+      } else {
+        console.error(error);
+        setAuthStatus(AuthState.SERVER_ERROR);
+      }
+    }
+  };
+
   const login = (userData) => {
+    setAuthStatus(AuthState.VERIFIED);
     setUser(userData);
   };
 
-  const logout = () => {
-    setUser(null);
+  const logout = async () => {
+    try {      
+      setUser(null);
+      setAuthStatus(AuthState.LOADING);
+      const response = await fetch(`${BACKEND_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+
+      if (response.status == 500) {
+        console.error(await response.text());
+        setAuthStatus(AuthState.SERVER_ERROR);
+        return false;
+      } 
+
+      // Successfully logged out
+      setAuthStatus(AuthState.UNAUTHORIZED);
+      return true;
+    } catch (error) {
+      if (error instanceof TypeError) {
+        setAuthStatus(AuthState.SERVER_UNAVAILABLE);
+      } else {
+        console.error(error);
+        setAuthStatus(AuthState.SERVER_ERROR);
+      }
+      return false;
+    } 
   };
 
   const value = {
     user,
     login,
-    logout
+    logout,
+    authStatus,
+    verifyAuth
   };
 
   return (

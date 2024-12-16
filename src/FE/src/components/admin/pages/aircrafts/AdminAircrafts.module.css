@@ -2,90 +2,84 @@
     padding: 20px;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.addButton {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background-color: #db3434;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.tableContainer {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: auto;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th,
-.table td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
-.table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-}
-
-.actions {
-    display: flex;
-    gap: 8px;
-}
-
-.editButton,
-.deleteButton {
-    padding: 6px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
-}
-
-.editButton {
-    background-color: #4CAF50;
-}
-
-.deleteButton {
-    background-color: #f44336;
-}
-
 /* Modal styles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes growFromCenter {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes shrinkToCenter {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
 .modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modalOverlay.closing {
+    animation: fadeOut 0.3s ease-out;
 }
 
 .modal {
     background: white;
-    padding: 24px;
+    padding: 20px;
     border-radius: 8px;
-    width: 100%;
     max-width: 500px;
+    width: 90%;
+    position: relative;
+    z-index: 10000;
+    animation: growFromCenter 0.3s ease-out;
+
+    h2 {
+        text-align: center;
+    }
+}
+
+.modal.closing {
+    animation: shrinkToCenter 0.3s ease-out;
 }
 
 .formGroup {
@@ -124,6 +118,25 @@
     color: white;
 }
 
+.modalActions button[type="submit"]:hover {
+    background-color: #e05454;
+}  
+
+.modalActions button[type="submit"]:active {
+    background-color: #cc2727;
+}
+
 .modalActions button[type="button"] {
     background-color: #e0e0e0;
 } 
+
+.modalActions button[type="button"]:hover {
+    background-color: #cfcfcf;
+}
+
+.modalActions button[type="button"]:active {
+    background-color: #b0b0b0;
+}
+ 
+
+

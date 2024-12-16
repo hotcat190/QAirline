@@ -17,6 +17,8 @@ import {
 import { months } from 'utils/months';
 import { daysOfWeek } from 'utils/daysOfWeek';
 
+import Heading from '../../components/heading/Heading';
+
 ChartJS.register(LineElement, BarElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, Filler);
 
 export default function AdminDashboard() {
@@ -133,9 +135,7 @@ export default function AdminDashboard() {
 
     return (
         <div className={styles.dashboard}>
-            <div className={styles.header}>
-                <h1>Dashboard</h1>
-            </div>
+            <Heading title="Dashboard" />
             <div className={styles.statsGrid}>
                 {dashboardStats.map((stat, index) => (
                     <div className={styles.statCard} key={index}>

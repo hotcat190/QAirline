@@ -1,0 +1,131 @@
+.globalSearch {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.globalSearch input {
+    margin-left: 8px;
+    border: none;
+    outline: none;
+    width: 100%;
+    padding-right: 30px;
+}
+
+.columnFilters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.columnLabel {
+    display: block;
+    margin-bottom: 8px;
+    margin-left: 8px;
+}
+
+.filterField {
+    flex: 1 1 150px; /* grow | shrink | basis */
+}
+
+.filterField input,
+.filterField select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.filterField input:focus,
+.filterField select:focus,
+.globalSearch:focus {
+    border-color: #2684ff;
+    box-shadow: 0 0 0 1px #2684ff;
+}
+
+.filterField input.hasValue,
+.filterField select.hasValue,
+.globalSearch.hasValue {
+    border-color: #2684ff;
+    background-color: #f0f7ff;
+}
+
+.globalSearch input.hasValue {
+    background-color: #f0f7ff;
+}
+
+.filterInputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.clearButton {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clearButton:hover {
+    color: #333;
+}
+
+.globalSearch .clearButton {
+    right: 8px;
+}
+
+.searchHeader {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.globalSearch {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+.clearAllButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #dc3545;
+    background-color: white;
+    color: #dc3545;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-size: inherit;
+}
+
+.clearAllButton:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.clearAllButton:focus {
+    border: 1px solid #dc3545;
+}
+
+.clearAllButton svg {
+    font-size: inherit;
+}
