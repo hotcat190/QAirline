@@ -6,7 +6,7 @@ import './Passenger.css';
 
 const Passenger = () => {
     const location = useLocation();
-    const { booking, startAirport, endAirport } = location.state || {};
+    const { booking, startDestination, endDestination } = location.state || {};
     return (
         <div className="search-flight-container">
             <div className="content">
@@ -36,7 +36,7 @@ const Passenger = () => {
                         </div>
                         <div className="sidebar-fs-details">
                             <p>
-                                <strong>{startAirport}</strong><img src='img/colorful_plane.svg' style={{ marginLeft: "10px", marginRight: "10px" }} /><strong>{endAirport}</strong>
+                                <strong>{startDestination}</strong><img src='img/colorful_plane.svg' style={{ marginLeft: "10px", marginRight: "10px" }} /><strong>{endDestination}</strong>
                             </p>
                             <p>{booking.date} | {booking.time} | {booking.flightCode} | {booking.class}</p>
                         </div>

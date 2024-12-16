@@ -3,13 +3,221 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './SearchFlight.css';
 
+const EconomyTicketInfo = () => {
+    return (
+        <div className="ticket-info-container">
+            <div className="ticket-info">
+                <h3 className="ticket-info__title">Included:</h3>
+                <ul className="ticket-info__list">
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Carry-on baggage: 07Kg.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Sky Care Insurance (not applicable to flights operated by Thai QAirline).
+                    </li>
+                </ul>
+
+                <h3 className="ticket-info__title">Not included:</h3>
+                <ul className="ticket-info__list">
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--cross">❌</span>
+                        Checked baggage (optional).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--cross">❌</span>
+                        Meal
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--cross">❌</span>
+                        3-in-1 convenience kit.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--cross">❌</span>
+                        Seat selection in advance.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--cross">❌</span>
+                        Flight, date, or itinerary changes.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--cross">❌</span>
+                        Fare difference upon changes (if any).
+                    </li>
+                </ul>
+
+                <a href="#" className="ticket-info__link">View ticket fare rules</a>
+
+                <div className="ticket-info__status">
+                    <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                    Selected
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const BusinessTicketInfo = () => {
+    return (
+        <div className="ticket-info-container ticket-info-container--business">
+            <div className="ticket-info">
+                <h3 className="ticket-info__title">Included:</h3>
+                <ul className="ticket-info__list">
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Carry-on baggage: 10kg.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Checked baggage: 30kg and 01 golf equipment set (if applicable).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Access to luxury lounges (not applicable on domestic flights in Thailand or airports with lounges that do not meet the required standards or are closed during flight operation hours).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority check-in.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority baggage handling.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority access through security checks (subject to conditions at each airport).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Private shuttle service to the aircraft (applicable for remote parking; not applicable at airports that do not provide private shuttle services).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority seat selection on the aircraft (not applicable to Business class seats).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Enjoy fresh and delicious cuisine throughout the flight.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Convenience kit (for flights lasting 04 hours or longer).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Refundable or transferable ticket credit valid for up to 02 (two) years from the scheduled departure date.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Sky Care Insurance (not applicable to flights operated by Thai QAirline).
+                    </li>
+                </ul>
+
+
+                <a href="#" className="ticket-info__link">View ticket fare rules</a>
+
+                <div className="ticket-info__status">
+                    <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                    Selected
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const FirstClassTicketInfo = () => {
+    return (
+        <div className="ticket-info-container ticket-info-container--business ticket-info-container-firstclass">
+            <div className="ticket-info">
+                <h3 className="ticket-info__title">Included:</h3>
+                <ul className="ticket-info__list">
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Carry-on baggage: 18kg.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Checked baggage: 40kg and 01 golf equipment set (if applicable).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Access to luxury lounges (not applicable on domestic flights in Thailand or airports with lounges that do not meet the required standards or are closed during flight operation hours).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority check-in.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority baggage handling.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority access through security checks (subject to conditions at each airport).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Private shuttle service to the aircraft (applicable for remote parking; not applicable at airports that do not provide private shuttle services).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Priority seat selection on the aircraft.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Enjoy fresh and delicious cuisine throughout the flight.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Convenience kit (for flights lasting 04 hours or longer).
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Refundable or transferable ticket credit valid for up to 02 years from the scheduled departure date.
+                    </li>
+                    <li className="ticket-info__item">
+                        <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                        Sky Care Insurance (not applicable to flights operated by Thai QAirline).
+                    </li>
+                </ul>
+                <a href="#" className="ticket-info__link">View ticker fare rules</a>
+                <div className="ticket-info__status">
+                    <span className="ticket-info__icon ticket-info__icon--check">✔️</span>
+                    Selected
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
+
 const SearchFlight = () => {
+    const [ showBusinessInfo, setShowBusinessInfo ] = useState(false);
+    const [ showEconomyInfo, setShowEconomyInfo ] = useState(false);
+    const [ showFirstClassInfo, setShowFirstClassInfo ] = useState(false);
+    const handleClickBusiness = () => {
+        setShowBusinessInfo(prevState => !prevState);
+        setShowEconomyInfo(false);
+        setShowFirstClassInfo(false);
+    };
+    const handleClickEconomy = () => {
+        setShowEconomyInfo(prevState => !prevState);
+        setShowBusinessInfo(false);
+        setShowFirstClassInfo(false);
+    };
+    const handleClickFirstClass = () => {
+        setShowFirstClassInfo(prevState => !prevState);
+        setShowBusinessInfo(false);
+        setShowEconomyInfo(false);
+    };
     const location = useLocation();
     const navigate = useNavigate();
-    const { flightForwardData, flightBackwardData, selectedType, startAirport, endAirport } = location.state || {};
+    const { flightForwardData, flightBackwardData, startDestination, endDestination, selectedType, passengerSummary } = location.state || {};
     const [ booking, setBooking ] = useState({
-        from: startAirport,
-        to: endAirport,
+        from: startDestination,
+        to: endDestination,
         date: "--",
         time: "--",
         flightCode: "--",
@@ -40,7 +248,7 @@ const SearchFlight = () => {
     };
 
     const handleContinue = () => {
-        navigate("/passenger", { state: { booking: booking, startAirport, endAirport } });
+        navigate("/passenger", { state: { booking: booking, startDestination, endDestination } });
     }
 
 
@@ -51,13 +259,13 @@ const SearchFlight = () => {
                     <div className="main-fs-content">
                         <div className="left-fs-main-content">
                             {selectedType === 'oneWay' ? (
-                                <h2 className="title">One-way flight</h2>
+                                <h2 className="title">One-way flight <span>| {passengerSummary}</span></h2>
                             ) : (
-                                <h2 className="title">Round-way flight</h2>
+                                <h2 className="title">Round-way flight <span>| {passengerSummary}</span></h2>
                             )}
                             {selectedType === 'oneWay' ? (
                                 <div className='route-info'>
-                                    <div class="jss2412"><img src="img/departure-icon.25d3557e.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>Start Destination</span><span>{startAirport}</span></p></div>
+                                    <div class="jss2412"><img src="img/departure-icon.25d3557e.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'></span><span>{startDestination}</span></p></div>
                                     <div className='fs-arrow'>
                                         <svg
                                             width="57"
@@ -73,11 +281,11 @@ const SearchFlight = () => {
                                             <path d="M19.1165 34L7.5 34C17 39 16 38 23 44V37L19.1165 34Z" fill="#ddd"></path>
                                         </svg>
                                     </div>
-                                    <div class="jss2412"><img src="img/arrival-icon.a05c5d78.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>End Destination</span><span>{endAirport}</span></p></div>
+                                    <div class="jss2412"><img src="img/arrival-icon.a05c5d78.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'></span><span>{endDestination}</span></p></div>
                                 </div>
                             ) : (
                                 <div className='route-info'>
-                                    <div class="jss2412"><img src="img/departure-icon.25d3557e.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>Start Destination</span><span>{startAirport}</span></p></div>
+                                    <div class="jss2412"><img src="img/departure-icon.25d3557e.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>Start Destination</span><span>{startDestination}</span></p></div>
                                     <div className='fs-arrow'>
                                         <svg
                                             width="57"
@@ -93,7 +301,7 @@ const SearchFlight = () => {
                                             <path d="M19.1165 34L7.5 34C17 39 16 38 23 44V37L19.1165 34Z" fill="rgb(224, 54, 54)"></path>
                                         </svg>
                                     </div>
-                                    <div class="jss2412"><img src="img/arrival-icon.a05c5d78.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>End Destination</span><span>{endAirport}</span></p></div>
+                                    <div class="jss2412"><img src="img/arrival-icon.a05c5d78.svg" alt="Departure Icon" style={{ width: "12px" }} /><p class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary" variantmd="h3"><span className='airport'>End Destination</span><span>{endDestination}</span></p></div>
                                 </div>
                             )}
                         </div>
@@ -107,9 +315,6 @@ const SearchFlight = () => {
                             </div>
                             <div className='fs-icon'>
                                 <svg class="MuiSvgIcon-root jss276" style={{ fill: "#F9A51A" }} focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
-                            </div>
-                            <div className='fs-icon'>
-                                <svg class="MuiSvgIcon-root jss276" style={{ fill: "#F9A51A" }} focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path></svg>
                             </div>
                             <div className='fs-icon'>
                                 <svg class="MuiSvgIcon-root jss276" style={{ fill: "#F9A51A" }} focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"></path></svg>
@@ -129,6 +334,7 @@ const SearchFlight = () => {
                                         border: '1px solid rgb(106, 183, 46)',
                                         backgroundColor: 'rgb(106, 183, 46)',
                                     }}
+                                    onClick={handleClickEconomy}
                                 >
                                     <img
                                         src="https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/weco-1642435135644.svg"
@@ -141,6 +347,7 @@ const SearchFlight = () => {
                                         border: '1px solid rgb(175, 137, 3)',
                                         backgroundColor: 'rgb(175, 137, 3)',
                                     }}
+                                    onClick={handleClickBusiness}
                                 >
                                     <img
                                         src="https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/businesswhite-1689220127310.svg"
@@ -153,16 +360,22 @@ const SearchFlight = () => {
                                         border: '1px solid rgb(218, 33, 40)',
                                         backgroundColor: 'rgb(224, 54, 54)',
                                     }}
+                                    onClick={handleClickFirstClass}
                                 >
                                     <img
                                         src="https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/wskyboss-1642435135647.svg"
                                         alt=""
                                     />
                                 </div>
-
                             </div>
                         </div>
+
                         <div className="flight-list">
+                            <div className="show-ticket">
+                                {showEconomyInfo && <EconomyTicketInfo />}
+                                {showBusinessInfo && <BusinessTicketInfo />}
+                                {showFirstClassInfo && <FirstClassTicketInfo />}
+                            </div>
                             {flightForwardData.map((flight) => (
                                 <div className="flight-card" key={flight.idFlight}>
                                     <div className="flight-info">
@@ -194,6 +407,7 @@ const SearchFlight = () => {
                                         ))}
                                     </div>
                                 </div>
+
                             ))}
                         </div>
                     </div>
@@ -225,7 +439,7 @@ const SearchFlight = () => {
                         </div>
                         <div className="sidebar-fs-details">
                             <p>
-                                <strong>{startAirport}</strong><img src='img/colorful_plane.svg' style={{ marginLeft: "10px", marginRight: "10px" }} /><strong>{endAirport}</strong>
+                                <strong>{startDestination}</strong><img src='img/colorful_plane.svg' style={{ marginLeft: "10px", marginRight: "10px" }} /><strong>{endDestination}</strong>
                             </p>
                             <p>{booking.date} | {booking.time} | {booking.flightCode} | {booking.class}</p>
                         </div>

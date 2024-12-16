@@ -1,18 +1,24 @@
 .fixed-header {
     background: #f8f4f7;
-    padding-top: 17px;
+    padding-top: 13px;
     position: sticky;
-    top: -17px;
+    top: -13px;
     z-index: 20;
+}
+
+button {
+    border: none;
+    cursor: pointer;
 }
 
 .logo {
     width: 110px;
     height: auto;
+    margin-bottom: 15px;
 }
 
 .fixed-header .navbar {
-    padding: 10px 0;
+    padding: 5px 0;
     display: flex;
     align-items: center;
 }
@@ -50,6 +56,8 @@
 }
 
 .fixed-header .action-link {
+    font-size: 16px;
+    background: none;
     margin-right: 20px;
     color: black;
 }
@@ -58,6 +66,8 @@
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: 16px;
+    padding: 15px;
 }
 
 .fixed-header .action-btn:hover {

@@ -1,0 +1,55 @@
+.notification {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: fixed;
+    top: 200px;
+    right: -320px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: right 0.3s ease-in-out;
+    border-left: 5px solid red;
+    height: 80px;
+    width: 320px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.notification.show {
+    right: 0px;
+}
+
+.notification .title-message {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.notification .content-message {
+    font-size: 14px;
+    color: #747171;
+}
+
+.notification .wrap-message {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.notification .wrap-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 30px;
+    width: 30px;
+    border-radius: 999px;
+    background-color: red;
+}
+
+.notification .wrap-icon span {
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+    text-align: center;
+}

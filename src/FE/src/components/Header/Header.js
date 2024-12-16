@@ -65,15 +65,15 @@ function Header() {
                   <div className="dropdown-menu">
                     <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
                     <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
-                    <a href="#!" onClick={handleLogout}>Logout</a>
+                    <button onClick={handleLogout}>Logout</button>
                   </div>
                 )}
               </div>
             </div>
           ) : (
             <div className="actions">
-              <a href="#!" className="action-link" onClick={openSignup}>Sign up</a>
-              <a href="#!" className="btn action-btn" onClick={openSignin}>Sign in</a>
+              <button className="action-link" onClick={openSignup}>Sign up</button>
+              <button className="btn action-btn" onClick={openSignin}>Sign in</button>
             </div>
           )}
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import * as rd from 'react-router-dom'
 import './assets/styles/reset.css';
 import Header from './components/Header/Header';
@@ -23,15 +23,28 @@ import { AuthProvider } from 'contexts/AuthContext';
 import Footer from 'components/Footer/Footer';
 
 const DefaultLayout = () => {
-  return (
-    <>
-      <ActionForm />
-      <MobileHeader />
-      <Header />
-      <rd.Outlet />
-      <Footer />
-    </> 
-  )
+  const location = useLocation();
+  
+  if (location.pathname.includes('/searchflights') || location.pathname.includes('/passenger')) {
+    return (
+      <>
+        <ActionForm />
+        <MobileHeader />
+        <Header />
+        <rd.Outlet />
+      </> 
+    );
+  } else {
+    return (
+      <>
+        <ActionForm />
+        <MobileHeader />
+        <Header />
+        <rd.Outlet />
+        <Footer />
+      </>
+    );
+  }
 }
 
 class App extends Component {
@@ -47,6 +60,7 @@ class App extends Component {
                 <rd.Route path="/news" element={<News />}></rd.Route>
                 <rd.Route path="/destination" element={<Destination />}></rd.Route>
                 <rd.Route path="/searchflights" element={<SearchFlight />}></rd.Route>
+                <rd.Route path="/passenger" element={<Passenger />}></rd.Route>
               </rd.Route>
               
               <rd.Route path="/admin" element={<AdminLayout />}>
