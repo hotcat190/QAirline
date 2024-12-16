@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './SearchFlight.css';
 
 const EconomyTicketInfo = () => {
@@ -227,6 +227,28 @@ const SearchFlight = () => {
         serviceFee: "0",
         totalPrice: "0",
     });
+    const [ adultCount, setAdultCount ] = useState(0);
+    const [ childrenCount, setChildrenCount ] = useState(0);
+    const [ infantsCount, setInfantsCount ] = useState(0);
+
+    useEffect(() => {
+        const extractPassengerCount = (summary) => {
+            const adultMatch = summary.match(/(\d+)\s*adults/);
+            const childrenMatch = summary.match(/(\d+)\s*children/);
+            const infantsMatch = summary.match(/(\d+)\s*infants/);
+            if (adultMatch) {
+                setAdultCount(parseInt(adultMatch[ 1 ], 10));
+            }
+            if (childrenMatch) {
+                setChildrenCount(parseInt(childrenMatch[ 1 ], 10));
+            }
+            if (infantsMatch) {
+                setInfantsCount(parseInt(infantsMatch[ 1 ], 10));
+            }
+        };
+
+        extractPassengerCount(passengerSummary);
+    }, [ passengerSummary ]);
 
     const handleClassCardClick = (flight, classInfo) => {
         setBooking({
@@ -243,12 +265,12 @@ const SearchFlight = () => {
             ticketPrice: (classInfo.currentPrice).toLocaleString('vi-VN'),
             tax: (classInfo.currentPrice / 20).toLocaleString('vi-VN'),
             serviceFee: '0',
-            totalPrice: (classInfo.currentPrice + classInfo.currentPrice / 20 + 0).toLocaleString('vi-VN'),
+            totalPrice: ((classInfo.currentPrice + classInfo.currentPrice / 20 + 0) * adultCount + classInfo.currentPrice * 0.75 * childrenCount + classInfo.currentPrice * 0.5 * infantsCount).toLocaleString('vi-VN'),
         });
     };
 
     const handleContinue = () => {
-        navigate("/passenger", { state: { booking: booking, startDestination, endDestination } });
+        navigate("/passenger", { state: { booking: booking, startDestination, endDestination, passengerSummary } });
     }
 
 
