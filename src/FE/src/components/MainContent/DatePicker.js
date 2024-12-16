@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import "./DatePicker.css";
 
-const DatePicker = forwardRef(({ type, nextInputRef, isEnd }, ref) => {
+const DatePicker = forwardRef(({ type, nextInputRef, isEnd, onDateChange }, ref) => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -73,6 +73,10 @@ const DatePicker = forwardRef(({ type, nextInputRef, isEnd }, ref) => {
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     setCalendarVisible(false);
+
+    if (onDateChange) {
+      onDateChange(date, isEnd); 
+    }
 
     if (nextInputRef?.current) {
       nextInputRef.current.focus();

@@ -82,6 +82,25 @@ function Header() {
           </ul>
           <div className="actions">            
           {user ? (
+//             <div className="actions">
+//               <div className="dropdown-container">
+//                 <img className="user-avatar" id="user-avatar" alt="User" src="img/default_avatar.png" onClick={() => setShowDropdown(!showDropdown)}/>
+//                 {showDropdown && (
+//                   <div className="dropdown-menu">
+//                     <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
+//                     <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
+//                     <button onClick={handleLogout}>Logout</button>
+//                   </div>
+//                 )}
+//               </div>
+//             </div>
+//           ) : (
+//             <div className="actions">
+//               <button className="action-link" onClick={openSignup}>Sign up</button>
+//               <button className="btn action-btn" onClick={openSignin}>Sign in</button>
+//             </div>
+//           )}
+
             <UserAvatar />
             ) : (
             <>

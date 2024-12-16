@@ -147,6 +147,8 @@ select.form-control {
 
 .pd-title {
     margin-top: 20px;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 .destination-container .thumb {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import "./AirportSearch.css";
 
 const airports = [
@@ -23,7 +23,7 @@ const groupByCountry = (data) => {
 };
 
 
-function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef, inputRef }) {
+const AirportSearch = forwardRef(({ airports, onSelectAirport, type, idOther, nextInputRef, inputRef }, ref) => {
   const [query, setQuery] = useState("");
   const [showList, setShowList] = useState(false);
   const [filteredAirports, setFilteredAirports] = useState({});
@@ -117,7 +117,6 @@ function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef,
     <div className="airport-search" style={{ position: "relative" }}>
       <input
         type="text"
-        id="from"
         name="startAirport"
         placeholder={`${type} Destination`}
         value={query}
@@ -199,6 +198,6 @@ function AirportSearch({ airports, onSelectAirport, type, idOther, nextInputRef,
       )}
     </div>
   );
-}
+});
 
 export default AirportSearch;
