@@ -36,21 +36,25 @@ export const login = async (req, res) => {
       accessToken = createAccessToken({
         idCustomer: `${user[0].idCustomer}`,
         role: `${role}`,
+        username: `${user[0].username}`,
         createAt: new Date(),
       });
       refreshToken = createRefreshToken({
         idCustomer: `${user[0].idCustomer}`,
         role: `${role}`,
+        username: `${user[0].username}`,
       });
     } else {
       accessToken = createAccessToken({
         idAdmin: `${user[0].idAdmin}`,
         role: `${role}`,
+        username: `${user[0].username}`,
         createAt: new Date(),
       });
       refreshToken = createRefreshToken({
         idAdmin: `${user[0].idAdmin}`,
         role: `${role}`,
+        username: `${user[0].username}`,
       });
     }
 
@@ -65,8 +69,8 @@ export const login = async (req, res) => {
       sameSite: "None",
     });
 
-    console.log(accessToken, refreshToken);
-    res.send({ role, idCustomer: user[0].username });
+    console.log(`accessToken: ${accessToken}\n refreshToken: ${refreshToken}`);
+    res.send({ role, username: user[0].username });
   } catch (e) {
     res.status(500).send(e.message);
     console.log(e);
@@ -112,7 +116,6 @@ export const logout = async (req, res) => {
       secure: true,
       sameSite: "None",
     });
-
     // Trả về phản hồi thành công sau khi logout
     res.status(200).json({ message: "Logged out successfully" });
   } catch (e) {
@@ -120,3 +123,11 @@ export const logout = async (req, res) => {
     console.log(e);
   }
 };
+
+export const sendUserInfo = async (req, res) => {
+  res.status(200).json({
+    role: req.user.role,
+    username: req.user.username,    
+  })
+};
+

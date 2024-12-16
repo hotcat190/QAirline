@@ -5,10 +5,39 @@ import { useAuth } from 'contexts/AuthContext';
 
 import './Header.css';
 
-function Header() {
+const UserAvatar = () => {  
   const { user, logout } = useAuth();
   const [showDropdown, setShowDropdown] = React.useState(false);
   const navigate = rd.useNavigate();
+
+  function handleLogout() {
+    setShowDropdown(false);
+    if (logout()) {
+      navigate('/');
+      window.location.reload();
+    }
+  }
+
+  return (
+    <div className="dropdown-container">
+      <img className="user-avatar" id="user-avatar" alt="User" src="img/default_avatar.png" onClick={() => setShowDropdown(!showDropdown)}/>
+      {showDropdown && (
+      <div className="dropdown-menu">
+        {user.role === "admin" ? (
+          <rd.Link to="/admin" onClick={() => setShowDropdown(false)}>Admin</rd.Link> 
+        ) : (
+          <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
+        )}
+        <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
+        <div onClick={handleLogout}>Logout</div>
+      </div>
+      )}
+    </div>
+  );
+}
+
+function Header() {
+  const { user } = useAuth();
 
   function openSignin() {
     document.querySelector('.overlay').style.display = 'block';
@@ -29,12 +58,6 @@ function Header() {
     }, 10);
     document.body.classList.add('no-scroll');
   }
-
-  const handleLogout = () => {
-    logout();
-    setShowDropdown(false);
-    navigate('/');
-  };
 
   return (
     <header className="fixed-header">
@@ -57,26 +80,35 @@ function Header() {
             <li><rd.Link to="/news">News</rd.Link></li>
             <li><rd.Link to="/destination">Destinations</rd.Link></li>
           </ul>
+          <div className="actions">            
           {user ? (
-            <div className="actions">
-              <div className="dropdown-container">
-                <img className="user-avatar" id="user-avatar" alt="User" src="img/default_avatar.png" onClick={() => setShowDropdown(!showDropdown)}/>
-                {showDropdown && (
-                  <div className="dropdown-menu">
-                    <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
-                    <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
-                    <button onClick={handleLogout}>Logout</button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="actions">
-              <button className="action-link" onClick={openSignup}>Sign up</button>
-              <button className="btn action-btn" onClick={openSignin}>Sign in</button>
-            </div>
-          )}
+//             <div className="actions">
+//               <div className="dropdown-container">
+//                 <img className="user-avatar" id="user-avatar" alt="User" src="img/default_avatar.png" onClick={() => setShowDropdown(!showDropdown)}/>
+//                 {showDropdown && (
+//                   <div className="dropdown-menu">
+//                     <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
+//                     <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
+//                     <button onClick={handleLogout}>Logout</button>
+//                   </div>
+//                 )}
+//               </div>
+//             </div>
+//           ) : (
+//             <div className="actions">
+//               <button className="action-link" onClick={openSignup}>Sign up</button>
+//               <button className="btn action-btn" onClick={openSignin}>Sign in</button>
+//             </div>
+//           )}
 
+            <UserAvatar />
+            ) : (
+            <>
+              <a href="#!" className="action-link" onClick={openSignup}>Sign up</a>
+              <a href="#!" className="btn action-btn" onClick={openSignin}>Sign in</a>
+            </>
+            )}
+          </div>
         </nav>
       </div>
     </header>

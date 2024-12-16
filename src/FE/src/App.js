@@ -19,8 +19,12 @@ import AdminAircrafts from './components/admin/pages/aircrafts/AdminAircrafts';
 import AdminFlights from './components/admin/pages/flights/AdminFlights';
 import AdminAdvertisements from './components/admin/pages/advertisements/AdminAdvertisements';
 import AdminBookings from './components/admin/pages/bookings/AdminBookings';
+import AdminSchedules from './components/admin/pages/schedules/AdminSchedules';
 import { AuthProvider } from 'contexts/AuthContext';
 import Footer from 'components/Footer/Footer';
+
+import ErrorPage from 'components/ErrorPage/ErrorPage';
+import { notFound } from 'components/ErrorPage/errors';
 
 const DefaultLayout = () => {
   const location = useLocation();
@@ -54,7 +58,7 @@ class App extends Component {
         <BrowserRouter>
           <div className="App">
             <rd.Routes>
-              <rd.Route path="/" element={<DefaultLayout />}>
+              <rd.Route exact path="/" element={<DefaultLayout />}>
                 <rd.Route index element={<Home />}></rd.Route>
                 <rd.Route path="/myflights" element={<MyFlight />}></rd.Route>
                 <rd.Route path="/news" element={<News />}></rd.Route>
@@ -63,17 +67,19 @@ class App extends Component {
                 <rd.Route path="/passenger" element={<Passenger />}></rd.Route>
               </rd.Route>
               
-              <rd.Route path="/admin" element={<AdminLayout />}>
+              <rd.Route exact path="/admin" element={<AdminLayout />}>
                 <rd.Route index element={<rd.Navigate to="/admin/dashboard" replace />} />
                 <rd.Route path="dashboard" element={<AdminDashboard />}></rd.Route>
                 <rd.Route path="aircrafts" element={<AdminAircrafts />}></rd.Route>
+                <rd.Route path="schedules" element={<AdminSchedules />}></rd.Route>
                 <rd.Route path="flights" element={<AdminFlights />}></rd.Route>
                 <rd.Route path="advertisements" element={<AdminAdvertisements />}></rd.Route>
                 <rd.Route path="bookings" element={<AdminBookings />}></rd.Route>
               </rd.Route>
+              
+              <rd.Route path="*" element={<ErrorPage error={notFound} />} />
             </rd.Routes>
           </div>
-          
         </BrowserRouter>
       </AuthProvider>
     );

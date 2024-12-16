@@ -308,3 +308,8 @@ export const deleteFlight = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+export const getAllFlights = async (req, res) => {
+  const flights = await Flight.findAll();
+  res.send(flights);
+};

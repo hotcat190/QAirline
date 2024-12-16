@@ -107,15 +107,16 @@ button {
 }
 
 .dropdown-menu { 
-    a {
+    a, div {
         display: block;
         padding: 8px 16px;
         color: #333;
         text-decoration: none;
         transition: background-color 0.2s;
+        cursor: pointer;
     }
 
-    a:hover {
+    a:hover, div:hover {
         background-color: #f5f5f5;
     }    
 }
