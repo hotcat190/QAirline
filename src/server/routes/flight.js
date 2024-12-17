@@ -14,6 +14,7 @@ import {
 
 const router = express.Router();
 
+router.get("/", getAllFlights);
 router.get("/searchFlight", getFlightByTimeAndAirport);
 router.get("/getInfo", getInfoFlight);
 router.post("/createFlight", authenticateAdmin, createFlight);
