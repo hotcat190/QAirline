@@ -7,6 +7,7 @@
     border: 1px solid #ddd;
     position: relative;
     transition: all 0.2s ease;
+    min-width: 90px;
 }
 
 .globalSearch input {
@@ -27,8 +28,20 @@
     display: block;
 }
 
+.paddingsmall {
+    padding-bottom: 4px;
+}
+
+.paddinglarge {
+    padding-bottom: 12px;
+}
+
+.paddingmedium {
+    padding-bottom: 8px;
+}
+
 .filterField {
-    flex: 1 1 150px; /* grow | shrink | basis */
+    flex: 1 1 150px;
 }
 
 .filterField input,
@@ -63,6 +76,14 @@
     display: flex;
     align-items: center;
     width: 100%;
+
+    :global(.date-picker) {
+        width: 100%;
+    }
+
+    :global(.date-display) {
+        padding: 0;
+    }
 }
 
 .clearButton {
@@ -86,11 +107,16 @@
     right: 8px;
 }
 
+.clearButton.dateInput {
+    right: 32px;
+}
+
 .searchHeader {
     display: flex;
     align-items: baseline;
     gap: 12px;
     margin-bottom: 16px;
+    flex-wrap: wrap;
 }
 
 .globalSearch {
@@ -222,11 +248,11 @@
     padding: 8px;
 }
 
-.checkboxWrapper {
+/* .checkboxWrapper {
     display: flex;
     flex-direction: row;
     gap: 8px;
-}
+} */
 
 .checkboxField {
     display: flex;

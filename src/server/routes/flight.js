@@ -19,6 +19,6 @@ router.get("/getInfo", getInfoFlight);
 router.post("/createFlight", authenticateAdmin, createFlight);
 router.put("/changeInfo", authenticateAdmin, changeInfoFlight);
 router.delete("/", authenticateAdmin, deleteFlight);
-router.get("/get", authenticateAdmin, getAllFlights);
+router.get("/", getAllFlights);
 
 export default router;

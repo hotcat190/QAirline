@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './TableSearchBar.module.css';
 import { FaSearch, FaTimes, FaTrash } from 'react-icons/fa';
 
 export default function TableSearchBar({ 
     columns, 
-    onSearch, 
-    onColumnFilterChange 
+    onSearch,
+    onColumnFilterChange,
+    showClearAllButton = true,
+    search = '',
+    filters = '', 
 }) {
     const defaultColumnFilters = columns.reduce((acc, col) => ({
         ...acc, [col.key]: col.key === 'status' ? col.options : ''
@@ -15,6 +18,15 @@ export default function TableSearchBar({
     const [columnFilters, setColumnFilters] = useState(
         defaultColumnFilters
     );
+
+    useEffect(() => {
+        setGlobalSearch(search);
+    }, [search]);
+
+    useEffect(() => {
+        setColumnFilters(filters);
+    }, [filters]);
+
 
     const handleGlobalSearch = (value) => {
         setGlobalSearch(value);
@@ -74,7 +86,7 @@ export default function TableSearchBar({
                         </button>
                     )}
                 </div>
-                {hasActiveFilters && (
+                {hasActiveFilters && (showClearAllButton === true) && (
                     <button 
                         className={styles.clearAllButton}
                         onClick={clearAllFilters}
@@ -89,8 +101,10 @@ export default function TableSearchBar({
             <div className={styles.columnFilters}>
                 {columns.map(column => column.type !== 'checkbox' && (                    
                     <div key={column.key} className={styles.filterField}>
-                        {column?.showLabel && (
-                            <span className={styles.columnLabel}>{column.label}</span>
+                        {column?.label && column.showLabel && (
+                            <span className={`${styles.columnLabel} ${column.labelPadding ? styles[`padding${column.labelPadding}`] : ''}`}>
+                                {column.label}
+                            </span>
                         )}
                         {column.type === 'select' ? (
                             <div className={styles.filterInputWrapper}>
@@ -99,7 +113,7 @@ export default function TableSearchBar({
                                     onChange={(e) => handleColumnFilter(column.key, e.target.value)}
                                     className={columnFilters[column.key] ? styles.hasValue : ''}
                                 >
-                                    <option value="">{`All ${column.label}es`}</option>
+                                    <option value="">{`${column.label}`}</option>
                                     {column.options.map(option => (
                                         <option key={option} value={option}>
                                             {option}
@@ -125,7 +139,7 @@ export default function TableSearchBar({
                                 />
                                 {columnFilters[column.key] && (
                                     <button 
-                                        className={styles.clearButton}
+                                        className={`${styles.clearButton} ${styles.dateInput}`}
                                         onClick={() => clearColumnFilter(column.key)}
                                     >
                                         <FaTimes />
@@ -160,7 +174,7 @@ export default function TableSearchBar({
                     // <div key={column.key} className={`${styles.statusWrapper} ${(columnFilters[column.key]) ? styles.active : ''}`}>
                     <div key={column.key} className={`${styles.statusWrapper}`}>
                         <div className={styles.statusHeader}>
-                            <span className={styles.columnLabel}>Filter {column.label}</span>
+                            <span className={styles.columnLabel}>{column.label}</span>
                             <div className={styles.statusButtons}>
                                 <button
                                     className={`${styles.statusToggleButton} ${columnFilters[column.key]?.length === column.options.length ? styles.active : ''}`}

@@ -3,18 +3,20 @@ import styles from './AdminAdvertisements.module.css';
 import { FaPlus, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import AdminPageTitle from 'components/admin/components/PageTitle/AdminPageTitle';
 
+const mockAdvertisements = [
+    {
+        id: 1,
+        imageUrl: 'https://example.com/ad1.jpg',
+        title: 'Summer Sale',
+        link: 'https://example.com/summer-sale',
+        active: true,
+        order: 1
+    }
+]
+
 export default function AdminAdvertisements() {
-    const [advertisements, setAdvertisements] = useState([
-        {
-            id: 1,
-            imageUrl: 'https://example.com/ad1.jpg',
-            title: 'Summer Sale',
-            link: 'https://example.com/summer-sale',
-            active: true,
-            order: 1
-        },
-        // Add more dummy data as needed
-    ]);
+
+    const [advertisements, setAdvertisements] = useState(mockAdvertisements);
 
     const [newAd, setNewAd] = useState({
         title: '',

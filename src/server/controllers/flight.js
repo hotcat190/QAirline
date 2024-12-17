@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 
-import { Flight, Airport, ClassFlight } from "../models/model.js";
+import { Flight, Airport, ClassFlight, Airplane } from "../models/model.js";
 import { sequelize } from "../models/config.model.js";
 
 export const getFlightByTimeAndAirport = async (req, res) => {
@@ -310,6 +310,32 @@ export const deleteFlight = async (req, res) => {
 };
 
 export const getAllFlights = async (req, res) => {
-  const flights = await Flight.findAll();
-  res.send(flights);
+  try {
+    const flights = await Flight.findAll({
+      include: [
+        {
+          model: Airplane,
+          required: true,
+        },
+        {
+          model: Airport,
+          as: "beginAirport",
+          required: true,
+        },
+        {
+          model: Airport,
+          as: "endAirport",
+          required: true,
+        },
+        {
+          model: ClassFlight,
+          required: true,
+        },
+      ],
+    });
+    res.send(flights);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
 };
