@@ -5,15 +5,14 @@ import { FaChevronLeft, FaChevronRight, FaSync } from 'react-icons/fa';
 import LoadingSpinner from 'components/LoadingPage/LoadingSpinner';
 import { LoadState } from 'types/states/LoadState';
 
-import AddButton from '../buttons/AddButton/AddButton';
 import EditButton from '../buttons/EditButton/EditButton';
 import DeleteButton from '../buttons/DeleteButton/DeleteButton';
 import RefreshButton from '../buttons/RefreshButton/RefreshButton';
 
 import TableSearchBar from '../TableSearchBar/TableSearchBar';
 
-import { searchFilter } from 'utils/searchFilter';
-import { columnFilter } from 'utils/columnFilter';
+import { searchFilter } from 'utils/filter/searchFilter';
+import { columnFilter } from 'utils/filter/columnFilter';
 
 import styles from './AdminTable.module.css';
 
@@ -30,8 +29,6 @@ export default function AdminTable({
     pageSizeOptions = [5, 10, 20, 50], // Options for items per page    
 }) {
     const [filteredData, setFilteredData] = useState(data);
-
-    
 
     const handleSearch = (searchQuery) => {
         setGlobalSearch(searchQuery);
@@ -163,8 +160,8 @@ export default function AdminTable({
                                 style={{
                                     textAlign: 'center',
                                     margin: '0 4px',
-                                    '-webkit-appearance': 'textfield',
-                                    '-moz-appearance': 'textfield',
+                                    WebkitAppearance: 'textfield',
+                                    MozAppearance: 'textfield',
                                     appearance: 'textfield',
                                 }}
                             />

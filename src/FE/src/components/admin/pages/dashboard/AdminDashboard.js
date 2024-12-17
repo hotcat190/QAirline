@@ -14,10 +14,10 @@ import {
     Filler
 } from "chart.js"
 
-import { months } from 'utils/months';
-import { daysOfWeek } from 'utils/daysOfWeek';
+import { months } from 'utils/date/months';
+import { daysOfWeek } from 'utils/date/daysOfWeek';
 
-import Heading from '../../components/heading/Heading';
+import AdminPageTitle from '../../components/PageTitle/AdminPageTitle';
 
 ChartJS.register(LineElement, BarElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, Filler);
 
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
 
     return (
         <div className={styles.dashboard}>
-            <Heading title="Dashboard" />
+            <AdminPageTitle title="Dashboard" />
             <div className={styles.statsGrid}>
                 {dashboardStats.map((stat, index) => (
                     <div className={styles.statCard} key={index}>

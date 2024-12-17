@@ -1,16 +1,42 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PassengerForm from '../PassengerForm/PassengerForm';
+import PassengerFormChildren from '../PassengerFormChildren/PassengerFormChildren';
 import './Passenger.css';
 
 const Passenger = () => {
     const location = useLocation();
-    const { booking, startDestination, endDestination } = location.state || {};
+    const { booking, startDestination, endDestination, passengerSummary } = location.state || {};
+    const [ adultCount, setAdultCount ] = useState(0);
+    const [ childrenCount, setChildrenCount ] = useState(0);
+
+    useEffect(() => {
+        const extractPassengerCount = (summary) => {
+            const adultMatch = summary.match(/(\d+)\s*adults/);
+            const childrenMatch = summary.match(/(\d+)\s*children/);
+
+            if (adultMatch) {
+                setAdultCount(parseInt(adultMatch[ 1 ], 10));
+            }
+            if (childrenMatch) {
+                setChildrenCount(parseInt(childrenMatch[ 1 ], 10));
+            }
+        };
+
+        extractPassengerCount(passengerSummary);
+    }, [ passengerSummary ]);
     return (
         <div className="search-flight-container">
             <div className="content">
-                <PassengerForm />
+                <div className='all-forms' style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: "100px" }}>
+                    {Array.from({ length: adultCount }).map((_, index) => (
+                        <PassengerForm key={`adult-${index}`} stt={index + 1}/>
+                    ))}
+                    {Array.from({ length: childrenCount }).map((_, index) => (
+                        <PassengerFormChildren key={`children-${index}`} stt={index + 1}/>
+                    ))}
+                </div>
                 <div className='right-search-fs'>
                     <div className="sidebar-fs">
                         <div className="sidebar-fs-header">
