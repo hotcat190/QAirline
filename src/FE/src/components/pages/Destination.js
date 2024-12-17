@@ -5,7 +5,6 @@ function Destination() {
         { from: "Tp. Hồ Chí Minh (SGN)", to: "Bali (DPS)", date: "17/01/2025", price: "1.000", thumb_image: "img/pd_1.jpg"},
         { from: "Hà Nội (HAN)", to: "Tokyo (NRT)", date: "20/01/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
         { from: "Đà Nẵng (DAD)", to: "Seoul (ICN)", date: "15/02/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
-        // Add 9 more similar objects here
         { from: "Tp. Hồ Chí Minh (SGN)", to: "Singapore (SIN)", date: "30/01/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
         { from: "Tp. Hồ Chí Minh (SGN)", to: "Bangkok (BKK)", date: "28/01/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
         { from: "Hà Nội (HAN)", to: "Kuala Lumpur (KUL)", date: "12/02/2025", price: "1.000", thumb_image: "img/pd_1.jpg" },
