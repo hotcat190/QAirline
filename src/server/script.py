@@ -12,8 +12,8 @@ def generate_flight_records(start_date, end_date, num_records):
         while len(records) < num_records:
             # Random thời gian bắt đầu và kết thúc chuyến bay
             flight_duration = 60 * random.randint(3, 8)  # thời gian bay từ 3h đến 8h
-            time_start = current_time + timedelta(minutes=15 * random.randint(0, 4 * 24))  # thời gian khởi hành cách nhau 30-120 phút
-            time_end = next_time + timedelta(minutes=flight_duration)
+            time_start = current_time + timedelta(minutes=15 * random.randint(0, 4 * 24))
+            time_end = time_start + timedelta(minutes=flight_duration)
             
             # Random thông tin khác
             idbeginAirport = random.randint(1, 53)
