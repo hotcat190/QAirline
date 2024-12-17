@@ -256,7 +256,7 @@ export const createFlight = async (req, res) => {
   }
 };
 
-const sendNotification = async (idFlight, content, type) => {
+const sendNotification = async (idFlight, content) => {
   try {
     const customers = await Customer.findAll({
       attributes: ["idCustomer"],
@@ -281,7 +281,7 @@ const sendNotification = async (idFlight, content, type) => {
     const notifications = customers.map(async (customer) => {
       await Notification.create({
         content,
-        type,
+        type: "flight",
         idCustomer: customer.idCustomer,
       });
     });
@@ -378,7 +378,7 @@ export const changeInfoFlight = async (req, res) => {
     if (idAirplane) content += `Đã thay đổi thông tin của máy bay.\n`;
     if (classes) content += `Đã thay đổi thông tin về các hạng ghế.\n`;
 
-    sendNotification(idFlight, content, "flight");
+    sendNotification(idFlight, content);
     res.json({ message: "Flight information updated successfully." });
   } catch (err) {
     await transaction.rollback();

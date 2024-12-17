@@ -160,13 +160,14 @@ const Notification = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    content: { type: DataTypes.STRING(100), allowNull: true },
+    content: { type: DataTypes.STRING(500), allowNull: true },
+    type: { type: DataTypes.STRING(45), allowNull: true },
+    unRead: { type: DataTypes.BOOLEAN, allowNull: true, defaultValue: true },
     create_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
-    unRead: { type: DataTypes.BOOLEAN, allowNull: true, defaultValue: true },
     idCustomer: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
   },
   {
