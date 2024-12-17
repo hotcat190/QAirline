@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './AdminBookings.module.css';
 import { FaSearch, FaFilter, FaEye, FaEdit } from 'react-icons/fa';
 
-import Heading from '../../components/heading/Heading';
+import AdminPageTitle from '../../components/PageTitle/AdminPageTitle';
 export default function AdminBookings() {
     const [searchQuery, setSearchQuery] = useState('');
     const [columnFilters, setColumnFilters] = useState({
@@ -57,7 +57,7 @@ export default function AdminBookings() {
 
     return (
         <div className={styles.bookingsPage}>
-            <Heading title="Bookings Management" />
+            <AdminPageTitle title="Bookings Management" />
 
             <div className={styles.controls}>
                 <div className={styles.searchBar}>

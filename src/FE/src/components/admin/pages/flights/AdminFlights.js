@@ -2,9 +2,9 @@ import { useState } from 'react';
 import styles from './AdminFlights.module.css';
 import FlightMap from './FlightMap';
 import TableSearchBar from '../../components/TableSearchBar/TableSearchBar';
-import Heading from '../../components/heading/Heading';
-import { searchFilter } from 'utils/searchFilter';
-import { columnFilter } from 'utils/columnFilter';
+import AdminPageTitle from '../../components/PageTitle/AdminPageTitle';
+import { searchFilter } from 'utils/filter/searchFilter';
+import { columnFilter } from 'utils/filter/columnFilter';
 const dummyFlights = [
     {
         id: 'FL001',
@@ -127,7 +127,7 @@ export default function AdminFlights() {
 
     return (
         <div className={styles.flightsPage}>
-            <Heading title="Flights Tracking" onAdd={handleAddFlight} label="Add New Flight" />
+            <AdminPageTitle title="Flights Tracking" onAdd={handleAddFlight} label="Add New Flight" />
 
             <div className={styles.content}>
                 <div className={styles.listSection}>

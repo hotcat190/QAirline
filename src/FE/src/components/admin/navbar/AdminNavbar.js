@@ -23,7 +23,7 @@ export default function AdminNavbar() {
                 <AdminNavbarItem icon="fas fa-plane" title="Aircrafts" to="/admin/aircrafts" />
                 <AdminNavbarItem icon="fas fa-calendar-alt" title="Schedules" to="/admin/schedules" />
                 <AdminNavbarItem icon="fas fa-route" title="Flights" to="/admin/flights" />
-                <AdminNavbarItem icon="fas fa-ticket-alt" title="Bookings" to="/admin/bookings" />
+                <AdminNavbarItem icon="fas fa-book" title="Bookings" to="/admin/bookings" />
                 <AdminNavbarItem icon="fas fa-ad" title="Advertisements" to="/admin/advertisements" />
                 <li className={styles.returnHome}>
                     <NavLink to="/" className={styles.homeLink}>

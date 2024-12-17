@@ -25,8 +25,6 @@
 
 .columnLabel {
     display: block;
-    margin-bottom: 8px;
-    margin-left: 8px;
 }
 
 .filterField {
@@ -128,4 +126,140 @@
 
 .clearAllButton svg {
     font-size: inherit;
+}
+
+.statusWrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.statusWrapper.active {
+    border-color: #2684ff;
+}
+
+.statusHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.statusFilter {
+    margin-top: 16px;
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+}
+
+.statusWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: white;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.statusWrapper select {
+    width: 120px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.statusButtons {
+    display: flex;
+    gap: 8px;
+}
+
+.statusToggleButton {
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.statusToggleButton {
+    color: white;
+    background-color: #2684ff;
+    border: 1px solid white;
+}
+
+.statusToggleButton:hover {
+    background-color: #e9f3ff;
+    color: #2684ff;
+    border-color: #2684ff;
+}
+
+.statusToggleButton:hover {
+    background-color: white;
+    color: #2684ff;
+    border: 1px solid #2684ff;
+}
+
+
+.statusToggleButton.active {
+    background-color: white;
+    color: #2684ff;
+}
+
+.statusToggleButton.active:hover {
+    border-color: white;
+}
+
+.statusToggleButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.checkboxWrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    padding: 8px;
+}
+
+.checkboxWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.checkboxField {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.checkboxWrapper input {
+    width: auto;
+}
+
+.checkboxField {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.checkboxField:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.checkboxField input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.checkboxField label {
+    cursor: pointer;
+    user-select: none;
 }

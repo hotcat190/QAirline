@@ -1,5 +1,5 @@
 import styles from './AdminSchedules.module.css';
-import Heading from '../../components/heading/Heading';
+import AdminPageTitle from '../../components/PageTitle/AdminPageTitle';
 
 const AdminSchedules = () => {
 
@@ -9,7 +9,7 @@ const AdminSchedules = () => {
 
     return (
         <div className={styles.schedulesPage}>
-            <Heading title="Schedules Management" onAdd={handleAddSchedule} label="Add New Schedule" />
+            <AdminPageTitle title="Schedules Management" onAdd={handleAddSchedule} label="Add New Schedule" />
         </div>
     )
 }

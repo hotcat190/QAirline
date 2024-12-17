@@ -7,9 +7,13 @@ export default function TableSearchBar({
     onSearch, 
     onColumnFilterChange 
 }) {
+    const defaultColumnFilters = columns.reduce((acc, col) => ({
+        ...acc, [col.key]: col.key === 'status' ? col.options : ''
+    }), {})
+
     const [globalSearch, setGlobalSearch] = useState('');
     const [columnFilters, setColumnFilters] = useState(
-        columns.reduce((acc, col) => ({ ...acc, [col.key]: '' }), {})
+        defaultColumnFilters
     );
 
     const handleGlobalSearch = (value) => {
@@ -42,13 +46,12 @@ export default function TableSearchBar({
 
     const clearAllFilters = () => {
         setGlobalSearch('');
-        const emptyFilters = columns.reduce((acc, col) => ({ ...acc, [col.key]: '' }), {});
-        setColumnFilters(emptyFilters);
+        setColumnFilters(defaultColumnFilters);
         onSearch('');
-        onColumnFilterChange(emptyFilters);
+        onColumnFilterChange(defaultColumnFilters);
     };
 
-    const hasActiveFilters = globalSearch || Object.values(columnFilters).some(value => value);
+    const hasActiveFilters = globalSearch || columnFilters['status']?.length !== defaultColumnFilters['status']?.length;
 
     return (
         <div className={styles.searchContainer}>
@@ -84,7 +87,7 @@ export default function TableSearchBar({
 
             {/* Column Filters */}
             <div className={styles.columnFilters}>
-                {columns.map(column => (
+                {columns.map(column => column.type !== 'checkbox' && (                    
                     <div key={column.key} className={styles.filterField}>
                         {column?.showLabel && (
                             <span className={styles.columnLabel}>{column.label}</span>
@@ -151,6 +154,57 @@ export default function TableSearchBar({
                     </div>
                 ))}
             </div>
+
+            <div className={styles.statusFilter}>
+                {columns.map(column => column.type === 'checkbox' && (
+                    // <div key={column.key} className={`${styles.statusWrapper} ${(columnFilters[column.key]) ? styles.active : ''}`}>
+                    <div key={column.key} className={`${styles.statusWrapper}`}>
+                        <div className={styles.statusHeader}>
+                            <span className={styles.columnLabel}>Filter {column.label}</span>
+                            <div className={styles.statusButtons}>
+                                <button
+                                    className={`${styles.statusToggleButton} ${columnFilters[column.key]?.length === column.options.length ? styles.active : ''}`}
+                                    onClick={() => handleColumnFilter(column.key, [...column.options])}
+                                    disabled={columnFilters[column.key]?.length === column.options.length}
+                                >
+                                    Select All
+                                </button>
+                                <button
+                                    className={`${styles.statusToggleButton} ${(!columnFilters[column.key] || columnFilters[column.key].length === 0) ? styles.active : ''}`}
+                                    onClick={() => handleColumnFilter(column.key, [])}
+                                    disabled={!columnFilters[column.key] || columnFilters[column.key].length === 0}
+                                >
+                                    Clear All
+                                </button>
+                            </div>
+                        </div>
+                        <div className={styles.checkboxWrapper}>
+                            {column.options.map(option => (
+                                <label 
+                                    key={option} 
+                                    className={styles.checkboxField} 
+                                    htmlFor={`checkbox-${option}`}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        id={`checkbox-${option}`}
+                                        checked={columnFilters[column.key]?.includes(option)}
+                                        onChange={(e) => {
+                                            const newValue = e.target.checked
+                                                ? [...(columnFilters[column.key] || []), option]
+                                                : columnFilters[column.key].filter(opt => opt !== option);
+                                            handleColumnFilter(column.key, newValue);
+                                        }}
+                                    />
+                                    <span>{option}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
+
+

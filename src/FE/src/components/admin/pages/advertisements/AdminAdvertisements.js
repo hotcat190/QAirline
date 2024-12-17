@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './AdminAdvertisements.module.css';
 import { FaPlus, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import AdminPageTitle from 'components/admin/components/PageTitle/AdminPageTitle';
 
 export default function AdminAdvertisements() {
     const [advertisements, setAdvertisements] = useState([
@@ -47,9 +48,7 @@ export default function AdminAdvertisements() {
 
     return (
         <div className={styles.advertisementsPage}>
-            <div className={styles.header}>
-                <h1>Advertisements</h1>
-            </div>
+            <AdminPageTitle title="Advertisements"/>
 
             <div className={styles.uploadSection}>
                 <h2>Add New Advertisement</h2>

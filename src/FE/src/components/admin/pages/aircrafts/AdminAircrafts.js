@@ -6,7 +6,7 @@ import { useAirplane } from 'hooks/airplane/useAirplane';
 
 import { LoadState } from 'types/states/LoadState';
 import AdminTable from '../../components/AdminTable/AdminTable';
-import Heading from '../../components/heading/Heading';
+import AdminPageTitle from '../../components/PageTitle/AdminPageTitle';
 
 
 const mockAircrafts = [
@@ -215,7 +215,7 @@ export default function AdminAircrafts() {
     const handleRefresh = () => {
         setLoadState(LoadState.LOADING);
         getAllAirplane().then((data) => {
-            setAircrafts(mockAircrafts);
+            setAircrafts(data);
             setLoadState(LoadState.SUCCESS);
         }).catch((error) => {
             console.error(error);
@@ -234,7 +234,7 @@ export default function AdminAircrafts() {
         { 
             key: 'status', 
             label: 'Status', 
-            type: 'select',
+            type: 'checkbox',
             options: ['Active', 'Maintenance', 'Retired']
         }
     ];
@@ -250,27 +250,35 @@ export default function AdminAircrafts() {
     };
 
     const handleDelete = (idAirplane) => {
-        if (window.confirm('Are you sure you want to delete this aircraft?')) {
-            setAircrafts(aircrafts.filter(aircraft => aircraft.idAirplane !== idAirplane));
+        if (window.confirm('Are you sure you want to delete this aircraft?\n(THIS ACTION IS IRREVERSIBLE)')) {
+            deleteAirplane(idAirplane).then(
+                setAircrafts(aircrafts.filter(aircraft => aircraft.idAirplane !== idAirplane))
+            );
         }
     };
 
     const handleSubmit = (formData) => {
         if (editingAircraft) {
             // Edit existing aircraft
-            setAircrafts(aircrafts.map(aircraft => 
-                aircraft.idAirplane === editingAircraft.idAirplane ? { ...formData, idAirplane: aircraft.idAirplane } : aircraft
-            ));
+            updateAirplane(formData).then(
+                setAircrafts(aircrafts.map(aircraft => 
+                    aircraft.idAirplane === editingAircraft.idAirplane ? { ...formData, idAirplane: aircraft.idAirplane } : aircraft
+                ))
+            )
         } else {
             // Add new aircraft
-            setAircrafts([...aircrafts, { ...formData, idAirplane: Date.now() }]);
+            addAirplane(formData).then( newAircraft => {
+                console.log(newAircraft);
+                handleRefresh()
+                // setAircrafts([...aircrafts, { newAircraft }]);
+            });
         }
         setIsModalOpen(false);
     };
 
     return (
         <div className={styles.container}>
-            <Heading title="Aircraft Management" onAdd={handleAdd} label="Add Aircraft" />
+            <AdminPageTitle title="Aircraft Management" onAdd={handleAdd} label="Add Aircraft" />
 
             <AdminTable
                 columns={columns}
