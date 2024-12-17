@@ -9,7 +9,16 @@ export const useFlight = () => {
         return data;
     }
 
+    const getAllFlightsAdmin = async () => {
+        const response = await fetch(`${BACKEND_BASE_URL}/flight/adminAll`, {
+            credentials: 'include',
+        });
+        const data = await response.json();
+        return data;
+    }
+
     return {
         getAllFlights,
+        getAllFlightsAdmin,
     }
 }

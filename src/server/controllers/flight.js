@@ -1,7 +1,76 @@
 import { Op } from "sequelize";
 
-import { Flight, Airport, ClassFlight, Airplane } from "../models/model.js";
+import {
+  Flight,
+  Airport,
+  ClassFlight,
+  Customer,
+  Ticket,
+  Notification,
+  Airplane,
+} from "../models/model.js";
+
 import { sequelize } from "../models/config.model.js";
+
+export const getAllFlights = async (req, res) => {
+  try {
+    const flights = await Flight.findAll({
+      include: [
+        {
+          model: Airport,
+          as: "beginAirport",
+          attributes: ["idairport", "name"],
+        },
+        {
+          model: Airport,
+          as: "endAirport",
+          attributes: ["idairport", "name"],
+        },
+        {
+          model: ClassFlight,
+          as: "ClassFlights",
+        },
+      ],
+    });
+
+    if (flights.length > 0) {
+      const flightData = flights.map((flight) => {
+        const flightClasses = {};
+
+        flight.ClassFlights.forEach((classFlight) => {
+          flightClasses[classFlight.class] = {
+            seatAmount: classFlight.seatAmount,
+            seatBooked: classFlight.seatBooked,
+            currentPrice: classFlight.currentPrice,
+          };
+        });
+
+        return {
+          idFlight: flight.idFlight,
+          timeStart: flight.timeStart,
+          timeEnd: flight.timeEnd,
+          beginAirport: {
+            id: flight.beginAirport.idairport,
+            name: flight.beginAirport.name,
+          },
+          endAirport: {
+            id: flight.endAirport.idairport,
+            name: flight.endAirport.name,
+          },
+          idAirplane: flight.idAirplane,
+          classes: flightClasses,
+        };
+      });
+
+      res.send(flightData);
+    } else {
+      res.status(404).json({ message: "No flight found." });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+};
 
 export const getFlightByTimeAndAirport = async (req, res) => {
   const { day, month, year, idBeginAirport, idEndAirport } = req.query;
@@ -189,6 +258,44 @@ export const createFlight = async (req, res) => {
   }
 };
 
+const sendNotification = async (idFlight, content, type) => {
+  try {
+    const customers = await Customer.findAll({
+      attributes: ["idCustomer"],
+      include: [
+        {
+          model: Ticket,
+          attributes: [],
+          include: [
+            {
+              model: ClassFlight,
+              as: "ClassFlight",
+              attributes: [],
+              where: { idFlight },
+            },
+          ],
+        },
+      ],
+      where: { "$Tickets.ClassFlight.idFlight$": idFlight },
+    });
+
+    content = `Chuyến bay mang số hiệu QA${idFlight} của bạn:\n${content}`;
+    const notifications = customers.map(async (customer) => {
+      await Notification.create({
+        content,
+        type,
+        idCustomer: customer.idCustomer,
+      });
+    });
+
+    await Promise.all(notifications);
+
+    console.log("Notifications sent successfully!");
+  } catch (error) {
+    console.error("Error sending notifications:", error);
+  }
+};
+
 export const changeInfoFlight = async (req, res) => {
   const { idAdmin } = req.user;
   const { idFlight, timeStart, timeEnd, classes, idAirplane } = req.body;
@@ -215,7 +322,7 @@ export const changeInfoFlight = async (req, res) => {
 
     if (updatedRows === 0) {
       await transaction.rollback();
-      return res.status(404).json({ message: "Flight not found." });
+      return res.status(404).json({ message: "Update failed." });
     }
 
     if (classes) {
@@ -265,6 +372,15 @@ export const changeInfoFlight = async (req, res) => {
     }
 
     await transaction.commit();
+
+    let content = "";
+    if (timeStart)
+      content += `Đã thay đổi thời gian khởi hành: ${timeStart}.\n`;
+    if (timeEnd) content += `Đã thay đổi thời gian kết thúc: ${timeStart}.\n`;
+    if (idAirplane) content += `Đã thay đổi thông tin của máy bay.\n`;
+    if (classes) content += `Đã thay đổi thông tin về các hạng ghế.\n`;
+
+    sendNotification(idFlight, content, "flight");
     res.json({ message: "Flight information updated successfully." });
   } catch (err) {
     await transaction.rollback();
@@ -309,7 +425,7 @@ export const deleteFlight = async (req, res) => {
   }
 };
 
-export const getAllFlights = async (req, res) => {
+export const getAllFlightsAdmin = async (req, res) => {
   try {
     const flights = await Flight.findAll({
       include: [

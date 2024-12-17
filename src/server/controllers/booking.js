@@ -4,7 +4,7 @@ import { ClassFlight, Ticket, Flight, Airport, Customer } from "../models/model.
 
 export const bookTicket = async (req, res) => {
   const { idCustomer } = req.user;
-  const { idClassFlight } = req.body;
+  const { idClassFlight, amount } = req.body;
 
   if (!idClassFlight) {
     return res.status(400).json({ message: "idClassFlight is required." });
@@ -25,13 +25,15 @@ export const bookTicket = async (req, res) => {
 
     const { seatBooked, seatAmount, currentPrice } = classFlight;
 
-    if (seatBooked >= seatAmount) {
+    if (seatBooked === seatAmount) {
       throw new Error("Không còn ghế trống trong hạng vé này.");
+    } else if (seatBooked + amount > seatAmount) {
+      throw new Error("Số ghế còn lại không đủ.");
     }
 
     const [updateResult] = await ClassFlight.update(
       {
-        seatBooked: seatBooked + 1,
+        seatBooked: seatBooked + amount,
       },
       {
         where: { idClassFlight },
@@ -43,20 +45,26 @@ export const bookTicket = async (req, res) => {
       throw new Error("Không thể cập nhật số lượng ghế.");
     }
 
-    const ticket = await Ticket.create(
-      {
-        idClassFlight,
-        idCustomer,
-        price: currentPrice,
-      },
-      { transaction }
-    );
+    const ticketsData = Array.from({ length: amount }, () => ({
+      idClassFlight,
+      idCustomer,
+      price: currentPrice,
+    }));
+
+    // Tạo tất cả vé trong một lần
+    const tickets = await Ticket.bulkCreate(ticketsData, {
+      transaction,
+      returning: true,
+    });
+
+    // Lấy danh sách ID từ các vé đã tạo
+    const ticketId = tickets.map((ticket) => ticket.idTicket);
 
     await transaction.commit();
 
     res.status(201).json({
       message: "Đặt vé thành công.",
-      ticketId: ticket.id,
+      ticketId: ticketId,
     });
   } catch (error) {
     await transaction.rollback();

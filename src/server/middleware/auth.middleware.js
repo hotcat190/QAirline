@@ -11,6 +11,11 @@ export const authenticateToken = async (req, res, nextFunction) => {
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_KEY);
+    if (decoded.role !== "customer") {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Token is invalid." });
+    }
 
     // Nếu token hợp lệ, gán decoded vào req.user và tiếp tục
     req.user = decoded;
@@ -22,6 +27,11 @@ export const authenticateToken = async (req, res, nextFunction) => {
         req.user = await refreshAccessToken(req, res);
         console.log("Refresh access token successfully");
         console.log(req.user);
+        if (req.user.role !== "customer") {
+          return res.status(403).json({
+            message: "Access denied. Token is invalid.",
+          });
+        }
         nextFunction();
       } catch (refreshError) {
         console.error(refreshError);

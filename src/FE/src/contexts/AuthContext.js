@@ -5,6 +5,7 @@ export const AuthState = {
   LOADING: 'loading',
   VERIFIED: 'verified',
   UNAUTHORIZED: 'unauthorized',
+  ELEVATED: 'elevated',
   SERVER_ERROR: 'server_error',
   SERVER_UNAVAILABLE: 'server_unavailable',
 }
@@ -36,6 +37,30 @@ export function AuthProvider({ children }) {
         credentials: 'include',
       });
       if (!response.ok) {
+        try {
+          const verifyAdmin = await fetch(`${BACKEND_BASE_URL}/auth/verifyAdmin`, {
+            method: 'POST',
+            credentials: 'include',
+          });
+
+          if (!verifyAdmin.ok) {
+            console.log(`Verified failed: ${((await verifyAdmin.json()).message)}`);
+            return;
+          }
+
+          const adminUserData = await verifyAdmin.json();
+          setUser(adminUserData);
+          setAuthStatus(AuthState.ELEVATED);
+
+        } catch (error) {
+          if (error instanceof TypeError) {
+            setAuthStatus(AuthState.SERVER_UNAVAILABLE);
+          } else {
+            console.error(error);
+            setAuthStatus(AuthState.SERVER_ERROR);
+          }
+        }
+
         console.log(`Verified failed: ${((await response.json()).message)}`);
         return;
       }

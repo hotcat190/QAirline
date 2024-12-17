@@ -17,7 +17,7 @@ import { formatDate } from 'utils/date/formatDate';
 export default function AdminFlights() {
     const [selectedFlight, setSelectedFlight] = useState(null);
 
-    const {getAllFlights} = useFlight();
+    const {getAllFlightsAdmin} = useFlight();
     const [flights, setFlights] = useState([]);
     const [loadState, setLoadState] = useState(LoadState.LOADING);
 
@@ -41,7 +41,7 @@ export default function AdminFlights() {
 
     const handleRefresh = () => {
         setLoadState(LoadState.LOADING);
-        getAllFlights().then((data) => {
+        getAllFlightsAdmin().then((data) => {
             const mappedData = data.map(flight => ({ 
                 idFlight: flight.idFlight,
                 aircraftCode: flight.Airplane.code,

@@ -11,7 +11,7 @@ import { useFlight } from 'hooks/flight/useFlight';
 import { ScheduleCard } from './ScheduleCard';
 
 const AdminSchedules = () => {
-    const {getAllFlights} = useFlight();
+    const {getAllFlightsAdmin} = useFlight();
     const [flights, setFlights] = useState([]);
     const [filteredFlights, setFilteredFlights] = useState([]);
     const [loadState, setLoadState] = useState(LoadState.LOADING);
@@ -61,7 +61,7 @@ const AdminSchedules = () => {
 
     const handleRefresh = () => {
         setLoadState(LoadState.LOADING);
-        getAllFlights().then((data) => {
+        getAllFlightsAdmin().then((data) => {
             setFlights(data);
             setLoadState(LoadState.SUCCESS);
         }).catch((error) => {
