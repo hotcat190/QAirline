@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './SearchFlight.css';
+import Notification from '../Notification/Notification';
 
 const EconomyTicketInfo = () => {
     return (
@@ -194,6 +195,8 @@ const FirstClassTicketInfo = () => {
 
 
 const SearchFlight = () => {
+    const [ showNotification, setShowNotification ] = useState(false);
+    const [showTicketSelection, setShowTicketSelection] = useState(false);
     const [ showBusinessInfo, setShowBusinessInfo ] = useState(false);
     const [ showEconomyInfo, setShowEconomyInfo ] = useState(false);
     const [ showFirstClassInfo, setShowFirstClassInfo ] = useState(false);
@@ -216,6 +219,7 @@ const SearchFlight = () => {
     const navigate = useNavigate();
     const { flightForwardData, flightBackwardData, startDestination, endDestination, selectedType, passengerSummary } = location.state || {};
     const [ booking, setBooking ] = useState({
+        idFlight: 0,
         from: startDestination,
         to: endDestination,
         date: "--",
@@ -251,31 +255,54 @@ const SearchFlight = () => {
     }, [ passengerSummary ]);
 
     const handleClassCardClick = (flight, classInfo) => {
-        setBooking({
-            from: flight.fromAirport,
-            to: flight.toAirport,
-            date: new Date(flight.timeStart).toLocaleDateString('vi-VN', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            }),
-            time: `${new Date(flight.timeStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${new Date(flight.timeEnd).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`,
-            flightCode: 'VJ198',
-            class: classInfo.class,
-            ticketPrice: (classInfo.currentPrice).toLocaleString('vi-VN'),
-            tax: (classInfo.currentPrice / 20).toLocaleString('vi-VN'),
-            serviceFee: '0',
-            totalPrice: ((classInfo.currentPrice + classInfo.currentPrice / 20 + 0) * adultCount + classInfo.currentPrice * 0.75 * childrenCount + classInfo.currentPrice * 0.5 * infantsCount).toLocaleString('vi-VN'),
-        });
+        if (adultCount + childrenCount + infantsCount <= (classInfo.seatAmount - classInfo.seatBooked)) {
+            setBooking({
+                idFlight: flight.idFlight,
+                from: flight.fromAirport,
+                to: flight.toAirport,
+                date: new Date(flight.timeStart).toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                }),
+                time: `${new Date(flight.timeStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${new Date(flight.timeEnd).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`,
+                flightCode: 'VJ198',
+                class: classInfo.class,
+                ticketPrice: (classInfo.currentPrice).toLocaleString('vi-VN'),
+                tax: (classInfo.currentPrice / 20).toLocaleString('vi-VN'),
+                serviceFee: '0',
+                totalPrice: ((classInfo.currentPrice + classInfo.currentPrice / 20 + 0) * adultCount + classInfo.currentPrice * 0.75 * childrenCount + classInfo.currentPrice * 0.5 * infantsCount).toLocaleString('vi-VN'),
+            });
+        } else {
+            setShowNotification(true); // Hiển thị thông báo
+            setTimeout(() => {
+                setShowNotification(false); // Ẩn thông báo sau 3 giây
+            }, 3000);
+        }
     };
 
     const handleContinue = () => {
-        navigate("/passenger", { state: { booking: booking, startDestination, endDestination, passengerSummary } });
+        if (booking.totalPrice === "0") {
+            setShowTicketSelection(true);
+            setTimeout(() => {
+                setShowTicketSelection(false); // Ẩn thông báo sau 3 giây
+            }, 3000);
+        } else {
+            navigate("/passenger", { state: { booking: booking, startDestination, endDestination, passengerSummary } });
+        }
     }
 
 
     return (
         <div className="search-flight-container">
+            <Notification
+                message="All tickets booked"
+                show={showNotification}
+            />
+            <Notification 
+                message="Please select a ticket class"
+                show={showTicketSelection}
+            />
             <div className="content">
                 <div className='left-search-fs'>
                     <div className="main-fs-content">
@@ -417,11 +444,12 @@ const SearchFlight = () => {
                                         {Object.values(flight.classes).map((classInfo, index) => (
                                             <div className={`class-card ${classInfo.seatBooked >= classInfo.seatAmount ? 'sold-out' : ''}`} key={index} onClick={() => handleClassCardClick(flight, classInfo)}>
                                                 {classInfo.seatBooked >= classInfo.seatAmount ? (
-                                                    <p className="status">All tickets booked!!!</p>
+                                                    <div class="jss1987"><img src="https://www.vietjetair.com/static/media/noflight.cee84207.svg" alt="" /><p class="MuiTypography-root jss1101 jss1109 MuiTypography-h5 MuiTypography-colorTextPrimary" customcolor="grey" weight="Bold">All Tickets Booked</p></div>
                                                 ) : (
                                                     <div className='price-info'>
                                                         <p className="price">{(classInfo.currentPrice / 1000).toLocaleString('vi-VN')}</p>
                                                         <p className='residue'>000 VND</p>
+                                                        <p className='tickets-stat' style={{ fontSize: "11px", color: "green", marginTop: "7px" }}>{classInfo.seatBooked}/{classInfo.seatAmount} Booked</p>
                                                     </div>
 
                                                 )}

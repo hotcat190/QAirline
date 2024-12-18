@@ -2,7 +2,8 @@
   "type": "module",
   "dependencies": {
     "concurrently": "^9.1.0",
-    "mysql2": "^3.11.3"
+    "mysql2": "^3.11.3",
+    "react-loader-spinner": "^6.1.6"
   },
   "scripts": {
     "server": "npm run dev --prefix src/server",

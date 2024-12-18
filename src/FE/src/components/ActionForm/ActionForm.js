@@ -224,7 +224,7 @@ function ActionForm() {
                 </form>
                 <div className="form-group remember-me">
                     <input type="checkbox" id="remember" name="remember" />
-                    <label for="remember">Remember me for later sign in</label>
+                    <label htmlFor="remember">Remember me for later sign in</label>
                 </div>
                 {loginError && (
                     <div className="error-message">

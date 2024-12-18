@@ -10,22 +10,54 @@ const Passenger = () => {
     const { booking, startDestination, endDestination, passengerSummary } = location.state || {};
     const [ adultCount, setAdultCount ] = useState(0);
     const [ childrenCount, setChildrenCount ] = useState(0);
+    const [ infantCount, setInfantCount ] = useState(0);
 
     useEffect(() => {
         const extractPassengerCount = (summary) => {
             const adultMatch = summary.match(/(\d+)\s*adults/);
             const childrenMatch = summary.match(/(\d+)\s*children/);
-
+            const infantMatch = summary.match(/(\d+)\s*infants/);
             if (adultMatch) {
                 setAdultCount(parseInt(adultMatch[ 1 ], 10));
             }
             if (childrenMatch) {
                 setChildrenCount(parseInt(childrenMatch[ 1 ], 10));
             }
+            if (infantMatch) {
+                setInfantCount(parseInt(infantMatch[ 1 ], 10));
+            }
         };
 
         extractPassengerCount(passengerSummary);
     }, [ passengerSummary ]);
+
+    const handleContinue = async () => {
+        const requestBody = {
+          idClassFlight: booking.idFlight,
+          amount: adultCount + childrenCount + infantCount,
+        };
+    
+        try {
+          const response = await fetch("https://qairline.onrender.com/api/booking", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+            credentials: "include",
+          });
+    
+          if (!response.ok) {
+            throw new Error("Booking failed");
+          }
+    
+          const data = await response.json();
+          console.log("Booking successful:", data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
+    
     return (
         <div className="search-flight-container">
             <div className="content">
@@ -99,7 +131,7 @@ const Passenger = () => {
                             {booking.totalPrice} VND
                         </span>
                     </div>
-                    <button className='fs-btn-continue'>Continue</button>
+                    <button className='fs-btn-continue' onClick={handleContinue}>Continue</button>
                 </div>
             </div>
         </div>

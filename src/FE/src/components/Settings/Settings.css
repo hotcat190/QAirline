@@ -1,0 +1,86 @@
+.settings-container {
+    padding: 20px;
+    max-width: 600px;
+    height: 100vh;
+    margin: 100px auto;
+}
+
+.settings-container .settings-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.settings-container .avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.settings-container .avatar-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.settings-container .avatar-input {
+    display: none;
+}
+
+.settings-container .change-avatar-btn {
+    padding: 10px 20px;
+    background-color: rgb(224, 54, 54);
+    color: white;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.settings-container .change-avatar-btn:hover {
+    opacity: 0.9;
+}
+
+.settings-container label {
+    font-size: 1rem;
+}
+
+.settings-container .input-group {
+    margin-bottom: 20px;
+}
+
+.settings-container .input-group label {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+}
+
+.settings-container .input-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.settings-container .save-btn {
+    padding: 10px 20px;
+    background-color: rgb(224, 54, 54);
+    color: white;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.settings-container .save-btn:hover {
+    opacity: 0.9;
+}
