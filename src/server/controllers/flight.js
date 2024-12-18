@@ -7,7 +7,9 @@ import {
   Customer,
   Ticket,
   Notification,
+  Airplane,
 } from "../models/model.js";
+
 import { sequelize } from "../models/config.model.js";
 
 export const getAllFlights = async (req, res) => {
@@ -418,6 +420,37 @@ export const deleteFlight = async (req, res) => {
     res.send("Delete successfully");
   } catch (err) {
     await transaction.rollback();
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+};
+
+export const getAllFlightsAdmin = async (req, res) => {
+  try {
+    const flights = await Flight.findAll({
+      include: [
+        {
+          model: Airplane,
+          required: true,
+        },
+        {
+          model: Airport,
+          as: "beginAirport",
+          required: true,
+        },
+        {
+          model: Airport,
+          as: "endAirport",
+          required: true,
+        },
+        {
+          model: ClassFlight,
+          required: true,
+        },
+      ],
+    });
+    res.send(flights);
+  } catch (err) {
     console.error(err);
     res.status(500).send(err.message);
   }

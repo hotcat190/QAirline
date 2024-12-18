@@ -29,6 +29,10 @@
     overflow: hidden;
 }
 
+.listSection :global(.columnLabel) {
+    padding-bottom: 8px;
+}
+
 .flightsList {
     flex: 1;
     overflow-y: auto;
@@ -95,32 +99,6 @@
     font-size: 0.9em;
 }
 
-.routeLine {
-    flex: 0 0 40px;
-    height: 2px;
-    background: #ddd;
-    position: relative;
-}
-
-.routeLine::before,
-.routeLine::after {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #ddd;
-    top: -2px;
-}
-
-.routeLine::before {
-    left: 0;
-}
-
-.routeLine::after {
-    right: 0;
-}
-
 .flightFooter {
     color: #666;
     font-size: 0.9em;
@@ -138,7 +116,7 @@
     color: #00a854;
 }
 
-.pending {
+.pending, .ongoing {
     background-color: #fae8c3;
     color: #f8860b;
 }
@@ -146,6 +124,11 @@
 .cancelled {
     background-color: #ffe0de;
     color: #dc3545;
+}
+
+.completed {
+    background-color: #f0f0f0;
+    color: #666666;
 }
 
 .searchHeader {
