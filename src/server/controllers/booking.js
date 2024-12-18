@@ -1,5 +1,6 @@
 import { col } from "sequelize";
 import { sequelize } from "../models/config.model.js";
+
 import {
   ClassFlight,
   Ticket,
@@ -32,7 +33,6 @@ const sendNotification = async (
     });
   }
 };
-
 export const bookTicket = async (req, res) => {
   const { idCustomer } = req.user;
   let { idClassFlight, amount } = req.body;
@@ -171,6 +171,47 @@ export const getTicketByCode = async (req, res) => {
       ],
     });
     res.send(infoTicket);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+export const getAllTickets = async (req, res) => {
+  try {
+    const tickets = await Ticket.findAll({
+      include: [
+        {
+          model: ClassFlight,
+          required: true,
+          attributes: ["class"],
+          include: [
+            {
+              model: Flight,
+              required: true,
+              attributes: ["idFlight", "timeStart"],
+              include: [
+                {
+                  model: Airport,
+                  as: "beginAirport",
+                  attributes: ["city"],
+                },
+                {
+                  model: Airport,
+                  as: "endAirport",
+                  attributes: ["city"],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: Customer,
+          required: true,
+          attributes: ["username"],
+        },
+      ],
+    }).then((ticket) => ticket.flat(1));
+    res.send(tickets);
   } catch (err) {
     res.status(500).send(err.message);
   }

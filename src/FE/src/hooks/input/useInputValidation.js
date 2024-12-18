@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { validateInputAny } from "utils/validateInput";
+import { validateInputAny } from "utils/validation/validateInput";
 
 /**
  * Return a stateful value, and a function to handle its changes.

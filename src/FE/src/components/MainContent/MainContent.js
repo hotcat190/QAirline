@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import "./MainContent.css";
 import AirportSearch from "./AirportSearch.js";
 import DatePicker from "./DatePicker";
-import Notification from '../Notification/Notification';
+import Notification from "../Notification/Notification";
+import { BACKEND_BASE_URL } from "services/api";
 
 const PassengerSelector = ({ onPassengerChange }) => {
-  const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
-  const [ passengers, setPassengers ] = useState({
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [passengers, setPassengers] = useState({
     adults: 1,
     children: 0,
     infants: 0,
@@ -29,7 +30,7 @@ const PassengerSelector = ({ onPassengerChange }) => {
   const handleIncrement = (type) => {
     if (getTotalPassengers() < MAX_PASSENGERS) {
       setPassengers((prev) => {
-        const updatedPassengers = { ...prev, [ type ]: prev[ type ] + 1 };
+        const updatedPassengers = { ...prev, [type]: prev[type] + 1 };
         onPassengerChange(updatedPassengers);
         return updatedPassengers;
       });
@@ -41,14 +42,13 @@ const PassengerSelector = ({ onPassengerChange }) => {
       setPassengers((prev) => {
         const updatedPassengers = {
           ...prev,
-          [ type ]: Math.max(prev[ type ] - 1, 0),
+          [type]: Math.max(prev[type] - 1, 0),
         };
         onPassengerChange(updatedPassengers);
         return updatedPassengers;
       });
     }
   };
-
 
   const getPassengerSummary = () => {
     const { adults, children, infants } = passengers;
@@ -283,8 +283,7 @@ const PassengerSelector = ({ onPassengerChange }) => {
 };
 
 function MainContent() {
-
-  const [ passengerData, setPassengerData ] = useState({
+  const [passengerData, setPassengerData] = useState({
     adults: 1,
     children: 0,
     infants: 0,
@@ -307,21 +306,21 @@ function MainContent() {
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
-  const [ flightForwardData, setFlightForwardData ] = useState(null);
-  const [ flightBackwardData, setFlightBackwardData ] = useState(null);
-  const [ loading, setLoading ] = useState(true);
-  const [ error, setError ] = useState(null);
-  const [ selectedType, setSelectedType ] = useState("roundTrip");
-  const [ airports, setAirports ] = useState([]);
-  const [ query, setQuery ] = useState("");
+  const [flightForwardData, setFlightForwardData] = useState([]);
+  const [flightBackwardData, setFlightBackwardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedType, setSelectedType] = useState("roundTrip");
+  const [airports, setAirports] = useState([]);
+  const [query, setQuery] = useState("");
 
-  const [ idBeginAirport, setIdBeginAirport ] = useState(null);
-  const [ idEndAirport, setIdEndAirport ] = useState(null);
-  const [ startDestination, setStartDestination ] = useState(null);
-  const [ endDestination, setEndDestination ] = useState(null);
-  const [ departureDate, setDepartureDate ] = useState(null);
-  const [ returnDate, setReturnDate ] = useState(null);
-  const [ showNotification, setShowNotification ] = useState(false);
+  const [idBeginAirport, setIdBeginAirport] = useState(null);
+  const [idEndAirport, setIdEndAirport] = useState(null);
+  const [startDestination, setStartDestination] = useState(null);
+  const [endDestination, setEndDestination] = useState(null);
+  const [departureDate, setDepartureDate] = useState(null);
+  const [returnDate, setReturnDate] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleDateChange = (date, isEnd) => {
     if (isEnd) {
@@ -332,12 +331,12 @@ function MainContent() {
   };
 
   const navigate = useNavigate();
-  const [ id2Destination, setId2Destination ] = useState(null);
+  const [id2Destination, setId2Destination] = useState(null);
 
   useEffect(() => {
     const fetchAirport = async () => {
       try {
-        const res = await fetch("https://qairline.onrender.com/api/airport/", {
+        const res = await fetch(`${BACKEND_BASE_URL}/airport/`, {
           method: "GET",
         });
         if (res.ok) {
@@ -345,10 +344,10 @@ function MainContent() {
           setAirports(result);
           setId2Destination(
             result.reduce((acc, airport) => {
-              acc[ airport.idairport ] = airport.city;
+              acc[airport.idairport] = airport.city;
               return acc;
             }, {})
-          )
+          );
         } else {
           throw new Error("Failed to fetch airport data!");
         }
@@ -365,17 +364,17 @@ function MainContent() {
   const handleSelectAirport = (type, id) => {
     if (type === "Start") {
       setIdBeginAirport(id);
-      setStartDestination(id2Destination[ id ]);
+      setStartDestination(id2Destination[id]);
     } else {
       setIdEndAirport(id);
-      setEndDestination(id2Destination[ id ]);
+      setEndDestination(id2Destination[id]);
     }
   };
 
   const handleFlightTypeChange = (type) => {
     setSelectedType(type);
-    const returnDate = document.querySelector('.input-enddate');
-    const endDes = document.querySelector('.input-enddes');
+    const returnDate = document.querySelector(".input-enddate");
+    const endDes = document.querySelector(".input-enddes");
     if (type === "oneWay") {
       returnDate.classList.add("hidden-return");
       endDes.classList.add("hidden-end");
@@ -388,7 +387,6 @@ function MainContent() {
   };
 
   const handleSubmit = async () => {
-
     if (selectedType === "roundTrip") {
       if (!idBeginAirport || !idEndAirport || !departureDate || !returnDate) {
         setShowNotification(true); // Hiển thị thông báo
@@ -403,20 +401,36 @@ function MainContent() {
         const endMonth = returnDate.getMonth() + 1;
         const endYear = returnDate.getFullYear();
 
-        const url_forward = `https://qairline.onrender.com/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
-        const url_backward = `https://qairline.onrender.com/api/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
+        const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+        const url_backward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
 
         try {
           const response_forward = await fetch(url_forward, { method: "GET" });
-          const response_backward = await fetch(url_backward, { method: "GET" });
-          if (response_forward.ok && response_backward.ok) {
-            const data_forward = await response_forward.json();
-            const data_backward = await response_backward.json();
+          const response_backward = await fetch(url_backward, {
+            method: "GET",
+          });
+          if (
+            (response_forward.ok || response_forward.status === 404) &&
+            (response_backward.ok || response_backward.status === 404)
+          ) {
+            const data_forward = response_forward.ok
+              ? await response_forward.json()
+              : [];
+            const data_backward = response_backward.ok
+              ? await response_backward.json()
+              : [];
             setFlightForwardData(data_forward);
             setFlightBackwardData(data_backward);
 
             navigate("/searchflights", {
-              state: { flightForwardData: data_forward, flightBackwardData: data_backward, startDestination, endDestination, selectedType, passengerSummary },
+              state: {
+                flightForwardData: data_forward,
+                flightBackwardData: data_backward,
+                startDestination,
+                endDestination,
+                selectedType,
+                passengerSummary,
+              },
             });
           } else {
             setError("No flights found or an error occurred.");
@@ -426,8 +440,6 @@ function MainContent() {
         } finally {
           setLoading(false);
         }
-
-
       }
     } else {
       if (!idBeginAirport || !idEndAirport || !departureDate) {
@@ -440,16 +452,25 @@ function MainContent() {
         const startMonth = departureDate.getMonth() + 1;
         const startYear = departureDate.getFullYear();
 
-        const url_forward = `https://qairline.onrender.com/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+        const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
 
         try {
           const response_forward = await fetch(url_forward, { method: "GET" });
 
-          if (response_forward.ok) {
-            const data_forward = await response_forward.json();
+          if (response_forward.ok || response_forward.status === 404) {
+            const data_forward = response_forward.ok
+              ? await response_forward.json()
+              : [];
             setFlightForwardData(data_forward);
             navigate("/searchflights", {
-              state: { flightForwardData: data_forward, flightBackwardData: flightBackwardData, startDestination, endDestination, selectedType, passengerSummary },
+              state: {
+                flightForwardData: data_forward,
+                // flightBackwardData: flightBackwardData,
+                startDestination,
+                endDestination,
+                selectedType,
+                passengerSummary,
+              },
             });
           } else {
             setError("No flights found or an error occurred.");
@@ -572,7 +593,13 @@ function MainContent() {
                     />
                   </div>
 
-                  <DatePicker type="Departure Date" ref={startDatePickerRef} nextInputRef={endAirportInputRef} isEnd={false} onDateChange={handleDateChange} />
+                  <DatePicker
+                    type="Departure Date"
+                    ref={startDatePickerRef}
+                    nextInputRef={endAirportInputRef}
+                    isEnd={false}
+                    onDateChange={handleDateChange}
+                  />
                 </div>
 
                 <div className="flight-search-bar input-enddes">
@@ -606,7 +633,13 @@ function MainContent() {
                     />
                   </div>
 
-                  <DatePicker type="Return Date" ref={endDatePickerRef} nextInputRef={null} isEnd={true} onDateChange={handleDateChange} />
+                  <DatePicker
+                    type="Return Date"
+                    ref={endDatePickerRef}
+                    nextInputRef={null}
+                    isEnd={true}
+                    onDateChange={handleDateChange}
+                  />
                 </div>
 
                 <PassengerSelector onPassengerChange={handlePassengerChange} />

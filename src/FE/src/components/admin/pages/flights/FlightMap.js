@@ -124,7 +124,7 @@ export default function FlightMap({ flights }) {
                         <CircleMarker 
                             center={flight.originCoords}
                             radius={8}
-                            fillColor="#FF0000"
+                            fillColor="#ff2626"
                             fillOpacity={1}
                             color="#ffffff"
                             weight={2}
@@ -148,7 +148,7 @@ export default function FlightMap({ flights }) {
                             radius={8}
                             fillColor="#ffffff"
                             fillOpacity={1}
-                            color="#FF0000"
+                            color="#ff2626"
                             weight={2}
                         >
                             <Tooltip >
