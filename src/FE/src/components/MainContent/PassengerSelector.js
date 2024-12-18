@@ -7,15 +7,13 @@ const PassengerSelector = ({ onPassengerChange }) => {
         infants: 0,
     });
 
-    const MAX_PASSENGERS = 9; // Giới hạn tổng số hành khách
-    const MIN_PASSENGERS = 1; // Giới hạn tối thiểu (>= 1)
-
-    // Tính tổng số hành khách
+    const MAX_PASSENGERS = 9; 
+    const MIN_PASSENGERS = 1;
+ 
     const getTotalPassengers = () => {
         return passengers.adults + passengers.children + passengers.infants;
     };
 
-    // Hàm toggle hiển thị dropdown
     const toggleDropdown = () => {
         setIsDropdownOpen((prev) => !prev);
     };

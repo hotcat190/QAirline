@@ -5,6 +5,7 @@ import {
   ClassFlight,
   Flight,
   Airport,
+  Notification,
 } from "../models/model.js";
 
 export const getInfo = async (req, res) => {
@@ -106,6 +107,22 @@ export const getTickets = async (req, res) => {
     }
 
     res.send(tickets);
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err.message);
+  }
+};
+
+export const getNotification = async (req, res) => {
+  const { idCustomer } = req.user;
+
+  try {
+    const notifications = await Notification.findAll({
+      where: { idCustomer },
+      attributes: ["content", "type", "unRead", "create_at"],
+    });
+
+    res.send(notifications);
   } catch (err) {
     res.status(500).send(err.message);
     console.log(err.message);

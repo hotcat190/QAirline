@@ -1,0 +1,26 @@
+.routeLine {
+    flex: 0 0 40px;
+    width: calc(100% - 100px);
+    height: 2px;
+    background: #ddd;
+    position: relative;
+}
+
+.routeLine::before,
+.routeLine::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ddd;
+    top: -2px;
+}
+
+.routeLine::before {
+    left: 0;
+}
+
+.routeLine::after {
+    right: 0;
+}
