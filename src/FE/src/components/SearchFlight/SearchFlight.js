@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Notification from '../Notification/Notification';
 import "./SearchFlight.css";
 
 const EconomyTicketInfo = () => {
@@ -379,9 +380,11 @@ export const TotalBill = ({
 };
 
 const SearchFlight = () => {
-  const [showBusinessInfo, setShowBusinessInfo] = useState(false);
-  const [showEconomyInfo, setShowEconomyInfo] = useState(false);
-  const [showFirstClassInfo, setShowFirstClassInfo] = useState(false);
+  const [ showNotification, setShowNotification ] = useState(false);
+  const [ showTicketSelection, setShowTicketSelection ] = useState(false);
+  const [ showBusinessInfo, setShowBusinessInfo ] = useState(false);
+  const [ showEconomyInfo, setShowEconomyInfo ] = useState(false);
+  const [ showFirstClassInfo, setShowFirstClassInfo ] = useState(false);
   const handleClickBusiness = () => {
     setShowBusinessInfo((prevState) => !prevState);
     setShowEconomyInfo(false);
@@ -439,12 +442,12 @@ const SearchFlight = () => {
     };
   }
 
-  const [booking, setBooking] = useState(initialBooking);
-  const [isBackward, setIsBackward] = useState(false);
+  const [ booking, setBooking ] = useState(initialBooking);
+  const [ isBackward, setIsBackward ] = useState(false);
 
-  const [adultCount, setAdultCount] = useState(0);
-  const [childrenCount, setChildrenCount] = useState(0);
-  const [infantsCount, setInfantsCount] = useState(0);
+  const [ adultCount, setAdultCount ] = useState(0);
+  const [ childrenCount, setChildrenCount ] = useState(0);
+  const [ infantsCount, setInfantsCount ] = useState(0);
 
   useEffect(() => {
     const extractPassengerCount = (summary) => {
@@ -452,71 +455,78 @@ const SearchFlight = () => {
       const childrenMatch = summary.match(/(\d+)\s*children/);
       const infantsMatch = summary.match(/(\d+)\s*infants/);
       if (adultMatch) {
-        setAdultCount(parseInt(adultMatch[1], 10));
+        setAdultCount(parseInt(adultMatch[ 1 ], 10));
       }
       if (childrenMatch) {
-        setChildrenCount(parseInt(childrenMatch[1], 10));
+        setChildrenCount(parseInt(childrenMatch[ 1 ], 10));
       }
       if (infantsMatch) {
-        setInfantsCount(parseInt(infantsMatch[1], 10));
+        setInfantsCount(parseInt(infantsMatch[ 1 ], 10));
       }
     };
 
     extractPassengerCount(passengerSummary);
-  }, [passengerSummary]);
+  }, [ passengerSummary ]);
 
   const handleClassCardClick = (flight, classInfo) => {
     const type = roundWay && isBackward ? "backward" : "forward";
-    setBooking((prevBooking) => {
-      const updatedType = {
-        from: flight.fromAirport,
-        to: flight.toAirport,
-        date: new Date(flight.timeStart).toLocaleDateString("vi-VN", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        }),
-        time: `${new Date(flight.timeStart).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })} - ${new Date(flight.timeEnd).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })}`,
-        flightCode: "VJ198",
-        class: classInfo.class,
-        ticketPrice: classInfo.currentPrice.toLocaleString("vi-VN"),
-        tax: (classInfo.currentPrice / 20).toLocaleString("vi-VN"),
-        serviceFee: "0",
-        totalPrice: (
-          (classInfo.currentPrice + classInfo.currentPrice / 20 + 0) *
+    if (adultCount + childrenCount + infantsCount <= (classInfo.seatAmount - classInfo.seatBooked)) {
+      setBooking((prevBooking) => {
+        const updatedType = {
+          from: flight.fromAirport,
+          to: flight.toAirport,
+          date: new Date(flight.timeStart).toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }),
+          time: `${new Date(flight.timeStart).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })} - ${new Date(flight.timeEnd).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })}`,
+          flightCode: "VJ198",
+          class: classInfo.class,
+          ticketPrice: classInfo.currentPrice.toLocaleString("vi-VN"),
+          tax: (classInfo.currentPrice / 20).toLocaleString("vi-VN"),
+          serviceFee: "0",
+          totalPrice: (
+            (classInfo.currentPrice + classInfo.currentPrice / 20 + 0) *
             adultCount +
-          classInfo.currentPrice * 0.75 * childrenCount +
-          classInfo.currentPrice * 0.5 * infantsCount
-        ).toLocaleString("vi-VN"),
-      };
+            classInfo.currentPrice * 0.75 * childrenCount +
+            classInfo.currentPrice * 0.5 * infantsCount
+          ).toLocaleString("vi-VN"),
+        };
 
-      const forwardPrice =
-        type === "forward"
-          ? updatedType.totalPrice
-          : prevBooking.forward?.totalPrice || "0";
-      const backwardPrice =
-        type === "backward"
-          ? updatedType.totalPrice
-          : prevBooking.backward?.totalPrice || "0";
+        const forwardPrice =
+          type === "forward"
+            ? updatedType.totalPrice
+            : prevBooking.forward?.totalPrice || "0";
+        const backwardPrice =
+          type === "backward"
+            ? updatedType.totalPrice
+            : prevBooking.backward?.totalPrice || "0";
 
-      const totalPrice =
-        parseInt(forwardPrice.replace(/\./g, "")) +
-        parseInt(backwardPrice.replace(/\./g, ""));
+        const totalPrice =
+          parseInt(forwardPrice.replace(/\./g, "")) +
+          parseInt(backwardPrice.replace(/\./g, ""));
 
-      return {
-        ...prevBooking,
-        [type]: updatedType,
-        totalPrice: totalPrice.toLocaleString("vi-VN"),
-      };
-    });
+        return {
+          ...prevBooking,
+          [ type ]: updatedType,
+          totalPrice: totalPrice.toLocaleString("vi-VN"),
+        };
+      });
+    } else {
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+    }
   };
 
   const handleContinue = () => {
@@ -548,10 +558,18 @@ const SearchFlight = () => {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [isBackward]);
+  }, [ isBackward ]);
 
   return (
     <div className="search-flight-container">
+      <Notification
+        message="Not enough seats available"
+        show={showNotification}
+      />
+      <Notification
+        message="Please select a ticket class"
+        show={showTicketSelection}
+      />
       <div className="content">
         <div className="left-search-fs">
           <div className="main-fs-content">
@@ -818,26 +836,22 @@ const SearchFlight = () => {
                     <div className="class-info">
                       {Object.values(flight.classes).map((classInfo, index) => (
                         <div
-                          className={`class-card ${
-                            classInfo.seatBooked >= classInfo.seatAmount
-                              ? "sold-out"
-                              : ""
-                          }`}
+                          className={`class-card ${classInfo.seatBooked >= classInfo.seatAmount
+                            ? "sold-out"
+                            : ""
+                            }`}
                           key={index}
                           onClick={() =>
                             handleClassCardClick(flight, classInfo)
                           }
                         >
                           {classInfo.seatBooked >= classInfo.seatAmount ? (
-                            <p className="status">All tickets booked!!!</p>
+                            <div class="jss1987"><img src="https://www.vietjetair.com/static/media/noflight.cee84207.svg" alt="" /><p class="MuiTypography-root jss1101 jss1109 MuiTypography-h5 MuiTypography-colorTextPrimary" customcolor="grey" weight="Bold">All Tickets Booked</p></div>
                           ) : (
                             <div className="price-info">
-                              <p className="price">
-                                {(classInfo.currentPrice / 1000).toLocaleString(
-                                  "vi-VN"
-                                )}
-                              </p>
-                              <p className="residue">000 VND</p>
+                              <p className="price">{(classInfo.currentPrice / 1000).toLocaleString('vi-VN')}</p>
+                              <p className='residue'>000 VND</p>
+                              <p className='tickets-stat' style={{ fontSize: "11px", color: "green", marginTop: "7px" }}>{classInfo.seatBooked}/{classInfo.seatAmount} Booked</p>
                             </div>
                           )}
                         </div>

@@ -14,7 +14,7 @@ function MyFlight() {
                             onClick={() => setView('form')}
                         >
                             <div className='inside-codemyflights'>
-                                <i class="fa-solid fa-calendar-check"></i>
+                                <i className="fa-solid fa-calendar-check"></i>
                                 Search booking code
                             </div>
                         </button>
@@ -23,7 +23,7 @@ function MyFlight() {
                             onClick={() => setView('noCode')}
                         >
                             <div className='inside-myflights'>
-                                <i class="fa-solid fa-calendar-check"></i>
+                                <i className="fa-solid fa-calendar-check"></i>
                                 My booked flights
                             </div>
                         </button>
@@ -83,7 +83,7 @@ function MyFlight() {
                                             stroke="white"
                                             stroke-width="1.1691"
                                             stroke-miterlimit="10"
-                                            stroke-dasharray="6.62 6.62"
+                                            strokeDasharray="6.62 6.62"
                                         ></path>
                                         <path
                                             d="M89.6012 27.6172L55.6074 44.6349L56.5637 46.5477L90.5575 29.53L89.6012 27.6172Z"
@@ -190,7 +190,7 @@ function MyFlight() {
                                             stroke="white"
                                             stroke-width="1.1691"
                                             stroke-miterlimit="10"
-                                            stroke-dasharray="6.62 6.62"
+                                            strokeDasharray="6.62 6.62"
                                         ></path>
                                         <path
                                             d="M100.338 64.1237H62.3262V66.2626H100.338V64.1237Z"
