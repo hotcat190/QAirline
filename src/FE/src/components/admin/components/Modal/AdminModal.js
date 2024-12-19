@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './AdminModal.module.css';
 
-export default function AdminModal({ title, onClose, children }) {
+export default function AdminModal({ title, onClose, handleSubmit, submitLabel, children }) {
     const [isClosing, setIsClosing] = useState(false);
 
     const handleClose = () => {
@@ -25,7 +25,14 @@ export default function AdminModal({ title, onClose, children }) {
         >
             <div className={`${styles.modal} ${isClosing ? styles.closing : ''}`}>
                 <h2>{title}</h2>
-                {children}
+                
+                <form onSubmit={handleSubmit}>
+                    {children}
+                    <div className={styles.modalActions}>
+                        <button type="button" onClick={handleClose}>Cancel</button>
+                        <button type="submit">{submitLabel ? submitLabel : `Submit`}</button>
+                    </div>
+                </form>
             </div>
         </div>,
         document.getElementById('adminLayout')

@@ -336,23 +336,27 @@ export const changeInfoFlight = async (req, res) => {
             transaction,
           });
 
-          if (classFlight) {
+          if (classFlight !== null) {
             // Kiểm tra sự thay đổi giữa dữ liệu mới và dữ liệu cũ
             const seatAmountChanged = classFlight.seatAmount !== seatAmount;
             const currentPriceChanged =
               classFlight.currentPrice !== currentPrice;
 
+            console.log(seatAmountChanged);
+
             if (seatAmountChanged || currentPriceChanged) {
               const [classUpdateRows] = await ClassFlight.update(
                 {
-                  seatAmount,
-                  currentPrice,
+                  seatAmount: seatAmount,
+                  currentPrice: currentPrice,
                 },
                 {
                   where: { idFlight, class: classType },
                   transaction,
                 }
               );
+
+              console.log(classFlight);
 
               if (classUpdateRows === 0) {
                 await transaction.rollback();

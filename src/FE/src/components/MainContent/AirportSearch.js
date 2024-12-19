@@ -23,13 +23,19 @@ const groupByCountry = (data) => {
 };
 
 
-const AirportSearch = forwardRef(({ airports, onSelectAirport, type, idOther, nextInputRef, inputRef }, ref) => {
+const AirportSearch = forwardRef(({ airports, onSelectAirport, type, idOther, nextInputRef, inputRef, disabled=false, initialValue=null }, ref) => {
   const [query, setQuery] = useState("");
   const [showList, setShowList] = useState(false);
   const [filteredAirports, setFilteredAirports] = useState({});
   const [countryVisibilityState, setCountryVisibilityState] = useState({});
   const [selected, setSelected] = useState(false);
   const listRef = useRef(null);
+
+  useEffect(() => {
+    if (initialValue) {
+      handleSelect(initialValue);
+    }
+  }, [])
 
   useEffect(() => {
     if (airports && Array.isArray(airports)) {
@@ -124,6 +130,7 @@ const AirportSearch = forwardRef(({ airports, onSelectAirport, type, idOther, ne
         onFocus={() => setShowList(true)}
         onChange={handleSearch}
         ref={inputRef}
+        disabled={disabled}
       />
 
       {/* Danh sách hiển thị */}
