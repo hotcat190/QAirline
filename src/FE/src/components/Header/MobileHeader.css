@@ -1,32 +1,29 @@
 .name1 {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .name2 {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .name3 {
-    margin-left: 13px;
+  margin-left: 13px;
 }
 
 .name4 {
-    margin-left: 14px;
+  margin-left: 14px;
 }
 
 .special-link {
-    margin-left: 3px;
+  margin-left: 3px;
 }
 
-
 @media screen and (max-width: 768px) {
+  .mobile-header span {
+    font-size: 1.6rem;
+  }
 
-    .mobile-header span {
-        font-size: 1.6rem;
-    }
-
-    .mobile-header i {
-        font-size: 1.6rem;
-    }
-    
+  .mobile-header i {
+    font-size: 1.6rem;
+  }
 }

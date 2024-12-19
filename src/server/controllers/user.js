@@ -56,38 +56,25 @@ export const getTickets = async (req, res) => {
 
   try {
     const tickets = await Ticket.findAll({
-      attributes: [
-        "idTicket",
-        "idClassFlight",
-        "code",
-        "price",
-        "status",
-        "created_at",
-        [col("ClassFlight.class"), "class"],
-        [col("ClassFlight.Flight.timeStart"), "timeStart"],
-        [col("ClassFlight.Flight.beginAirport.name"), "airportBeginName"],
-        [col("ClassFlight.Flight.endAirport.name"), "airportEndName"],
-      ],
+      attributes: ["idTicket", "code", "status", "price"], // Chỉ lấy các thuộc tính cần thiết
       include: [
         {
           model: ClassFlight,
-          as: "ClassFlight",
-          attributes: [],
+          attributes: ["class", "seatAmount", "seatBooked", "currentPrice"], // Chỉ lấy các trường cần thiết
           include: [
             {
               model: Flight,
-              as: "Flight",
-              attributes: [],
+              attributes: ["idFlight", "timeStart", "timeEnd"], // Chỉ lấy thời gian bắt đầu và kết thúc
               include: [
                 {
                   model: Airport,
                   as: "beginAirport",
-                  attributes: [],
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
                 },
                 {
                   model: Airport,
                   as: "endAirport",
-                  attributes: [],
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
                 },
               ],
             },

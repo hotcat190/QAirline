@@ -1,140 +1,141 @@
 .flightsPage {
-    padding: 20px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .content {
-    display: flex;
-    gap: 20px;
-    height: calc(100vh - 140px); /* Adjust based on your layout */
-    overflow: hidden;
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 140px); /* Adjust based on your layout */
+  overflow: hidden;
 }
 
 .listSection {
-    flex: 0 0 400px; /* Fixed width */
-    display: flex;
-    flex-direction: column;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+  flex: 0 0 400px; /* Fixed width */
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .listSection :global(.columnLabel) {
-    padding-bottom: 8px;
+  padding-bottom: 8px;
 }
 
 .flightsList {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
 }
 
 .mapSection {
-    flex: 1;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .flightCard {
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .flightCard:hover {
-    border-color: #ff4d4f;
-    box-shadow: 0 2px 4px rgba(255, 77, 79, 0.1);
+  border-color: #ff4d4f;
+  box-shadow: 0 2px 4px rgba(255, 77, 79, 0.1);
 }
 
 .flightCard.selected {
-    border: 2px solid #ff4d4f;
-    padding: 15px;
-    background-color: #fff1f0;
+  border: 2px solid #ff4d4f;
+  padding: 15px;
+  background-color: #fff1f0;
 }
 
 .flightHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .flightNumber {
-    font-weight: 600;
-    font-size: 1.1em;
+  font-weight: 600;
+  font-size: 1.1em;
 }
 
 .flightRoute {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .routePoint {
-    flex: 1;
+  flex: 1;
 }
 
 .city {
-    font-weight: 500;
-    margin-bottom: 4px;
+  font-weight: 500;
+  margin-bottom: 4px;
 }
 
 .time {
-    color: #666;
-    font-size: 0.9em;
+  color: #666;
+  font-size: 0.9em;
 }
 
 .flightFooter {
-    color: #666;
-    font-size: 0.9em;
+  color: #666;
+  font-size: 0.9em;
 }
 
 .status {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 500;
 }
 
 .scheduled {
-    background-color: #cdfde4;
-    color: #00a854;
+  background-color: #cdfde4;
+  color: #00a854;
 }
 
-.pending, .ongoing {
-    background-color: #fae8c3;
-    color: #f8860b;
+.pending,
+.ongoing {
+  background-color: #fae8c3;
+  color: #f8860b;
 }
 
 .cancelled {
-    background-color: #ffe0de;
-    color: #dc3545;
+  background-color: #ffe0de;
+  color: #dc3545;
 }
 
 .completed {
-    background-color: #f0f0f0;
-    color: #666666;
+  background-color: #f0f0f0;
+  color: #666666;
 }
 
 .searchHeader {
-    padding: 16px;
+  padding: 16px;
 }
 
 .searchHeader :global(#clear-all-filters) {
-    flex: 1 1;
+  flex: 1 1;
 }
