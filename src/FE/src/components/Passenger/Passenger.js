@@ -5,7 +5,7 @@ import PassengerForm from "../PassengerForm/PassengerForm";
 import PassengerFormChildren from "../PassengerFormChildren/PassengerFormChildren";
 import "./Passenger.css";
 import { TotalBill } from "../SearchFlight/SearchFlight.js";
-import Notification from "../Notification/Notification";
+import Notification from "../Notification/Notification.js";
 import { BACKEND_BASE_URL } from "services/api";
 
 const Passenger = () => {

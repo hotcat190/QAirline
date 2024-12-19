@@ -839,7 +839,7 @@ const SearchFlight = () => {
                       </div>
                       <div className="more-flight-info">
                         <p className="airbus">
-                          Airbus A321 - <span>Direct flight</span>
+                          {flight.codeAirplane} - <span>Direct flight</span>
                         </p>
                       </div>
                     </div>
