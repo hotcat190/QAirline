@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Notification from '../Notification/Notification';
+import Notification from "../Notification/Notification";
 import "./SearchFlight.css";
 
 const EconomyTicketInfo = () => {
@@ -415,6 +415,7 @@ const SearchFlight = () => {
   const initialBooking = {
     totalPrice: "0",
     forward: {
+      idClassFlight: 0,
       from: startDestination,
       to: endDestination,
       date: "--",
@@ -430,6 +431,7 @@ const SearchFlight = () => {
 
   if (roundWay) {
     initialBooking.backward = {
+      idClassFlight: 0,
       from: endDestination,
       to: startDestination,
       date: "--",
@@ -443,12 +445,12 @@ const SearchFlight = () => {
     };
   }
 
-  const [ booking, setBooking ] = useState(initialBooking);
-  const [ isBackward, setIsBackward ] = useState(false);
+  const [booking, setBooking] = useState(initialBooking);
+  const [isBackward, setIsBackward] = useState(false);
 
-  const [ adultCount, setAdultCount ] = useState(0);
-  const [ childrenCount, setChildrenCount ] = useState(0);
-  const [ infantsCount, setInfantsCount ] = useState(0);
+  const [adultCount, setAdultCount] = useState(0);
+  const [childrenCount, setChildrenCount] = useState(0);
+  const [infantsCount, setInfantsCount] = useState(0);
 
   useEffect(() => {
     const extractPassengerCount = (summary) => {
@@ -456,24 +458,29 @@ const SearchFlight = () => {
       const childrenMatch = summary.match(/(\d+)\s*children/);
       const infantsMatch = summary.match(/(\d+)\s*infants/);
       if (adultMatch) {
-        setAdultCount(parseInt(adultMatch[ 1 ], 10));
+        setAdultCount(parseInt(adultMatch[1], 10));
       }
       if (childrenMatch) {
-        setChildrenCount(parseInt(childrenMatch[ 1 ], 10));
+        setChildrenCount(parseInt(childrenMatch[1], 10));
       }
       if (infantsMatch) {
-        setInfantsCount(parseInt(infantsMatch[ 1 ], 10));
+        setInfantsCount(parseInt(infantsMatch[1], 10));
       }
     };
 
     extractPassengerCount(passengerSummary);
-  }, [ passengerSummary ]);
+  }, [passengerSummary]);
 
   const handleClassCardClick = (flight, classInfo) => {
     const type = roundWay && isBackward ? "backward" : "forward";
-    if (adultCount + childrenCount + infantsCount <= (classInfo.seatAmount - classInfo.seatBooked)) {
+    console.log(classInfo);
+    if (
+      adultCount + childrenCount + infantsCount <=
+      classInfo.seatAmount - classInfo.seatBooked
+    ) {
       setBooking((prevBooking) => {
         const updatedType = {
+          idClassFlight: classInfo.idClassFlight,
           from: flight.fromAirport,
           to: flight.toAirport,
           date: new Date(flight.timeStart).toLocaleDateString("vi-VN", {
@@ -497,7 +504,7 @@ const SearchFlight = () => {
           serviceFee: "0",
           totalPrice: (
             (classInfo.currentPrice + classInfo.currentPrice / 20 + 0) *
-            adultCount +
+              adultCount +
             classInfo.currentPrice * 0.75 * childrenCount +
             classInfo.currentPrice * 0.5 * infantsCount
           ).toLocaleString("vi-VN"),
@@ -518,7 +525,7 @@ const SearchFlight = () => {
 
         return {
           ...prevBooking,
-          [ type ]: updatedType,
+          [type]: updatedType,
           totalPrice: totalPrice.toLocaleString("vi-VN"),
         };
       });
@@ -546,7 +553,7 @@ const SearchFlight = () => {
         }, 2000);
       }
     } else {
-      if (booking.backward.totalPrice === "0") {
+      if (booking.totalPrice === "0") {
         setShowTicketSelection(true);
         setTimeout(() => {
           setShowTicketSelection(false);
@@ -568,6 +575,10 @@ const SearchFlight = () => {
     }, 2000);
   };
 
+  const handleBack = () => {
+    window.history.go(-1);
+  };
+
   useEffect(() => {
     const handlePopState = () => {
       if (isBackward) {
@@ -580,7 +591,7 @@ const SearchFlight = () => {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [ isBackward ]);
+  }, [isBackward]);
 
   return (
     <div className="search-flight-container">
@@ -837,7 +848,7 @@ const SearchFlight = () => {
                 (flight) => (
                   <div className="flight-card" key={flight.idFlight}>
                     <div className="flight-info">
-                      <p className="flight-code">VJ198</p>
+                      <p className="flight-code">QA{flight.idFlight}</p>
                       <div className="time">
                         <span className="time-text">
                           {new Date(flight.timeStart).toLocaleTimeString([], {
@@ -865,10 +876,11 @@ const SearchFlight = () => {
                     <div className="class-info">
                       {Object.values(flight.classes).map((classInfo, index) => (
                         <div
-                          className={`class-card ${classInfo.seatBooked >= classInfo.seatAmount
-                            ? "sold-out"
-                            : ""
-                            }`}
+                          className={`class-card ${
+                            classInfo.seatBooked >= classInfo.seatAmount
+                              ? "sold-out"
+                              : ""
+                          }`}
                           key={index}
                           onClick={() =>
                             handleClassCardClick(flight, classInfo)
@@ -878,9 +890,23 @@ const SearchFlight = () => {
                             <div className="jss1987"><img src="https://www.vietjetair.com/static/media/noflight.cee84207.svg" alt="" /><p className="MuiTypography-root jss1101 jss1109 MuiTypography-h5 MuiTypography-colorTextPrimary" customcolor="grey" weight="Bold">All Tickets Booked</p></div>
                           ) : (
                             <div className="price-info">
-                              <p className="price">{(classInfo.currentPrice / 1000).toLocaleString('vi-VN')}</p>
-                              <p className='residue'>000 VND</p>
-                              <p className='tickets-stat' style={{ fontSize: "11px", color: "green", marginTop: "7px" }}>{classInfo.seatBooked}/{classInfo.seatAmount} Booked</p>
+                              <p className="price">
+                                {(classInfo.currentPrice / 1000).toLocaleString(
+                                  "vi-VN"
+                                )}
+                              </p>
+                              <p className="residue">000 VND</p>
+                              <p
+                                className="tickets-stat"
+                                style={{
+                                  fontSize: "11px",
+                                  color: "green",
+                                  marginTop: "7px",
+                                }}
+                              >
+                                {classInfo.seatBooked}/{classInfo.seatAmount}{" "}
+                                Booked
+                              </p>
                             </div>
                           )}
                         </div>
@@ -902,6 +928,13 @@ const SearchFlight = () => {
 
       <div className="fs-continue">
         <div className="continue-container">
+          <button
+            className="fs-btn-continue fs-btn-back"
+            style={isBackward ? null : { visibility: "hidden" }}
+            onClick={handleBack}
+          >
+            Back
+          </button>
           <div className="summary-price">
             <span className="special-des-price">Total price</span>
             <span className="special-price">{booking.totalPrice} VND</span>

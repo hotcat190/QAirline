@@ -7,7 +7,6 @@ import Notification from "../Notification/Notification";
 import PassengerSelector from "./PassengerSelector";
 import { BACKEND_BASE_URL } from "services/api";
 
-
 function MainContent() {
   const [ passengerData, setPassengerData ] = useState({
     adults: 1,
@@ -400,9 +399,11 @@ function MainContent() {
         <div className="main-rightcontent">
           <img src="img/plane.svg" alt="" className="plane" width="110px" />
           <img src="img/cloud.svg" alt="" width="100px" className="cloud" />
+          <img src="img/plane.gif" alt="" width="100px" className="plane-gif1" />
+          <img src="img/plane.gif" alt="" width="100px" className="plane-gif2" />
           <img
             className="person"
-            src="img/main_image.jpeg"
+            src="img/test.jpeg"
             alt=""
             width="425px"
           />

@@ -266,6 +266,19 @@ h1 {
   display: inline-block;
 }
 
+.plane-gif1 {
+  position: absolute;
+  bottom: 230px;
+  left: -180px;
+}
+
+.plane-gif2 {
+  position: absolute;
+  bottom: 10px;
+  left: -350px;
+  transform: rotateY(180deg); 
+}
+
 .people-button {
   background-color: rgb(224, 54, 54);
   color: #fff;

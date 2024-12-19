@@ -3,11 +3,16 @@ body {
 }
 
 .search-flight-container .main-fs-content {
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(28.91deg, #F9A51A 2.24%, #FBB612 31.03%, #FBF300 97.21%);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(
+    28.91deg,
+    #f9a51a 2.24%,
+    #fbb612 31.03%,
+    #fbf300 97.21%
+  );
 }
 
 .jss2412 {
@@ -311,7 +316,7 @@ body {
 }
 
 .search-flight-container .class-card.sold-out {
-    color: grey;
+  color: grey;
 }
 
 .search-flight-container .class-card.sold-out .price {
@@ -377,6 +382,7 @@ body {
 }
 
 .search-flight-container .fs-btn-continue {
+  min-width: 117px;
   display: block;
   border: none;
   background-color: rgb(224, 54, 54);
@@ -388,6 +394,12 @@ body {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
   margin-left: auto;
+}
+
+.search-flight-container .fs-btn-back {
+  background-color: white;
+  color: gray;
+  border: 1px solid #686565;
 }
 
 .search-flight-container .fs-btn-continue:hover {
@@ -516,12 +528,11 @@ body {
 }
 
 @media screen and (max-width: 1250px) {
-
-    .search-flight-container .fs-icon,
-    .search-flight-container .fs-icon1 {
-        width: 30px;
-        height: 30px;
-    }
+  .search-flight-container .fs-icon,
+  .search-flight-container .fs-icon1 {
+    width: 30px;
+    height: 30px;
+  }
 
   .search-flight-container svg {
     width: 1.2em;
