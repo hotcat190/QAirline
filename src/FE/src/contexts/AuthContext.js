@@ -1,21 +1,21 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { BACKEND_BASE_URL } from '../services/api';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { BACKEND_BASE_URL } from "../services/api";
 
 export const AuthState = {
-  LOADING: 'loading',
-  VERIFIED: 'verified',
-  UNAUTHORIZED: 'unauthorized',
-  ELEVATED: 'elevated',
-  SERVER_ERROR: 'server_error',
-  SERVER_UNAVAILABLE: 'server_unavailable',
-}
+  LOADING: "loading",
+  VERIFIED: "verified",
+  UNAUTHORIZED: "unauthorized",
+  ELEVATED: "elevated",
+  SERVER_ERROR: "server_error",
+  SERVER_UNAVAILABLE: "server_unavailable",
+};
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     // Check localStorage for existing user data when component mounts
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
   const [authStatus, setAuthStatus] = useState(AuthState.LOADING);
@@ -23,9 +23,9 @@ export function AuthProvider({ children }) {
   // Update localStorage whenever user state changes
   useEffect(() => {
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
     }
   }, [user]);
 
@@ -33,25 +33,29 @@ export function AuthProvider({ children }) {
     try {
       setAuthStatus(AuthState.LOADING);
       const response = await fetch(`${BACKEND_BASE_URL}/auth/verify`, {
-        method: 'POST',
-        credentials: 'include',
+        method: "POST",
+        credentials: "include",
       });
       if (!response.ok) {
         try {
-          const verifyAdmin = await fetch(`${BACKEND_BASE_URL}/auth/verifyAdmin`, {
-            method: 'POST',
-            credentials: 'include',
-          });
+          const verifyAdmin = await fetch(
+            `${BACKEND_BASE_URL}/auth/verifyAdmin`,
+            {
+              method: "POST",
+              credentials: "include",
+            }
+          );
 
           if (!verifyAdmin.ok) {
-            console.log(`Verified failed: ${((await verifyAdmin.json()).message)}`);
+            console.log(
+              `Verified failed: ${(await verifyAdmin.json()).message}`
+            );
             return;
           }
 
           const adminUserData = await verifyAdmin.json();
           setUser(adminUserData);
           setAuthStatus(AuthState.ELEVATED);
-
         } catch (error) {
           if (error instanceof TypeError) {
             setAuthStatus(AuthState.SERVER_UNAVAILABLE);
@@ -61,13 +65,13 @@ export function AuthProvider({ children }) {
           }
         }
 
-        console.log(`Verified failed: ${((await response.json()).message)}`);
+        console.log(`Verified failed: ${(await response.json()).message}`);
         return;
       }
       const data = await response.json();
       setUser(data);
       setAuthStatus(AuthState.VERIFIED);
-    } catch (error) { 
+    } catch (error) {
       if (error instanceof TypeError) {
         setAuthStatus(AuthState.SERVER_UNAVAILABLE);
       } else {
@@ -83,19 +87,19 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    try {      
+    try {
       setUser(null);
       setAuthStatus(AuthState.LOADING);
       const response = await fetch(`${BACKEND_BASE_URL}/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      })
+        method: "POST",
+        credentials: "include",
+      });
 
       if (response.status == 500) {
         console.error(await response.text());
         setAuthStatus(AuthState.SERVER_ERROR);
         return false;
-      } 
+      }
 
       // Successfully logged out
       setAuthStatus(AuthState.UNAUTHORIZED);
@@ -108,7 +112,7 @@ export function AuthProvider({ children }) {
         setAuthStatus(AuthState.SERVER_ERROR);
       }
       return false;
-    } 
+    }
   };
 
   const value = {
@@ -116,16 +120,12 @@ export function AuthProvider({ children }) {
     login,
     logout,
     authStatus,
-    verifyAuth
+    verifyAuth,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   return useContext(AuthContext);
-} 
+}

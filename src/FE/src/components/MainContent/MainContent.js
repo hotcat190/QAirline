@@ -7,7 +7,6 @@ import Notification from "../Notification/Notification";
 import PassengerSelector from "./PassengerSelector";
 import { BACKEND_BASE_URL } from "services/api";
 
-
 function MainContent() {
   const [passengerData, setPassengerData] = useState({
     adults: 1,
