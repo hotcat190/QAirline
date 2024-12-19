@@ -380,6 +380,7 @@ export const TotalBill = ({
 };
 
 const SearchFlight = () => {
+  const [ loading, setLoading ] = useState(false);
   const [ showNotification, setShowNotification ] = useState(false);
   const [ showTicketSelection, setShowTicketSelection ] = useState(false);
   const [ showBusinessInfo, setShowBusinessInfo ] = useState(false);
@@ -531,19 +532,40 @@ const SearchFlight = () => {
 
   const handleContinue = () => {
     if (roundWay && !isBackward) {
-      setIsBackward(true);
-      window.scrollTo(0, 0);
-      window.history.pushState({}, "", window.location.href);
-    } else
-      navigate("/passenger", {
-        state: {
-          booking: booking,
-          startDestination,
-          endDestination,
-          passengerSummary,
-          isRoundWay: roundWay,
-        },
-      });
+      if (booking.forward.totalPrice === "0") {
+        setShowTicketSelection(true);
+        setTimeout(() => {
+          setShowTicketSelection(false);
+        }, 3000);
+      } else {
+        setLoading(true);
+        setTimeout(() => {
+          setIsBackward(true);
+          window.scrollTo(0, 0);
+          window.history.pushState({}, "", window.location.href);
+        }, 2000);
+      }
+    } else {
+      if (booking.backward.totalPrice === "0") {
+        setShowTicketSelection(true);
+        setTimeout(() => {
+          setShowTicketSelection(false);
+        }, 3000);
+      } else {
+        navigate("/passenger", {
+          state: {
+            booking: booking,
+            startDestination,
+            endDestination,
+            passengerSummary,
+            isRoundWay: roundWay,
+          },
+        });
+      }
+    }
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -562,6 +584,13 @@ const SearchFlight = () => {
 
   return (
     <div className="search-flight-container">
+    {loading && (
+        <div className="loading-overlay">
+          <div className="loading-container">
+            <img src="img/loading.gif" alt="Loading" />
+          </div>
+        </div>
+      )}
       <Notification
         message="Not enough seats available"
         show={showNotification}
@@ -585,14 +614,14 @@ const SearchFlight = () => {
               )}
               {selectedType === "oneWay" ? (
                 <div className="route-info">
-                  <div class="jss2412">
+                  <div className="jss2412">
                     <img
                       src="img/departure-icon.25d3557e.svg"
                       alt="Departure Icon"
                       style={{ width: "12px" }}
                     />
                     <p
-                      class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
+                      className="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
                       variantmd="h3"
                     >
                       <span className="airport"></span>
@@ -626,14 +655,14 @@ const SearchFlight = () => {
                       ></path>
                     </svg>
                   </div>
-                  <div class="jss2412">
+                  <div className="jss2412">
                     <img
                       src="img/arrival-icon.a05c5d78.svg"
                       alt="Departure Icon"
                       style={{ width: "12px" }}
                     />
                     <p
-                      class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
+                      className="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
                       variantmd="h3"
                     >
                       <span className="airport"></span>
@@ -643,14 +672,14 @@ const SearchFlight = () => {
                 </div>
               ) : (
                 <div className="route-info">
-                  <div class="jss2412">
+                  <div className="jss2412">
                     <img
                       src="img/departure-icon.25d3557e.svg"
                       alt="Departure Icon"
                       style={{ width: "12px" }}
                     />
                     <p
-                      class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
+                      className="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
                       variantmd="h3"
                     >
                       <span className="airport">Start Destination</span>
@@ -684,14 +713,14 @@ const SearchFlight = () => {
                       ></path>
                     </svg>
                   </div>
-                  <div class="jss2412">
+                  <div className="jss2412">
                     <img
                       src="img/arrival-icon.a05c5d78.svg"
                       alt="Departure Icon"
                       style={{ width: "12px" }}
                     />
                     <p
-                      class="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
+                      className="MuiTypography-root jss2413 jss168 jss2431 MuiTypography-h5 MuiTypography-colorTextPrimary"
                       variantmd="h3"
                     >
                       <span className="airport">End Destination</span>
@@ -727,7 +756,7 @@ const SearchFlight = () => {
               </div>
               <div className="fs-icon">
                 <svg
-                  class="MuiSvgIcon-root jss276"
+                  className="MuiSvgIcon-root jss276"
                   style={{ fill: "#F9A51A" }}
                   focusable="false"
                   viewBox="0 0 24 24"
@@ -739,7 +768,7 @@ const SearchFlight = () => {
               </div>
               <div className="fs-icon">
                 <svg
-                  class="MuiSvgIcon-root jss276"
+                  className="MuiSvgIcon-root jss276"
                   style={{ fill: "#F9A51A" }}
                   focusable="false"
                   viewBox="0 0 24 24"
@@ -846,7 +875,7 @@ const SearchFlight = () => {
                           }
                         >
                           {classInfo.seatBooked >= classInfo.seatAmount ? (
-                            <div class="jss1987"><img src="https://www.vietjetair.com/static/media/noflight.cee84207.svg" alt="" /><p class="MuiTypography-root jss1101 jss1109 MuiTypography-h5 MuiTypography-colorTextPrimary" customcolor="grey" weight="Bold">All Tickets Booked</p></div>
+                            <div className="jss1987"><img src="https://www.vietjetair.com/static/media/noflight.cee84207.svg" alt="" /><p className="MuiTypography-root jss1101 jss1109 MuiTypography-h5 MuiTypography-colorTextPrimary" customcolor="grey" weight="Bold">All Tickets Booked</p></div>
                           ) : (
                             <div className="price-info">
                               <p className="price">{(classInfo.currentPrice / 1000).toLocaleString('vi-VN')}</p>

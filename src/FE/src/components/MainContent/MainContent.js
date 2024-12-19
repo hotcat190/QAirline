@@ -9,7 +9,7 @@ import { BACKEND_BASE_URL } from "services/api";
 
 
 function MainContent() {
-  const [passengerData, setPassengerData] = useState({
+  const [ passengerData, setPassengerData ] = useState({
     adults: 1,
     children: 0,
     infants: 0,
@@ -32,21 +32,21 @@ function MainContent() {
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
-  const [flightForwardData, setFlightForwardData] = useState([]);
-  const [flightBackwardData, setFlightBackwardData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedType, setSelectedType] = useState("roundTrip");
-  const [airports, setAirports] = useState([]);
-  const [query, setQuery] = useState("");
+  const [ flightForwardData, setFlightForwardData ] = useState([]);
+  const [ flightBackwardData, setFlightBackwardData ] = useState([]);
+  const [ loading, setLoading ] = useState(false);
+  const [ error, setError ] = useState(null);
+  const [ selectedType, setSelectedType ] = useState("roundTrip");
+  const [ airports, setAirports ] = useState([]);
+  const [ query, setQuery ] = useState("");
 
-  const [idBeginAirport, setIdBeginAirport] = useState(null);
-  const [idEndAirport, setIdEndAirport] = useState(null);
-  const [startDestination, setStartDestination] = useState(null);
-  const [endDestination, setEndDestination] = useState(null);
-  const [departureDate, setDepartureDate] = useState(null);
-  const [returnDate, setReturnDate] = useState(null);
-  const [showNotification, setShowNotification] = useState(false);
+  const [ idBeginAirport, setIdBeginAirport ] = useState(null);
+  const [ idEndAirport, setIdEndAirport ] = useState(null);
+  const [ startDestination, setStartDestination ] = useState(null);
+  const [ endDestination, setEndDestination ] = useState(null);
+  const [ departureDate, setDepartureDate ] = useState(null);
+  const [ returnDate, setReturnDate ] = useState(null);
+  const [ showNotification, setShowNotification ] = useState(false);
 
   const handleDateChange = (date, isEnd) => {
     if (isEnd) {
@@ -57,7 +57,7 @@ function MainContent() {
   };
 
   const navigate = useNavigate();
-  const [id2Destination, setId2Destination] = useState(null);
+  const [ id2Destination, setId2Destination ] = useState(null);
 
   useEffect(() => {
     const fetchAirport = async () => {
@@ -70,7 +70,7 @@ function MainContent() {
           setAirports(result);
           setId2Destination(
             result.reduce((acc, airport) => {
-              acc[airport.idairport] = airport.city;
+              acc[ airport.idairport ] = airport.city;
               return acc;
             }, {})
           );
@@ -90,10 +90,10 @@ function MainContent() {
   const handleSelectAirport = (type, id) => {
     if (type === "Start") {
       setIdBeginAirport(id);
-      setStartDestination(id2Destination[id]);
+      setStartDestination(id2Destination[ id ]);
     } else {
       setIdEndAirport(id);
-      setEndDestination(id2Destination[id]);
+      setEndDestination(id2Destination[ id ]);
     }
   };
 
@@ -120,6 +120,7 @@ function MainContent() {
           setShowNotification(false); // Ẩn thông báo sau 3 giây
         }, 3000);
       } else {
+        setLoading(true);
         const startDay = departureDate.getDate();
         const startMonth = departureDate.getMonth() + 1;
         const startYear = departureDate.getFullYear();
@@ -147,24 +148,27 @@ function MainContent() {
               : [];
             setFlightForwardData(data_forward);
             setFlightBackwardData(data_backward);
-
-            navigate("/searchflights", {
-              state: {
-                flightForwardData: data_forward,
-                flightBackwardData: data_backward,
-                startDestination,
-                endDestination,
-                selectedType,
-                passengerSummary,
-              },
-            });
+            setTimeout(() => {
+              navigate("/searchflights", {
+                state: {
+                  flightForwardData: data_forward,
+                  flightBackwardData: data_backward,
+                  startDestination,
+                  endDestination,
+                  selectedType,
+                  passengerSummary,
+                },
+              });
+            }, 3000);
           } else {
             setError("No flights found or an error occurred.");
           }
         } catch (err) {
           setError("An error occurred: " + err.message);
         } finally {
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 3000);
         }
       }
     } else {
@@ -174,6 +178,7 @@ function MainContent() {
           setShowNotification(false); // Ẩn thông báo sau 3 giây
         }, 3000);
       } else {
+        setLoading(true);
         const startDay = departureDate.getDate();
         const startMonth = departureDate.getMonth() + 1;
         const startYear = departureDate.getFullYear();
@@ -188,23 +193,27 @@ function MainContent() {
               ? await response_forward.json()
               : [];
             setFlightForwardData(data_forward);
-            navigate("/searchflights", {
-              state: {
-                flightForwardData: data_forward,
-                // flightBackwardData: flightBackwardData,
-                startDestination,
-                endDestination,
-                selectedType,
-                passengerSummary,
-              },
-            });
+            setTimeout(() => {
+              navigate("/searchflights", {
+                state: {
+                  flightForwardData: data_forward,
+                  // flightBackwardData: flightBackwardData,
+                  startDestination,
+                  endDestination,
+                  selectedType,
+                  passengerSummary,
+                },
+              });
+            }, 3000);
           } else {
             setError("No flights found or an error occurred.");
           }
         } catch (err) {
           setError("An error occurred: " + err.message);
         } finally {
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 3000);
         }
       }
     }
@@ -212,6 +221,15 @@ function MainContent() {
 
   return (
     <div className="main-content">
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-container">
+            <img src="img/loading.gif" alt="Loading" />
+            <p>Searching...</p>
+          </div>
+        </div>
+      )}
+
       <Notification
         message="Please fill in all fields"
         show={showNotification}
