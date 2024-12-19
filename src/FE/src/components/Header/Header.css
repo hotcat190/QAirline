@@ -1,175 +1,175 @@
 .fixed-header {
-    background: #f8f4f7;
-    padding-top: 13px;
-    position: sticky;
-    top: -13px;
-    z-index: 20;
+  background: #f8f4f7;
+  padding-top: 13px;
+  position: sticky;
+  top: -13px;
+  z-index: 20;
 }
 
 button {
-    border: none;
-    cursor: pointer;
+  border: none;
+  cursor: pointer;
 }
 
 .logo {
-    width: 110px;
-    height: auto;
-    margin-bottom: 15px;
+  width: 110px;
+  height: auto;
+  margin-bottom: 15px;
 }
 
 .fixed-header .navbar {
-    padding: 5px 0;
-    display: flex;
-    align-items: center;
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
 }
 
 .fixed-header #pc-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-    margin-left: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  margin-left: 100px;
 }
 
 .fixed-header #pc-nav a {
-    color: #535353;
-    transition: color 0.3s ease;
+  color: #535353;
+  transition: color 0.3s ease;
 }
 
 .fixed-header #pc-nav a:hover {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 /* Actions */
 .fixed-header .actions {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .fixed-header .action-link {
-    font-size: 15px;
-    background: none;
-    margin-right: 20px;
-    color: black;
+  font-size: 15px;
+  background: none;
+  margin-right: 20px;
+  color: black;
 }
 
 .fixed-header .action-btn {
-    color: white;
-    background: var(--primary-color);
-    padding: 10px 15px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
+  color: white;
+  background: var(--primary-color);
+  padding: 10px 15px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
 .fixed-header .action-btn:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 /* Dropdown */
 .dropdown-container {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    object-fit: cover;
-    transition: box-shadow 0.3s;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  object-fit: cover;
+  transition: box-shadow 0.3s;
 }
 
 .user-avatar:hover {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Dropdown Menu */
 .dropdown-menu {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    width: 220px;
-    overflow: hidden;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  width: 220px;
+  overflow: hidden;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
 .dropdown-header {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    border-bottom: 1px solid #e6e6e6;
-    background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e6e6e6;
+  background-color: #fafafa;
 }
 
 .dropdown-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .dropdown-user-info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .dropdown-name {
-    font-weight: bold;
-    color: #333;
+  font-weight: bold;
+  color: #333;
 }
 
 .dropdown-username {
-    color: #777;
-    font-size: 14px;
+  color: #777;
+  font-size: 14px;
 }
 
 .dropdown-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .dropdown-links li {
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .dropdown-links li a {
-    text-decoration: none;
-    color: #333;
-    display: block;
-    width: 100%;
+  text-decoration: none;
+  color: #333;
+  display: block;
+  width: 100%;
 }
 
 .dropdown-links li:hover {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 .logout {
-    border-top: 1px solid #e6e6e6;
-    font-weight: bold;
-    color: rgb(224, 54, 54);
-    cursor: pointer;
+  border-top: 1px solid #e6e6e6;
+  font-weight: bold;
+  color: rgb(224, 54, 54);
+  cursor: pointer;
 }
 
 .logout:hover {
-    background-color: #ffe6e6;
-    color: #c9302c;
+  background-color: #ffe6e6;
+  color: #c9302c;
 }
 
 /* Fade In Animation */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
