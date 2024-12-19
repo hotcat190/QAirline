@@ -32,7 +32,7 @@ export const getAllFlights = async (req, res) => {
         },
         {
           model: Airplane,
-          attributes: ["code"],
+          attributes: ["type"],
         },
       ],
     });
@@ -63,7 +63,7 @@ export const getAllFlights = async (req, res) => {
             name: flight.endAirport.name,
           },
           idAirplane: flight.idAirplane,
-          codeAirplane: flight.Airplane.code,
+          codeAirplane: flight.Airplane.type,
           classes: flightClasses,
         };
       });
@@ -112,7 +112,7 @@ export const getFlightByTimeAndAirport = async (req, res) => {
         },
         {
           model: Airplane,
-          attributes: ["code"],
+          attributes: ["type"],
         },
       ],
     });
@@ -143,7 +143,7 @@ export const getFlightByTimeAndAirport = async (req, res) => {
             name: flight.endAirport.name,
           },
           idAirplane: flight.idAirplane,
-          codeAirplane: flight.Airplane.code,
+          codeAirplane: flight.Airplane.type,
           classes: flightClasses,
         };
       });
@@ -181,7 +181,7 @@ export const getInfoFlight = async (req, res) => {
         },
         {
           model: Airplane,
-          attributes: ["code"],
+          attributes: ["type"],
         },
       ],
     });
@@ -199,7 +199,7 @@ export const getInfoFlight = async (req, res) => {
           name: flight.endAirport.name,
         },
         idAirplane: flight.idAirplane,
-        codeAirplane: flight.Airplane.code,
+        codeAirplane: flight.Airplane.type,
         classes: {},
       };
 
