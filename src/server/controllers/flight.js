@@ -39,6 +39,7 @@ export const getAllFlights = async (req, res) => {
 
         flight.ClassFlights.forEach((classFlight) => {
           flightClasses[classFlight.class] = {
+            idClassFlight: classFlight.idClassFlight,
             seatAmount: classFlight.seatAmount,
             seatBooked: classFlight.seatBooked,
             currentPrice: classFlight.currentPrice,
@@ -113,6 +114,7 @@ export const getFlightByTimeAndAirport = async (req, res) => {
 
         flight.ClassFlights.forEach((classFlight) => {
           flightClasses[classFlight.class] = {
+            idClassFlight: classFlight.idClassFlight,
             seatAmount: classFlight.seatAmount,
             seatBooked: classFlight.seatBooked,
             currentPrice: classFlight.currentPrice,
@@ -188,6 +190,7 @@ export const getInfoFlight = async (req, res) => {
 
       flight.ClassFlights.forEach((classFlight) => {
         flightData.classes[classFlight.class] = {
+          idClassFlight: classFlight.idClassFlight,
           seatAmount: classFlight.seatAmount,
           seatBooked: classFlight.seatBooked,
           currentPrice: classFlight.currentPrice,
