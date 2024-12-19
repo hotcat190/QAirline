@@ -9,6 +9,8 @@ import Notification from "../Notification/Notification.js";
 import { BACKEND_BASE_URL } from "services/api";
 
 const Passenger = () => {
+  const [ showOverlay, setShowOverlay ] = useState(false);
+  const [ errorMessage, setErrorMessage ] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const {
@@ -18,13 +20,21 @@ const Passenger = () => {
     passengerSummary,
     isRoundWay,
   } = location.state || {};
-  const [adultCount, setAdultCount] = useState(0);
-  const [childrenCount, setChildrenCount] = useState(0);
+  const [ adultCount, setAdultCount ] = useState(0);
+  const [ childrenCount, setChildrenCount ] = useState(0);
+  const [ formDataArray, setFormDataArray] = useState([]);
+  const [ messageNotification, setMessageNotification ] = useState("");
+  const [ showNotification, setShowNotification ] = useState(false);
+  const [ success, setSuccess ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
 
-  const [messageNotification, setMessageNotification] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const updateFormData = (index, data, type) => {
+    setFormDataArray((prevData) => {
+        const updatedData = [...prevData];
+        updatedData[index] = { ...data, type }; 
+        return updatedData;
+    });
+};
 
   useEffect(() => {
     const extractPassengerCount = (summary) => {
@@ -32,26 +42,70 @@ const Passenger = () => {
       const childrenMatch = summary.match(/(\d+)\s*children/);
 
       if (adultMatch) {
-        setAdultCount(parseInt(adultMatch[1], 10));
+        setAdultCount(parseInt(adultMatch[ 1 ], 10));
       }
       if (childrenMatch) {
-        setChildrenCount(parseInt(childrenMatch[1], 10));
+        setChildrenCount(parseInt(childrenMatch[ 1 ], 10));
       }
     };
 
     extractPassengerCount(passengerSummary);
-  }, [passengerSummary]);
+  }, [ passengerSummary ]);
 
   const checkValid = () => {
+    const requiredFields = ['firstName', 'lastName', 'dateOfBirth', 'country'];
+
+    for (const formData of formDataArray) {
+        for (const field of requiredFields) {
+            if (!formData[field] || formData[field].trim() === "") {
+                setMessageNotification("Please fill in all this form");
+                setShowNotification(true);
+                setShowOverlay(true);
+                return false;
+            }
+        }
+
+        const dob = formData.dateOfBirth;
+        const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;  
+        if (!dateRegex.test(dob)) {
+            setMessageNotification("Please enter a valid date of birth");
+            setShowNotification(true);
+            setShowOverlay(true);
+            return false;
+        }
+
+        if (formData.type === "adult") {
+            if (!formData.phoneNumber || formData.phoneNumber.trim() === "") {
+                setMessageNotification("Please fill in phone number");
+                setShowNotification(true);
+                setShowOverlay(true);
+                return false;
+            }
+
+            if (!formData.email || formData.email.trim() === "") {
+                setMessageNotification("Please fill in email");
+                setShowNotification(true);
+                setShowOverlay(true);
+                return false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                setMessageNotification("Please enter a valid email address");
+                setShowNotification(true);
+                setShowOverlay(true);
+                return false;
+            }
+        }
+    }
+
     return true;
   };
 
   const bookTicket = async () => {
     if (!checkValid()) {
-      setMessageNotification("Please fill in all fields");
-      setShowNotification(true); // Hiển thị thông báo
       setTimeout(() => {
-        setShowNotification(false); // Ẩn thông báo sau 3 giây
+        setShowNotification(false); 
       }, 3000);
 
       return;
@@ -65,9 +119,9 @@ const Passenger = () => {
     console.log(booking);
     const body2 = isRoundWay
       ? {
-          idClassFlight: booking.backward.idClassFlight,
-          amount: adultCount + childrenCount,
-        }
+        idClassFlight: booking.backward.idClassFlight,
+        amount: adultCount + childrenCount,
+      }
       : null;
 
     try {
@@ -98,20 +152,19 @@ const Passenger = () => {
       const responses = await Promise.all(requests);
 
       for (let i = 0; i < responses.length; i++) {
-        if (!responses[i].ok) {
-          // Cần xử lý failed ở đây
+        if (!responses[ i ].ok) {
           throw new Error(`Request ${i + 1} failed`);
         }
       }
 
-      const [data1, data2] = await Promise.all(
+      const [ data1, data2 ] = await Promise.all(
         responses.map((res) => res.json())
       );
       console.log("Response 1:", data1);
       if (isRoundWay) console.log("Response 2:", data2);
       setSuccess(true);
       setMessageNotification("Book ticket successfully!!");
-      setShowNotification(true); // Hiển thị thông báo
+      setShowNotification(true); 
       setTimeout(() => {
         setShowNotification(false); // Ẩn thông báo sau 3 giây
       }, 3000);
@@ -144,10 +197,10 @@ const Passenger = () => {
           }}
         >
           {Array.from({ length: adultCount }).map((_, index) => (
-            <PassengerForm key={`adult-${index}`} stt={index + 1} />
+            <PassengerForm key={`adult-${index}`} stt={index + 1} onUpdate={(data) => updateFormData(index, data, "adult")}/>
           ))}
           {Array.from({ length: childrenCount }).map((_, index) => (
-            <PassengerFormChildren key={`children-${index}`} stt={index + 1} />
+            <PassengerFormChildren key={`children-${index}`} stt={index + 1}onUpdate={(data) => updateFormData(adultCount + index, data, "child")} />
           ))}
         </div>
         <TotalBill
@@ -171,8 +224,16 @@ const Passenger = () => {
             <span className="special-price">{booking.totalPrice} VND</span>
           </div>
           <button className="fs-btn-continue" onClick={bookTicket}>
-            Continue
+            Book now
           </button>
+          {/* {showOverlay && (
+                <div className="overlay">
+                    <div className="error-popup">
+                        <p>{errorMessage}</p>
+                        <button onClick={() => setShowOverlay(false)}>Close</button>
+                    </div>
+                </div>
+            )} */}
         </div>
       </div>
     </div>

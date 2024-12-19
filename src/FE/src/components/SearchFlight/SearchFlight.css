@@ -382,6 +382,7 @@ body {
 }
 
 .search-flight-container .fs-btn-continue {
+  min-width: 117px;
   display: block;
   border: none;
   background-color: rgb(224, 54, 54);

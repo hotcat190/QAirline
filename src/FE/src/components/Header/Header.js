@@ -1,11 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'contexts/AuthContext';
+import { FaBell } from 'react-icons/fa';
 import './Header.css';
+
+const Notification = () => {
+  const [ notifications, setNotifications ] = useState([]);
+  const [ unreadCount, setUnreadCount ] = useState(0);
+  const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
+  const [ error, setError ] = useState(null);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const url = 'https://qairline.onrender.com/api/user/getNotification';
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setNotifications(data);
+          const unread = data.filter((notification) => notification.unRead).length;
+          setUnreadCount(unread);
+        } else {
+          throw new Error('Unexpected response format');
+        }
+      } catch (err) {
+        console.error('Error fetching notifications:', err);
+        setError(err.message);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+
+  return (
+    <div className="notification-container">
+      <div className="notification-icon" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+        <div
+          className="chuong"
+        >
+          <FaBell className="icon-chuong" />
+          {unreadCount > 0 && (
+            <span
+              className="notification-count"
+
+            >
+              {unreadCount}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {isDropdownOpen && (<div className="notification-dropdown">
+        {error ? (
+          <p className="error-message" style={{ color: 'red' }}>
+            Error: {error}
+          </p>
+        ) : notifications.length > 0 ? (
+          notifications.map((notification, index) => (
+            <div
+              key={index}
+              className={`notification-item ${notification.unRead ? 'unread' : ''}`}
+            >
+              <p>{notification.content}</p>
+              <span className="notification-time">
+                {new Date(notification.create_at).toLocaleString()}
+              </span>
+            </div>
+          ))
+        ) : (
+          <p className="no-notifications">No notifications</p>
+        )}
+      </div>
+      )
+      }
+    </div>
+  );
+};
 
 const UserDropdown = ({ avatar, setAvatar }) => {
   const { user, logout } = useAuth();
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [ showDropdown, setShowDropdown ] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -72,7 +160,7 @@ const UserDropdown = ({ avatar, setAvatar }) => {
 
 const Header = () => {
   const { user } = useAuth();
-  const [avatar, setAvatar] = useState('img/default_avatar.png');  // Thêm state avatar
+  const [ avatar, setAvatar ] = useState('img/default_avatar.png');  // Thêm state avatar
 
   const openSignin = () => {
     document.querySelector('.overlay').style.display = 'block';
@@ -125,7 +213,10 @@ const Header = () => {
           {/* Actions */}
           <div className="actions">
             {user ? (
-              <UserDropdown avatar={avatar} setAvatar={setAvatar} />  // Truyền avatar và setAvatar từ Header
+              <>
+                <Notification />
+                <UserDropdown avatar={avatar} setAvatar={setAvatar} />
+              </>
             ) : (
               <>
                 <button className="action-link" onClick={openSignup}>

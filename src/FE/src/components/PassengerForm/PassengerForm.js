@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './PassengerForm.css';
 
-const PassengerForm = ({stt}) => {
+const PassengerForm = ({stt, onUpdate}) => {
     const [ formData, setFormData ] = useState({
         firstName: "",
         lastName: "",
@@ -41,6 +41,10 @@ const PassengerForm = ({stt}) => {
             setErrors((prevErrors) => ({ ...prevErrors, [ name ]: "" }));
         }
     };
+
+    useEffect(() => {
+        onUpdate(formData);
+    }, [formData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
