@@ -69,11 +69,11 @@ main .main-content .cloud {
   left: -120px;
   width: 100px;
   height: 100px;
-  animation: moveCloud 2s ease-in-out infinite alternate,
-    scaleCloud 2s ease-in-out infinite alternate;
+  /* animation: moveCloud 2s ease-in-out infinite alternate,
+    scaleCloud 2s ease-in-out infinite alternate; */
 }
 
-@keyframes moveCloud {
+/* @keyframes moveCloud {
   0% {
     transform: translateX(-20px);
   }
@@ -91,7 +91,7 @@ main .main-content .cloud {
   100% {
     transform: scale(1.1);
   }
-}
+} */
 
 main .main-rightcontent {
   position: relative;
@@ -268,13 +268,13 @@ h1 {
 
 .plane-gif1 {
   position: absolute;
-  bottom: 230px;
+  bottom: 200px;
   left: -180px;
 }
 
 .plane-gif2 {
   position: absolute;
-  bottom: 10px;
+  bottom: 30px;
   left: -350px;
   transform: rotateY(180deg); 
 }
