@@ -164,11 +164,11 @@ const TicketCard = ({
             isSelected ? "show" : isAnimating ? "hide" : ""
           }`}
         >
-          <button className="btn delete-ticket">
+          <button className="btn delete-ticket" onClick={handleDeleteTicket}>
             <i className="fas fa-trash"></i>
             <span>Delete Ticket</span>
           </button>
-          <button className="btn view-details">
+          <button className="btn view-details" onClick={handleViewDetails}>
             <span>View Details </span>
             <i className="fas fa-eye"></i>
           </button>
