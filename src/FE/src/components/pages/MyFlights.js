@@ -75,8 +75,8 @@ function MyFlight() {
       );
 
       if (response.ok) {
-        console.log(response);
         const result = await response.json();
+        console.log(result);
       } else if (response.status === 404) {
         setShowNotification(true);
         setTimeout(() => {
