@@ -132,37 +132,26 @@ export const getTicketByCode = async (req, res) => {
 
   try {
     const infoTicket = await Ticket.findOne({
-      attributes: [
-        "idTicket",
-        [col("classFlight.idclassFlight"), "idClassFlight"],
-        [col("classFlight.class"), "class"],
-        "code",
-        "price",
-        "status",
-        "created_at",
-        [col("ClassFlight.Flight.timeStart"), "timeStart"],
-        [col("ClassFlight.Flight.beginAirport.name"), "airportBeginName"],
-        [col("ClassFlight.Flight.endAirport.name"), "airportEndName"],
-      ],
       where: { code },
+      attributes: ["idTicket", "code", "status", "price"], // Chỉ lấy các thuộc tính cần thiết
       include: [
         {
           model: ClassFlight,
-          attributes: [],
+          attributes: ["class", "seatAmount", "seatBooked", "currentPrice"], // Chỉ lấy các trường cần thiết
           include: [
             {
               model: Flight,
-              attributes: [],
+              attributes: ["idFlight", "timeStart", "timeEnd"], // Chỉ lấy thời gian bắt đầu và kết thúc
               include: [
                 {
                   model: Airport,
-                  attributes: [],
                   as: "beginAirport",
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
                 },
                 {
                   model: Airport,
-                  attributes: [],
                   as: "endAirport",
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
                 },
               ],
             },
@@ -170,6 +159,9 @@ export const getTicketByCode = async (req, res) => {
         },
       ],
     });
+    if (!infoTicket || infoTicket.length === 0) {
+      return res.status(404).send("Don't find any booking flights with code.");
+    }
     res.send(infoTicket);
   } catch (err) {
     res.status(500).send(err.message);
