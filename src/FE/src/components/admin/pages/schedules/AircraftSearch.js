@@ -101,7 +101,7 @@ const AircraftSearch = forwardRef(({ airplanes, onSelectAircraft, inputRef, disa
                 </div>
                 <div className="row" style={{ paddingTop:"2px" }}>
                     <div className="city-cell" style={{ fontSize:"0.8em" }}>Capacity: {airplane.capacity}</div>
-                    {/* <div style={{ backgroundColor: "#E8F5E9", color: "#2E7D32", padding:"2px", borderRadius:"4px" }}>{airplane.status}</div> */}
+                    <div style={{ backgroundColor: "#E8F5E9", color: "#2E7D32", padding:"2px", borderRadius:"4px" }}>{airplane.status}</div>
                 </div>
               </div>
             ))

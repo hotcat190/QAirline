@@ -5,8 +5,9 @@ import AdminModal from "components/admin/components/Modal/AdminModal";
 import AirportSearch from "components/MainContent/AirportSearch";
 import AircraftSearch from "./AircraftSearch";
 import { FlightStatus, getFlightStatus } from "types/flightStatus/FlightStatus";
+import { convertToDateTimeLocalString } from "utils/date/convertToDateTimeLocalString";
 
-export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, airplanes }) {
+export function ScheduleModal({ flight, onClose, onSubmit, onEdit, onDelete, airports, airplanes }) {
     const startAirportInputRef = useRef(null);
     const endAirportInputRef = useRef(null);
     const aircraftInputRef = useRef(null);
@@ -28,8 +29,8 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
         if (flight) {
             setFormData({
                 ...formData,
-                timeStart: new Date(flight.timeStart),
-                timeEnd: new Date(flight.timeEnd),
+                timeStart: convertToDateTimeLocalString(new Date(flight.timeStart)),
+                timeEnd: convertToDateTimeLocalString(new Date(flight.timeEnd)),
             })
             
         }
@@ -39,6 +40,7 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
     const isEditing = !!flight;
     const flightStatus = flight ? getFlightStatus(flight) : FlightStatus.SCHEDULED;
     const canEdit = (!isEditing) || (isEditing && flightStatus === FlightStatus.SCHEDULED);
+    const showDelete = (flight) && (flightStatus !== FlightStatus.ONGOING);
     const flightDuration = isEditing ? 
         new Date(flight.timeEnd) - new Date(flight.timeStart) : 0;
     const originalDepartureDate = isEditing ? new Date(flight.timeStart) : "";
@@ -71,19 +73,25 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
                         ...prev,
                         departure: "Departure time cannot be in the past"
                     }));
-                    return;
+                }
+
+                if (newDateTime < originalDepartureDate) {
+                    setErrors(prev => ({
+                        ...prev,
+                        departure: `Delayed departure time cannot be earlier than the original departure time: ${convertToDateTimeLocalString(originalDepartureDate).split('T')[0]} ${convertToDateTimeLocalString(originalDepartureDate).split('T')[1]}`
+                    }));
                 }
 
                 // If editing and there's a flight duration, update arrival time
-                // if (isEditing && flightDuration) {
-                //     const newArrivalDate = new Date(newDateTime.getTime() + flightDuration);
-                //     setFormData(prev => ({
-                //         ...prev,
-                //         [name]: value,
-                //         timeEnd: newArrivalDate.toISOString().slice(0, 16)
-                //     }));
-                //     return;
-                // }
+                if (isEditing && flightDuration) {
+                    const newArrivalDate = new Date(newDateTime.getTime() + flightDuration);
+                    setFormData(prev => ({
+                        ...prev,
+                        [name]: value,
+                        timeEnd: convertToDateTimeLocalString(newArrivalDate)
+                    }));
+                    return;
+                }
             }
 
             setFormData(prev => ({
@@ -106,7 +114,7 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
                     delete newClassDetails[value];
                 } else if (!newClassDetails[value]) {
                     // Initialize details for new class type
-                    newClassDetails[value] = { seats: 0, price: 0 };
+                    newClassDetails[value] = { seatAmount: 0, currentPrice: 0 };
                 }
                 
                 return {
@@ -119,7 +127,7 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
         }
 
         // Handle seats and price inputs for class types
-        if (name.startsWith('seats_') || name.startsWith('price_')) {
+        if (name.startsWith('seatAmount_') || name.startsWith('currentPrice_')) {
             const [field, classType] = name.split('_');
             setFormData(prev => ({
                 ...prev,
@@ -131,6 +139,7 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
                     }
                 }
             }));
+            console.log(formData);
             return;
         }
     };
@@ -193,6 +202,9 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
         if (departureDateTime >= arrivalDateTime) {
             newErrors.arrival = "Arrival time must be after departure time";
         }
+        if (departureDateTime < Date.now()) {
+            newErrors.departure = "Departure time cannot be in the past";
+        }
 
         // Total seats validation
         const totalSeats = getTotalSeats();
@@ -212,8 +224,8 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
         for (let i = 1; i < selectedClasses.length; i++) {
             const prevClass = selectedClasses[i-1];
             const currentClass = selectedClasses[i];
-            const prevPrice = formData.classDetails[prevClass]?.price || 0;
-            const currentPrice = formData.classDetails[currentClass]?.price || 0;
+            const prevPrice = formData.classDetails[prevClass]?.currentPrice || 0;
+            const currentPrice = formData.classDetails[currentClass]?.currentPrice || 0;
 
             if (prevPrice >= currentPrice) {
                 newErrors.price = `${currentClass} price must be higher than ${prevClass} price`;
@@ -233,20 +245,25 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
                 timeStart: `${formData.timeStart}`,
                 timeEnd: `${formData.timeEnd}`,
             };
-            if (isEditing) onEdit(combinedData)
-            else onSubmit(combinedData);
+            if (isEditing && 
+                formData.timeStart !== originalDepartureDate && 
+                window.confirm("You have updated the departure time to be delayed by " + ((Date.parse(formData.timeStart) - Date.parse(originalDepartureDate))/60000) + " minutes.\nThis action cannot be undone.\nAre you sure you want to continue?")) {
+                onEdit(combinedData)
+            }
+            else if (!isEditing) onSubmit(combinedData);
         }
     };
 
     const getTotalSeats = () => {
         return Object.values(formData.classDetails)
-            .reduce((sum, detail) => sum + (detail.seats || 0), 0);
+            .reduce((sum, detail) => sum + (detail.seatAmount || 0), 0);
     };
 
     return (
         <AdminModal 
             title={isEditing ? 'Flight Details' : 'Add Flight Schedule'} 
             onClose={onClose}
+            handleDelete={showDelete ? () => onDelete(flight.idFlight) : null}
             submitLabel={isEditing ? 'Confirm' : 'Submit'}
             handleSubmit={handleSubmit}
         >
@@ -269,7 +286,7 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
             <div className={styles.formGroup}>
                 <label>Airplane:</label>
                 <AircraftSearch
-                    airplanes={airplanes}
+                    airplanes={!canEdit ? airplanes : airplanes.filter(airplane => airplane.status === "Active")}
                     onSelectAircraft={onSelectAircraft}
                     inputRef={aircraftInputRef}
                     disabled={isEditing}
@@ -352,14 +369,14 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
                                         <label>Seats:</label>
                                         <input
                                             type="number"
-                                            name={`seats_${classType}`}
-                                            value={formData.classDetails[classType]?.seats || 0}
+                                            name={`seatAmount_${classType}`}
+                                            value={formData.classDetails[classType]?.seatAmount || 0}
                                             onChange={handleChange}
                                             disabled={isEditing}
                                             min="0"
-                                            max={capacity - (getTotalSeats() - (formData.classDetails[classType]?.seats || 0))}
+                                            max={capacity - (getTotalSeats() - (formData.classDetails[classType]?.seatAmount || 0))}
                                             placeholder="Number of seats"
-                                            title={`Available seats: ${capacity - (getTotalSeats() - (formData.classDetails[classType]?.seats || 0))}`}
+                                            title={`Available seats: ${capacity - (getTotalSeats() - (formData.classDetails[classType]?.seatAmount || 0))}`}
                                             required
                                         />
                                     </div>
@@ -367,8 +384,8 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, airports, air
                                         <label>Price (kVND):</label>
                                         <input
                                             type="number"
-                                            name={`price_${classType}`}
-                                            value={formData.classDetails[classType]?.price || 0}
+                                            name={`currentPrice_${classType}`}
+                                            value={formData.classDetails[classType]?.currentPrice || 0}
                                             onChange={handleChange}
                                             disabled={isEditing}
                                             min="0"

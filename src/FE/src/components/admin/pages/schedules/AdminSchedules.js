@@ -21,7 +21,7 @@ import SortControls from '../../components/SortControls/SortControls';
 const AdminSchedules = () => {
     const {getAllAirports} = useAirport();
     const {getAllAirplane} = useAirplane();
-    const {getAllFlightsAdmin, createFlight, changeInfoFlight} = useFlight();
+    const {getAllFlightsAdmin, getFlightByIdAdmin, createFlight, changeInfoFlight, deleteFlight} = useFlight();
 
     const [airports, setAirports] = useState();
     const [airplanes, setAirplanes] = useState();
@@ -51,7 +51,7 @@ const AdminSchedules = () => {
         
         const classDetailsKeys = Object.keys(formData.classDetails)
         for (var i = 0; i < classDetailsKeys.length; i++) {
-            classes[classDetailsKeys[i]].price *= 1000;
+            classes[classDetailsKeys[i]].currentPrice *= 1000;
         }
 
         const requestBody = ({
@@ -69,9 +69,22 @@ const AdminSchedules = () => {
     const handleSubmit = (formData) => {        
         const requestBody = mapFormDataToRequestBody(formData);
         
-        createFlight(requestBody).then(
-            handleRefresh()
-        )
+        createFlight(requestBody).then((response) => {
+            getFlightByIdAdmin(response.idFlight).then(flight => {
+                const newFlight = ({
+                    ...flight,
+                    status: getFlightStatus(flight)
+                })
+                setFlights(prev => [...prev, newFlight]);
+                setFilteredFlights(prev => [...prev, newFlight]);
+                console.log("---------START CREATE LOG------------");
+                console.log(newFlight);
+                console.log(flights);
+                console.log(filteredFlights);
+                console.log("---------END CREATE LOG------------")
+            })
+        })
+        setIsModalOpen(false);
     }
 
     const handleEdit = (formData) => {
@@ -100,13 +113,32 @@ const AdminSchedules = () => {
             );
             setFilteredFlights(prevFilteredFlights => 
                 prevFilteredFlights.map(flight => 
-                    flight.idFlight === formData.idFlight ? { ...flight, ...requestBody } : flight
+                    flight.idFlight === formData.idFlight ? { 
+                        ...flight, 
+                        timeStart: requestBody.timeStart,
+                        timeEnd: requestBody.timeEnd,
+                    } : flight
                 )
             );
         });
 
         setIsModalOpen(false);
         setEditingFlight(null);
+    }
+
+    const handleDelete = (idFlight) => {
+        if (window.confirm(`You are about to delete flightID: QA${idFlight}\nThis action cannot be undone.\nAre you sure sure you want to proceed?`)) {
+            deleteFlight(idFlight).then(() => {
+                setFlights(prev => 
+                    prev.filter(flight => flight.idFlight !== idFlight)
+                );
+                setFilteredFlights(prev => 
+                    prev.filter(flight => flight.idFlight !== idFlight)
+                );
+            })
+            setIsModalOpen(false);
+            setEditingFlight(null);
+        }
     }
 
     // Pagination
@@ -159,11 +191,15 @@ const AdminSchedules = () => {
     ];
 
     const defaultColumnFilters = columns.reduce((acc, col) => ({
-        ...acc, [col.key]: col.key === 'status' ? col.options : ''
+        ...acc, [col.key]: col.key === 'status' ? [FlightStatus.ONGOING] : ''
     }), {});
-    const [columnFilters, setColumnFilters] = useState({});
+    const [columnFilters, setColumnFilters] = useState(defaultColumnFilters);
     const [globalSearch, setGlobalSearch] = useState('');    
     const [loadState, setLoadState] = useState(LoadState.LOADING);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [columnFilters, globalSearch])
 
     useEffect(() => {
         handleRefresh();
@@ -174,7 +210,6 @@ const AdminSchedules = () => {
         getAllFlightsAdmin().then((data) => {
             const mappedData = data.map(flight => ({
                 ...flight,
-                flightNumber: `QA${flight.idFlight}`,
                 aircraft: `${flight.Airplane.code} ${flight.Airplane.type}`,
                 origin: `${flight.beginAirport.city} ${flight.beginAirport.code}`,
                 destination: `${flight.endAirport.city} ${flight.endAirport.code}`,
@@ -289,9 +324,9 @@ const AdminSchedules = () => {
         const classDetails = flight.ClassFlights.reduce((acc, value) => ({
             ...acc,
             [value.class]: {
-                seats: value.seatAmount,
+                seatAmount: value.seatAmount,
                 seatBooked: value.seatBooked,
-                price: value.currentPrice / 1000,
+                currentPrice: value.currentPrice / 1000,
             }
         }), {});
 
@@ -300,8 +335,8 @@ const AdminSchedules = () => {
             idAirplane: flight.idAirplane,
             beginAirportId: flight.idbeginAirport,
             endAirportId: flight.idendAirport,
-            timeStart: new Date(flight.timeStart).toISOString().slice(0, 16),
-            timeEnd: new Date(flight.timeEnd).toISOString().slice(0, 16),
+            timeStart: flight.timeStart,
+            timeEnd: flight.timeEnd,
             classTypes: flight.ClassFlights.map(cf => cf.class),
             classDetails: classDetails
         };
@@ -339,21 +374,20 @@ const AdminSchedules = () => {
                 </div>
                 <div className={styles.flightList}>
                     <div className={styles.controlsContainer}>
-                        {filteredFlights.length > pageSize && (
-                            <PaginationControl 
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                onPageChange={handlePageChange}
-                                pageSize={pageSize}
-                                pageSizeOptions={pageSizeOptions}
-                                totalItems={filteredFlights.length}
-                                onPageSizeChange={handlePageSizeChange}
-                                pageInput={pageInput}
-                                onPageInputChange={handlePageInputChange}
-                                onPageInputBlur={handlePageInputBlur}
-                                onRefresh={handleRefresh}
-                            />
-                        )}
+                        <PaginationControl 
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                            pageSize={pageSize}
+                            pageSizeOptions={pageSizeOptions}
+                            totalItems={filteredFlights.length}
+                            onPageSizeChange={handlePageSizeChange}
+                            pageInput={pageInput}
+                            onPageInputChange={handlePageInputChange}
+                            onPageInputBlur={handlePageInputBlur}
+                            onRefresh={handleRefresh}
+                        />  
+                        
                         <SortControls 
                             columns={columns}
                             sortConfig={sortConfig}
@@ -382,7 +416,8 @@ const AdminSchedules = () => {
                     onSubmit={handleSubmit}
                     onEdit={handleEdit}
                     airports={airports}
-                    airplanes={airplanes.filter(airplane => airplane.status === "Active")}
+                    airplanes={airplanes}
+                    onDelete={handleDelete}
                 />
             )}
         </div>

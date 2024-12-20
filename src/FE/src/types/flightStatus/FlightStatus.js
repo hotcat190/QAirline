@@ -1,8 +1,7 @@
 export const FlightStatus = {
-    SCHEDULED: "Scheduled",
     ONGOING: "Ongoing",
+    SCHEDULED: "Scheduled",
     COMPLETED: "Completed",
-
 }
 
 export const getFlightStatus = (flight) => {

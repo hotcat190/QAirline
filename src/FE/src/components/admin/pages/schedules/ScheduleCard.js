@@ -19,7 +19,7 @@ export const ScheduleCard = ({flight, onViewDetailsClick}) => {
     return (
         <div className={styles.flightCard}>
             <div className={styles.cardHeader}>
-                <span className={styles.flightId}>Flight Number: {flight.flightNumber}</span>
+                <span className={styles.flightId}>Flight Number: QA{flight.idFlight}</span>
                 <span className={`${styles.status} ${styles[flight.status.toLowerCase()]}`}>
                     {flight.status}
                 </span>

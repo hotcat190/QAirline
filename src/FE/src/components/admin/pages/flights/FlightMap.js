@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { Icon } from 'leaflet';
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Polyline, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { FaExpand, FaCompress, FaCrosshairs } from 'react-icons/fa';
+import { FaExpand, FaCompress, FaCrosshairs, FaPlane } from 'react-icons/fa';
 import styles from './FlightMap.module.css';
+import { Marker, Rotation } from 'react-leaflet';
 
 // Control component for resetting view
 function ResetViewControl({ center, zoom }) {
@@ -156,7 +158,7 @@ export default function FlightMap({ flights }) {
                                 <div className={styles.tooltipItem}>Flight: {flight.flightNumber}</div>
                                 <div className={styles.tooltipItem}>Arrival: {flight.arrivalTime}</div>
                             </Tooltip>
-                        </CircleMarker> 
+                        </CircleMarker>                         
                     </div>
                 ))}
             </MapContainer>

@@ -105,14 +105,27 @@
     background-color: #cc2727;
 }
 
-.modalActions button[type="button"] {
+.modalActions .cancelButton {
     background-color: #e0e0e0;
 } 
 
-.modalActions button[type="button"]:hover {
+.modalActions .cancelButton:hover {
     background-color: #cfcfcf;
 }
 
-.modalActions button[type="button"]:active {
+.modalActions .cancelButton:active {
     background-color: #b0b0b0;
+}
+
+.modalActions .deleteButton {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+    transition: all 0.2s ease;
+}
+
+.modalActions .deleteButton:hover {
+    background-color: white;
+    color: #dc3545;
+    border: 1px solid #dc3545;
 }
