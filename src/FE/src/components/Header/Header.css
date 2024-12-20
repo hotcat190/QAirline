@@ -238,6 +238,7 @@ button {
 .notification-item.unread p {
     font-size: 14px;
     margin-bottom: 10px;
+    line-height: 1.2;
 }
 
 .notification-item:hover {

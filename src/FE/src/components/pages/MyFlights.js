@@ -6,44 +6,91 @@ import ListTicket from "components/ticket/ListTicket.js";
 import Notification from "components/Notification/Notification.js";
 import { BACKEND_BASE_URL } from "services/api";
 
-const tickets = [
-  {
-    code: "QA150001-C150001-S1",
-    status: "Unpaid",
-    price: 400000,
-    ClassFlight: {
-      class: "Economy",
-      seatAmount: 150,
-      seatBooked: 1,
-      currentPrice: 400000,
-      Flight: {
-        timeStart: "2024-12-31T01:00:00.000Z",
-        timeEnd: "2024-12-31T04:00:00.000Z",
-        beginAirport: {
-          name: "Noi Bai International Airport",
-          country: "Vietnam",
-          city: "Hanoi",
-          code: "HAN",
-        },
-        endAirport: {
-          name: "Tan Son Nhat International Airport",
-          country: "Vietnam",
-          city: "Ho Chi Minh City",
-          code: "SGN",
-        },
-      },
-    },
-  },
-];
+const TicketComponent = ({ ticket }) => {
+  const string = ticket.code;
+  const seat = string.split('-').pop();
+  return (
+    <div className="ticket-container">
+      <div key={ticket.idTicket} className="ticket">
+        <div className="ticket-header">
+        <img src="img/LOGO.png" style={{width: "100px"}}/>
+        </div>
+        <div className="ticket-details">
+          <div className="flight-info">
+            <div>
+              <h4>ID FLIGHT:</h4>
+              <p>QA{ticket.ClassFlight.Flight.idFlight}</p>
+            </div>
+            <div>
+              <img src="img/mavach.png" style={{ height: "60px", width: "400px" }} />
+            </div>
+            <div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <h4>FROM:</h4>
+                <p>{ticket.ClassFlight.Flight.beginAirport.name}</p>
+                <p>({ticket.ClassFlight.Flight.beginAirport.code})</p>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <h4>TO:</h4>
+                <p>{ticket.ClassFlight.Flight.endAirport.name}</p>
+                <p>({ticket.ClassFlight.Flight.endAirport.code})</p>
+              </div>
+            </div>
+          </div>
+          <div className="time-info">
+            <div style={{ display: "flex", justifyContent: "space-between", width: "37%" }}>
+              <div>
+                <h4>DEPARTURE:</h4>
+                <p>{new Date(ticket.ClassFlight.Flight.timeStart).toLocaleString()}</p>
+              </div>
+              <div>
+                <h4>ARRIVAL:</h4>
+                <p>{new Date(ticket.ClassFlight.Flight.timeEnd).toLocaleString()}</p>
+              </div>
+              <div>
+                <h4>SEAT:</h4>
+                <p>{seat}</p>
+              </div>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", width: "29.5%" }}>
+              <div>
+                <h4>FULL NAME:</h4>
+                <p>{document.getElementById("last-name").value} {document.getElementById("first-name").value}</p>
+              </div>
+              <div>
+                <h4>CLASS:</h4>
+                <p>{ticket.ClassFlight.class}</p>
+              </div>
+              <div className="price-info">
+                <h4>PRICE:</h4>
+                <p>{ticket.price.toLocaleString()} VND</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="seat-info">
+          <p>
+            Seats Booked: {ticket.ClassFlight.seatBooked} / {ticket.ClassFlight.seatAmount}
+          </p>
+        </div>
+        <div className="ticket-header">
+        <h4 className="title-ticket" style={{fontWeight: "500"}}>The boarding gate closes 15 minutes before departure time.</h4>
+        <h4>Hotline: 1900 9099</h4>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function MyFlight() {
-  const [view, setView] = useState("form");
+  const [ view, setView ] = useState("form");
 
-  const [code, setCode] = useState("");
-  const [tickets, setTickets] = useState([]);
-
-  const [showNotification, setShowNotification] = useState(false);
-  const [loadState, setLoadState] = useState(LoadState.LOADING);
+  const [ code, setCode ] = useState("");
+  const [ tickets, setTickets ] = useState([]);
+  const [ myticket, setMyTicket ] = useState();
+  const [ showTicket, setShowTicket ] = useState(false);
+  const [ showNotification, setShowNotification ] = useState(false);
+  const [ loadState, setLoadState ] = useState(LoadState.LOADING);
 
   const getAllTickets = async () => {
     try {
@@ -70,15 +117,17 @@ function MyFlight() {
         `${BACKEND_BASE_URL}/booking/getTicketByCode?code=${code}`,
         {
           method: "GET",
-          // credentials: "include",
+          //   credentials: "include",
         }
       );
 
       if (response.ok) {
-        console.log(response);
         const result = await response.json();
+        setMyTicket(result);
+        setShowTicket(true);
       } else if (response.status === 404) {
         setShowNotification(true);
+        setShowTicket(false);
         setTimeout(() => {
           setShowNotification(false);
         }, 3000);
@@ -96,20 +145,18 @@ function MyFlight() {
         <div className="content">
           <div className="toprow-myflights">
             <button
-              className={`search-codemyflights ${
-                view === "form" ? "active-flightoption" : ""
-              }`}
+              className={`search-codemyflights ${view === "form" ? "active-flightoption" : ""
+                }`}
               onClick={() => setView("form")}
             >
               <div className="inside-codemyflights">
                 <i className="fa-solid fa-calendar-check"></i>
-                Search booking code
+                Search ticket code
               </div>
             </button>
             <button
-              className={`search-myflights ${
-                view === "noCode" ? "active-flightoption" : ""
-              }`}
+              className={`search-myflights ${view === "noCode" ? "active-flightoption" : ""
+                }`}
               onClick={() => {
                 setView("noCode");
                 getAllTickets();
@@ -125,13 +172,13 @@ function MyFlight() {
           {view === "form" ? (
             <div className="bottomrow-myflights">
               <Notification
-                message={"Don't find any booking flights with code."}
+                message={"No tickets have been found."}
                 show={showNotification}
               />
               <div className="flight-form">
-                <h2>MY BOOKED FLIGHTS</h2>
+                <h2>MY BOOKED TICKETS</h2>
                 <p>
-                  If you want to view your booked flight, change your flight
+                  If you want to view your booked ticket, change your flight
                   schedule, or purchase additional services like baggage, seat
                   selection, or meals, please fill in the information below:
                 </p>
@@ -141,7 +188,7 @@ function MyFlight() {
                       type="text"
                       id="booking-code"
                       name="booking-code"
-                      placeholder="Booking code *"
+                      placeholder="Ticket code *"
                       required
                       onChange={(event) => setCode(event.target.value)}
                     />
@@ -165,7 +212,7 @@ function MyFlight() {
                     />
                   </div>
                   <button className="search" onClick={handleSearch}>
-                    Search
+                    Search Your Ticket
                   </button>
                 </div>
               </div>
@@ -473,6 +520,7 @@ function MyFlight() {
               )}
             </div>
           )}
+          {showTicket && (<TicketComponent ticket={myticket} />)}
         </div>
       </div>
     </main>
