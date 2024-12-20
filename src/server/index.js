@@ -13,8 +13,9 @@ import airplaneRouter from "./routes/airplane.js";
 
 dotenv.config();
 
-const AWS_IP = 'https://54.169.30.97';
-const LOCALHOST = 'http://localhost:3000';
+const AWS_IP = "https://54.169.30.97";
+const LOCALHOST = "http://localhost:3000";
+const FRONTEND_APP = "https://q-airline-web.vercel.app/";
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -22,13 +23,15 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
-app.use(cookieParser())
+app.use(cookieParser());
 
-const allowedOrigins = [LOCALHOST, AWS_IP];
-app.use(cors({ 
-  origin: allowedOrigins,
-  credentials: true
-}));
+const allowedOrigins = [LOCALHOST, AWS_IP, FRONTEND_APP];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 app.get("/api", (req, res) => {
   res.send("Hello World!");
