@@ -125,6 +125,21 @@ export const logout = async (req, res) => {
 };
 
 export const sendUserInfo = async (req, res) => {
+  const user = req.user;
+  if (user.role === 'admin') {
+    const admin = await Admin.findOne({
+      where: {
+        idAdmin: user.idAdmin,
+      }
+    })
+    res.status(200).json({
+      role: 'admin',
+      username: admin.username,
+      email: admin.email,
+      phoneNumber: admin.phoneNumber,
+    })
+  }
+
   res.status(200).json({
     role: req.user.role,
     username: req.user.username,    

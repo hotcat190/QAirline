@@ -10,6 +10,7 @@ import flightRouter from "./routes/flight.js";
 import bookingRouter from "./routes/booking.js";
 import airportRouter from "./routes/airport.js";
 import airplaneRouter from "./routes/airplane.js";
+import advertisementRouter from "./routes/advertisement.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use("/api/flight", flightRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/airport", airportRouter);
 app.use("/api/airplane", airplaneRouter);
+app.use("/api/advertisement", advertisementRouter);
 
 let server = app.listen(port, () => {
   console.log("Server listen in port " + port);
