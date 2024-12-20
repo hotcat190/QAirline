@@ -46,6 +46,8 @@ function MainContent() {
   const [ departureDate, setDepartureDate ] = useState(null);
   const [ returnDate, setReturnDate ] = useState(null);
   const [ showNotification, setShowNotification ] = useState(false);
+  const [ showNoFlight, setShowNoFlight ] = useState(false);
+  const [showInvalidDate, setShowInvalidDate] = useState(false);
 
   const handleDateChange = (date, isEnd) => {
     if (isEnd) {
@@ -112,42 +114,63 @@ function MainContent() {
   };
 
   const handleSubmit = async () => {
+    const currentDate = new Date();
     if (selectedType === "roundTrip") {
       if (!idBeginAirport || !idEndAirport || !departureDate || !returnDate) {
-        setShowNotification(true); // Hiển thị thông báo
+        setShowNotification(true);
         setTimeout(() => {
-          setShowNotification(false); // Ẩn thông báo sau 3 giây
+          setShowNotification(false);
         }, 3000);
-      } else {
-        setLoading(true);
-        const startDay = departureDate.getDate();
-        const startMonth = departureDate.getMonth() + 1;
-        const startYear = departureDate.getFullYear();
-        const endDay = returnDate.getDate();
-        const endMonth = returnDate.getMonth() + 1;
-        const endYear = returnDate.getFullYear();
+        return;
+      }
 
-        const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
-        const url_backward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
+      if (departureDate < currentDate || returnDate < currentDate) {
+        setShowInvalidDate(true);
+        setTimeout(() => {
+          setShowInvalidDate(false);
+        }, 3000);
+        return;
+      }
 
-        try {
-          const response_forward = await fetch(url_forward, { method: "GET" });
-          const response_backward = await fetch(url_backward, {
-            method: "GET",
-          });
-          if (
-            (response_forward.ok || response_forward.status === 404) &&
-            (response_backward.ok || response_backward.status === 404)
-          ) {
-            const data_forward = response_forward.ok
-              ? await response_forward.json()
-              : [];
-            const data_backward = response_backward.ok
-              ? await response_backward.json()
-              : [];
-            setFlightForwardData(data_forward);
-            setFlightBackwardData(data_backward);
-            setTimeout(() => {
+      setLoading(true); // Show loading immediately
+
+      const startDay = departureDate.getDate();
+      const startMonth = departureDate.getMonth() + 1;
+      const startYear = departureDate.getFullYear();
+      const endDay = returnDate.getDate();
+      const endMonth = returnDate.getMonth() + 1;
+      const endYear = returnDate.getFullYear();
+
+      const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+      const url_backward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
+
+      try {
+        const response_forward = await fetch(url_forward, { method: "GET" });
+        const response_backward = await fetch(url_backward, { method: "GET" });
+
+        if (
+          (response_forward.ok || response_forward.status === 404) &&
+          (response_backward.ok || response_backward.status === 404)
+        ) {
+          const data_forward = response_forward.ok
+            ? await response_forward.json()
+            : [];
+          const data_backward = response_backward.ok
+            ? await response_backward.json()
+            : [];
+
+          setFlightForwardData(data_forward);
+          setFlightBackwardData(data_backward);
+
+          setTimeout(() => {
+            if (data_forward.length === 0 || data_backward.length === 0) {
+              setShowNoFlight(true); // Show the "No Flights" message
+              setLoading(false); // Stop loading when showing the message
+              setTimeout(() => {
+                setShowNoFlight(false); // Hide the message after 3 seconds
+              }, 3000);
+            } else {
+              setLoading(false); // Stop loading before navigating
               navigate("/searchflights", {
                 state: {
                   flightForwardData: data_forward,
@@ -158,65 +181,83 @@ function MainContent() {
                   passengerSummary,
                 },
               });
-            }, 3000);
-          } else {
-            setError("No flights found or an error occurred.");
-          }
-        } catch (err) {
-          setError("An error occurred: " + err.message);
-        } finally {
-          setTimeout(() => {
-            setLoading(false);
-          }, 3000);
+            }
+          }, 3000); // Ensure loading is active for 3 seconds
+        } else {
+          setError("No flights found or an error occurred.");
+          setLoading(false);
         }
+      } catch (err) {
+        setError("An error occurred: " + err.message);
+        setLoading(false);
       }
     } else {
+      // One-way trip
       if (!idBeginAirport || !idEndAirport || !departureDate) {
-        setShowNotification(true); // Hiển thị thông báo
+        setShowNotification(true);
         setTimeout(() => {
-          setShowNotification(false); // Ẩn thông báo sau 3 giây
+          setShowNotification(false);
         }, 3000);
-      } else {
-        setLoading(true);
-        const startDay = departureDate.getDate();
-        const startMonth = departureDate.getMonth() + 1;
-        const startYear = departureDate.getFullYear();
+        return;
+      }
 
-        const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+      if (departureDate < currentDate) {
+        setShowInvalidDate(true);
+        setTimeout(() => {
+          setShowInvalidDate(false);
+        }, 3000);
+        return;
+      }
 
-        try {
-          const response_forward = await fetch(url_forward, { method: "GET" });
+      setLoading(true); // Show loading immediately
 
-          if (response_forward.ok || response_forward.status === 404) {
-            const data_forward = response_forward.ok
-              ? await response_forward.json()
-              : [];
-            setFlightForwardData(data_forward);
-            setTimeout(() => {
+      const startDay = departureDate.getDate();
+      const startMonth = departureDate.getMonth() + 1;
+      const startYear = departureDate.getFullYear();
+
+      const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+
+      try {
+        const response_forward = await fetch(url_forward, { method: "GET" });
+
+        if (response_forward.ok || response_forward.status === 404) {
+          const data_forward = response_forward.ok
+            ? await response_forward.json()
+            : [];
+
+          setFlightForwardData(data_forward);
+
+          setTimeout(() => {
+            if (data_forward.length === 0) {
+              setShowNoFlight(true); // Show the "No Flights" message
+              setLoading(false); // Stop loading when showing the message
+              setTimeout(() => {
+                setShowNoFlight(false); // Hide the message after 3 seconds
+              }, 3000);
+            } else {
+              setLoading(false); // Stop loading before navigating
               navigate("/searchflights", {
                 state: {
                   flightForwardData: data_forward,
-                  // flightBackwardData: flightBackwardData,
                   startDestination,
                   endDestination,
                   selectedType,
                   passengerSummary,
                 },
               });
-            }, 3000);
-          } else {
-            setError("No flights found or an error occurred.");
-          }
-        } catch (err) {
-          setError("An error occurred: " + err.message);
-        } finally {
-          setTimeout(() => {
-            setLoading(false);
-          }, 3000);
+            }
+          }, 3000); // Ensure loading is active for 3 seconds
+        } else {
+          setError("No flights found or an error occurred.");
+          setLoading(false);
         }
+      } catch (err) {
+        setError("An error occurred: " + err.message);
+        setLoading(false);
       }
     }
   };
+
 
   return (
     <div className="main-content">
@@ -232,6 +273,14 @@ function MainContent() {
       <Notification
         message="Please fill in all fields"
         show={showNotification}
+      />
+      <Notification
+        message="We have no flights for your option"
+        show={showNoFlight}
+      />
+      <Notification
+        message="Please select a valid date"
+        show={showInvalidDate}
       />
       <div className="content">
         <div className="main-leftcontent">

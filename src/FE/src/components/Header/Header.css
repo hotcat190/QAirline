@@ -238,6 +238,7 @@ button {
 .notification-item.unread p {
     font-size: 14px;
     margin-bottom: 10px;
+    line-height: 1.2;
 }
 
 .notification-item:hover {
@@ -254,7 +255,8 @@ button {
     position: absolute;
     top: -5px;
     right: -5px;
-    background: red;
+    background: rgb(224, 54, 54);
+    padding-left: 1px;
     height: 20px;
     width: 20px;
     display: flex;
