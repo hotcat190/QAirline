@@ -30,6 +30,10 @@ export const getAllFlights = async (req, res) => {
           model: ClassFlight,
           as: "ClassFlights",
         },
+        {
+          model: Airplane,
+          attributes: ["type"],
+        },
       ],
     });
 
@@ -39,6 +43,7 @@ export const getAllFlights = async (req, res) => {
 
         flight.ClassFlights.forEach((classFlight) => {
           flightClasses[classFlight.class] = {
+            idClassFlight: classFlight.idClassFlight,
             seatAmount: classFlight.seatAmount,
             seatBooked: classFlight.seatBooked,
             currentPrice: classFlight.currentPrice,
@@ -58,6 +63,7 @@ export const getAllFlights = async (req, res) => {
             name: flight.endAirport.name,
           },
           idAirplane: flight.idAirplane,
+          codeAirplane: flight.Airplane.type,
           classes: flightClasses,
         };
       });
@@ -104,6 +110,10 @@ export const getFlightByTimeAndAirport = async (req, res) => {
           model: ClassFlight,
           as: "ClassFlights",
         },
+        {
+          model: Airplane,
+          attributes: ["type"],
+        },
       ],
     });
 
@@ -113,6 +123,7 @@ export const getFlightByTimeAndAirport = async (req, res) => {
 
         flight.ClassFlights.forEach((classFlight) => {
           flightClasses[classFlight.class] = {
+            idClassFlight: classFlight.idClassFlight,
             seatAmount: classFlight.seatAmount,
             seatBooked: classFlight.seatBooked,
             currentPrice: classFlight.currentPrice,
@@ -132,6 +143,7 @@ export const getFlightByTimeAndAirport = async (req, res) => {
             name: flight.endAirport.name,
           },
           idAirplane: flight.idAirplane,
+          codeAirplane: flight.Airplane.type,
           classes: flightClasses,
         };
       });
@@ -167,6 +179,10 @@ export const getInfoFlight = async (req, res) => {
         {
           model: ClassFlight,
         },
+        {
+          model: Airplane,
+          attributes: ["type"],
+        },
       ],
     });
     if (flight) {
@@ -183,11 +199,13 @@ export const getInfoFlight = async (req, res) => {
           name: flight.endAirport.name,
         },
         idAirplane: flight.idAirplane,
+        codeAirplane: flight.Airplane.type,
         classes: {},
       };
 
       flight.ClassFlights.forEach((classFlight) => {
         flightData.classes[classFlight.class] = {
+          idClassFlight: classFlight.idClassFlight,
           seatAmount: classFlight.seatAmount,
           seatBooked: classFlight.seatBooked,
           currentPrice: classFlight.currentPrice,
@@ -261,7 +279,7 @@ export const createFlight = async (req, res) => {
   }
 };
 
-const sendNotification = async (idFlight, content, type) => {
+const sendNotification = async (idFlight, content) => {
   try {
     const customers = await Customer.findAll({
       attributes: ["idCustomer"],
@@ -286,7 +304,7 @@ const sendNotification = async (idFlight, content, type) => {
     const notifications = customers.map(async (customer) => {
       await Notification.create({
         content,
-        type,
+        type: "flight",
         idCustomer: customer.idCustomer,
       });
     });
@@ -387,7 +405,7 @@ export const changeInfoFlight = async (req, res) => {
     if (idAirplane) content += `Đã thay đổi thông tin của máy bay.\n`;
     if (classes) content += `Đã thay đổi thông tin về các hạng ghế.\n`;
 
-    sendNotification(idFlight, content, "flight");
+    sendNotification(idFlight, content);
     res.json({ message: "Flight information updated successfully." });
   } catch (err) {
     await transaction.rollback();

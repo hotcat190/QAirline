@@ -1,21 +1,60 @@
 import { col } from "sequelize";
 import { sequelize } from "../models/config.model.js";
-import { ClassFlight, Ticket, Flight, Airport, Customer } from "../models/model.js";
 
+import {
+  ClassFlight,
+  Ticket,
+  Flight,
+  Airport,
+  Notification,
+} from "../models/model.js";
+
+const sendNotification = async (
+  idCustomer,
+  className,
+  idFlight,
+  amount,
+  tickets
+) => {
+  try {
+    const ticketCodes = tickets.map((ticket) => ticket.code).join(", ");
+
+    const content = `Bạn đã đặt thành công chuyến bay có số hiệu QA${idFlight} hạng vé ${className} với tổng số ${amount} vé. Mã vé của bạn: ${ticketCodes}`;
+
+    await Notification.create({
+      content,
+      type: "ticket",
+      idCustomer,
+    });
+  } catch (error) {
+    console.error("Error creating notification:", error);
+    res.status(500).json({
+      message: "Đặt vé thành công nhưng không thể gửi thông báo.",
+    });
+  }
+};
 export const bookTicket = async (req, res) => {
   const { idCustomer } = req.user;
-  const { idClassFlight, amount } = req.body;
+  let { idClassFlight, amount } = req.body;
 
   if (!idClassFlight) {
     return res.status(400).json({ message: "idClassFlight is required." });
   }
+
+  amount = amount || 1;
 
   const transaction = await sequelize.transaction();
 
   try {
     const classFlight = await ClassFlight.findOne({
       where: { idClassFlight },
-      attributes: ["seatBooked", "seatAmount", "currentPrice"],
+      attributes: [
+        "class",
+        "seatBooked",
+        "seatAmount",
+        "currentPrice",
+        "idFlight",
+      ],
       transaction,
     });
 
@@ -23,12 +62,22 @@ export const bookTicket = async (req, res) => {
       throw new Error("Hạng vé không tồn tại.");
     }
 
-    const { seatBooked, seatAmount, currentPrice } = classFlight;
+    const {
+      class: className,
+      seatBooked,
+      seatAmount,
+      currentPrice,
+      idFlight,
+    } = classFlight;
 
     if (seatBooked === seatAmount) {
-      throw new Error("Không còn ghế trống trong hạng vé này.");
+      await transaction.rollback();
+      return res
+        .status(409)
+        .send({ message: "Không còn ghế trống trong hạng vé này." });
     } else if (seatBooked + amount > seatAmount) {
-      throw new Error("Số ghế còn lại không đủ.");
+      await transaction.rollback();
+      return res.status(409).send({ message: "Số ghế còn lại không đủ." });
     }
 
     const [updateResult] = await ClassFlight.update(
@@ -45,10 +94,13 @@ export const bookTicket = async (req, res) => {
       throw new Error("Không thể cập nhật số lượng ghế.");
     }
 
-    const ticketsData = Array.from({ length: amount }, () => ({
+    const ticketsData = Array.from({ length: amount }, (_, i) => ({
       idClassFlight,
       idCustomer,
-      price: currentPrice,
+      price: classFlight.currentPrice,
+      code: `QA${classFlight.idFlight}-C${idClassFlight}-S${
+        classFlight.seatBooked + i + 1
+      }`,
     }));
 
     // Tạo tất cả vé trong một lần
@@ -57,11 +109,11 @@ export const bookTicket = async (req, res) => {
       returning: true,
     });
 
-    // Lấy danh sách ID từ các vé đã tạo
     const ticketId = tickets.map((ticket) => ticket.idTicket);
 
     await transaction.commit();
 
+    sendNotification(idCustomer, className, idFlight, amount, tickets);
     res.status(201).json({
       message: "Đặt vé thành công.",
       ticketId: ticketId,
@@ -80,37 +132,26 @@ export const getTicketByCode = async (req, res) => {
 
   try {
     const infoTicket = await Ticket.findOne({
-      attributes: [
-        "idTicket",
-        [col("classFlight.idclassFlight"), "idClassFlight"],
-        [col("classFlight.class"), "class"],
-        "code",
-        "price",
-        "status",
-        "created_at",
-        [col("ClassFlight.Flight.timeStart"), "timeStart"],
-        [col("ClassFlight.Flight.beginAirport.name"), "airportBeginName"],
-        [col("ClassFlight.Flight.endAirport.name"), "airportEndName"],
-      ],
       where: { code },
+      attributes: ["idTicket", "code", "status", "price"], // Chỉ lấy các thuộc tính cần thiết
       include: [
         {
           model: ClassFlight,
-          required: true,
+          attributes: ["class", "seatAmount", "seatBooked", "currentPrice"], // Chỉ lấy các trường cần thiết
           include: [
             {
               model: Flight,
-              required: true,
+              attributes: ["idFlight", "timeStart", "timeEnd"], // Chỉ lấy thời gian bắt đầu và kết thúc
               include: [
                 {
                   model: Airport,
-                  required: true,
                   as: "beginAirport",
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
                 },
                 {
                   model: Airport,
-                  required: true,
                   as: "endAirport",
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
                 },
               ],
             },
@@ -118,6 +159,9 @@ export const getTicketByCode = async (req, res) => {
         },
       ],
     });
+    if (!infoTicket || infoTicket.length === 0) {
+      return res.status(404).send("Don't find any booking flights with code.");
+    }
     res.send(infoTicket);
   } catch (err) {
     res.status(500).send(err.message);
@@ -131,36 +175,36 @@ export const getAllTickets = async (req, res) => {
         {
           model: ClassFlight,
           required: true,
-          attributes: ['class'],
+          attributes: ["class"],
           include: [
             {
               model: Flight,
               required: true,
-              attributes: ['idFlight', 'timeStart'],
+              attributes: ["idFlight", "timeStart"],
               include: [
                 {
                   model: Airport,
-                  as: 'beginAirport',
-                  attributes: ['city'],
+                  as: "beginAirport",
+                  attributes: ["city"],
                 },
                 {
                   model: Airport,
-                  as: 'endAirport',
-                  attributes: ['city'],
+                  as: "endAirport",
+                  attributes: ["city"],
                 },
-              ]
+              ],
             },
-          ]
+          ],
         },
         {
           model: Customer,
           required: true,
-          attributes: ['username']
-        }
-      ]
-    }).then(ticket => ticket.flat(1));
+          attributes: ["username"],
+        },
+      ],
+    }).then((ticket) => ticket.flat(1));
     res.send(tickets);
   } catch (err) {
     res.status(500).send(err.message);
   }
-}
+};

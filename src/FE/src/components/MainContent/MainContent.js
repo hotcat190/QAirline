@@ -3,287 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./MainContent.css";
 import AirportSearch from "./AirportSearch.js";
 import DatePicker from "./DatePicker";
-import Notification from '../Notification/Notification';
-
-const PassengerSelector = ({ onPassengerChange }) => {
-  const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
-  const [ passengers, setPassengers ] = useState({
-    adults: 1,
-    children: 0,
-    infants: 0,
-  });
-
-  const MAX_PASSENGERS = 9; // Giới hạn tổng số hành khách
-  const MIN_PASSENGERS = 1; // Giới hạn tối thiểu (>= 1)
-
-  // Tính tổng số hành khách
-  const getTotalPassengers = () => {
-    return passengers.adults + passengers.children + passengers.infants;
-  };
-
-  // Hàm toggle hiển thị dropdown
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
-
-  const handleIncrement = (type) => {
-    if (getTotalPassengers() < MAX_PASSENGERS) {
-      setPassengers((prev) => {
-        const updatedPassengers = { ...prev, [ type ]: prev[ type ] + 1 };
-        onPassengerChange(updatedPassengers);
-        return updatedPassengers;
-      });
-    }
-  };
-
-  const handleDecrement = (type) => {
-    if (getTotalPassengers() > MIN_PASSENGERS) {
-      setPassengers((prev) => {
-        const updatedPassengers = {
-          ...prev,
-          [ type ]: Math.max(prev[ type ] - 1, 0),
-        };
-        onPassengerChange(updatedPassengers);
-        return updatedPassengers;
-      });
-    }
-  };
-
-
-  const getPassengerSummary = () => {
-    const { adults, children, infants } = passengers;
-    let summary = `${adults} adults`;
-    if (children > 0) summary += `, ${children} children`;
-    if (infants > 0) summary += `, ${infants} infants`;
-    return summary;
-  };
-
-  return (
-    <div style={{ width: "100%", position: "relative" }}>
-      <div
-        onClick={toggleDropdown}
-        style={{
-          padding: "10px",
-          border: "1px solid #ccc",
-          borderRadius: "10px",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          backgroundColor: "white",
-          height: "40px",
-        }}
-      >
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
-          <path
-            d="M8.5 0C9.62717 0 10.7082 0.447766 11.5052 1.2448C12.3022 2.04183 12.75 3.12283 12.75 4.25C12.75 5.37717 12.3022 6.45817 11.5052 7.2552C10.7082 8.05223 9.62717 8.5 8.5 8.5C7.37283 8.5 6.29183 8.05223 5.4948 7.2552C4.69777 6.45817 4.25 5.37717 4.25 4.25C4.25 3.12283 4.69777 2.04183 5.4948 1.2448C6.29183 0.447766 7.37283 0 8.5 0ZM8.5 10.625C13.1962 10.625 17 12.5269 17 14.875V17H0V14.875C0 12.5269 3.80375 10.625 8.5 10.625Z"
-            fill="#333333"
-          ></path>
-        </svg>
-        <span style={{ marginLeft: "10px", fontSize: "14px" }}>
-          {getPassengerSummary()}
-        </span>
-        <span style={{ marginLeft: "auto" }}>▼</span>
-      </div>
-
-      {isDropdownOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: "100%",
-            left: "0",
-            width: "100%",
-            background: "#fff",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            padding: "10px",
-            zIndex: 30,
-          }}
-        >
-          <div style={{ marginBottom: "20px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div className="adult-container" style={{ display: "flex" }}>
-                <div className="adult-image">
-                  <img src="img/adult.svg" />
-                </div>
-                <div
-                  className="people-des"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "2px",
-                  }}
-                >
-                  <span
-                    style={{
-                      textAlign: "left",
-                      fontSize: "12px",
-                      fontWeight: "550",
-                    }}
-                  >
-                    Adult
-                  </span>
-                  <span style={{ textAlign: "left", fontSize: "12px" }}>
-                    More than 12 years old
-                  </span>
-                </div>
-              </div>
-              <div>
-                <button
-                  className="people-button"
-                  onClick={() => handleDecrement("adults")}
-                >
-                  -
-                </button>
-                <span
-                  style={{
-                    display: "inline-block",
-                    margin: "0px 10px",
-                    width: "10px",
-                  }}
-                >
-                  {passengers.adults}
-                </span>
-                <button
-                  onClick={() => handleIncrement("adults")}
-                  className="people-button"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-          <div style={{ marginBottom: "20px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div className="children-container" style={{ display: "flex" }}>
-                <div className="children-image">
-                  <img src="img/children.svg" />
-                </div>
-                <div
-                  className="people-des"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "2px",
-                  }}
-                >
-                  <span
-                    style={{
-                      textAlign: "left",
-                      fontSize: "12px",
-                      fontWeight: "550",
-                    }}
-                  >
-                    Children
-                  </span>
-                  <span style={{ textAlign: "left", fontSize: "12px" }}>
-                    2-11 years old
-                  </span>
-                </div>
-              </div>
-              <div>
-                <button
-                  onClick={() => handleDecrement("children")}
-                  className="people-button"
-                >
-                  -
-                </button>
-                <span
-                  style={{
-                    display: "inline-block",
-                    margin: "0px 10px",
-                    width: "10px",
-                  }}
-                >
-                  {passengers.children}
-                </span>
-                <button
-                  onClick={() => handleIncrement("children")}
-                  className="people-button"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div className="infant-container" style={{ display: "flex" }}>
-                <div className="infant-image">
-                  <img src="img/infant.svg" />
-                </div>
-                <div
-                  className="people-des"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "2px",
-                  }}
-                >
-                  <span
-                    style={{
-                      textAlign: "left",
-                      fontSize: "12px",
-                      fontWeight: "550",
-                    }}
-                  >
-                    Infant
-                  </span>
-                  <span style={{ textAlign: "left", fontSize: "12px" }}>
-                    less than 2 years old
-                  </span>
-                </div>
-              </div>
-              <div>
-                <button
-                  onClick={() => handleDecrement("infants")}
-                  className="people-button"
-                >
-                  -
-                </button>
-                <span
-                  style={{
-                    display: "inline-block",
-                    margin: "0px 10px",
-                    width: "10px",
-                  }}
-                >
-                  {passengers.infants}
-                </span>
-                <button
-                  onClick={() => handleIncrement("infants")}
-                  className="people-button"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+import Notification from "../Notification/Notification";
+import PassengerSelector from "./PassengerSelector";
+import { BACKEND_BASE_URL } from "services/api";
 
 function MainContent() {
-
   const [ passengerData, setPassengerData ] = useState({
     adults: 1,
     children: 0,
@@ -307,9 +31,9 @@ function MainContent() {
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
-  const [ flightForwardData, setFlightForwardData ] = useState(null);
-  const [ flightBackwardData, setFlightBackwardData ] = useState(null);
-  const [ loading, setLoading ] = useState(true);
+  const [ flightForwardData, setFlightForwardData ] = useState([]);
+  const [ flightBackwardData, setFlightBackwardData ] = useState([]);
+  const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
   const [ selectedType, setSelectedType ] = useState("roundTrip");
   const [ airports, setAirports ] = useState([]);
@@ -337,7 +61,7 @@ function MainContent() {
   useEffect(() => {
     const fetchAirport = async () => {
       try {
-        const res = await fetch("https://qairline.onrender.com/api/airport/", {
+        const res = await fetch(`${BACKEND_BASE_URL}/airport/`, {
           method: "GET",
         });
         if (res.ok) {
@@ -348,7 +72,7 @@ function MainContent() {
               acc[ airport.idairport ] = airport.city;
               return acc;
             }, {})
-          )
+          );
         } else {
           throw new Error("Failed to fetch airport data!");
         }
@@ -374,8 +98,8 @@ function MainContent() {
 
   const handleFlightTypeChange = (type) => {
     setSelectedType(type);
-    const returnDate = document.querySelector('.input-enddate');
-    const endDes = document.querySelector('.input-enddes');
+    const returnDate = document.querySelector(".input-enddate");
+    const endDes = document.querySelector(".input-enddes");
     if (type === "oneWay") {
       returnDate.classList.add("hidden-return");
       endDes.classList.add("hidden-end");
@@ -388,7 +112,6 @@ function MainContent() {
   };
 
   const handleSubmit = async () => {
-
     if (selectedType === "roundTrip") {
       if (!idBeginAirport || !idEndAirport || !departureDate || !returnDate) {
         setShowNotification(true); // Hiển thị thông báo
@@ -396,6 +119,7 @@ function MainContent() {
           setShowNotification(false); // Ẩn thông báo sau 3 giây
         }, 3000);
       } else {
+        setLoading(true);
         const startDay = departureDate.getDate();
         const startMonth = departureDate.getMonth() + 1;
         const startYear = departureDate.getFullYear();
@@ -403,31 +127,48 @@ function MainContent() {
         const endMonth = returnDate.getMonth() + 1;
         const endYear = returnDate.getFullYear();
 
-        const url_forward = `https://qairline.onrender.com/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
-        const url_backward = `https://qairline.onrender.com/api/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
+        const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+        const url_backward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${endDay}&month=${endMonth}&year=${endYear}&idBeginAirport=${idEndAirport}&idEndAirport=${idBeginAirport}`;
 
         try {
           const response_forward = await fetch(url_forward, { method: "GET" });
-          const response_backward = await fetch(url_backward, { method: "GET" });
-          if (response_forward.ok && response_backward.ok) {
-            const data_forward = await response_forward.json();
-            const data_backward = await response_backward.json();
+          const response_backward = await fetch(url_backward, {
+            method: "GET",
+          });
+          if (
+            (response_forward.ok || response_forward.status === 404) &&
+            (response_backward.ok || response_backward.status === 404)
+          ) {
+            const data_forward = response_forward.ok
+              ? await response_forward.json()
+              : [];
+            const data_backward = response_backward.ok
+              ? await response_backward.json()
+              : [];
             setFlightForwardData(data_forward);
             setFlightBackwardData(data_backward);
-
-            navigate("/searchflights", {
-              state: { flightForwardData: data_forward, flightBackwardData: data_backward, startDestination, endDestination, selectedType, passengerSummary },
-            });
+            setTimeout(() => {
+              navigate("/searchflights", {
+                state: {
+                  flightForwardData: data_forward,
+                  flightBackwardData: data_backward,
+                  startDestination,
+                  endDestination,
+                  selectedType,
+                  passengerSummary,
+                },
+              });
+            }, 3000);
           } else {
             setError("No flights found or an error occurred.");
           }
         } catch (err) {
           setError("An error occurred: " + err.message);
         } finally {
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 3000);
         }
-
-
       }
     } else {
       if (!idBeginAirport || !idEndAirport || !departureDate) {
@@ -436,28 +177,42 @@ function MainContent() {
           setShowNotification(false); // Ẩn thông báo sau 3 giây
         }, 3000);
       } else {
+        setLoading(true);
         const startDay = departureDate.getDate();
         const startMonth = departureDate.getMonth() + 1;
         const startYear = departureDate.getFullYear();
 
-        const url_forward = `https://qairline.onrender.com/api/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
+        const url_forward = `${BACKEND_BASE_URL}/flight/searchFlight?day=${startDay}&month=${startMonth}&year=${startYear}&idBeginAirport=${idBeginAirport}&idEndAirport=${idEndAirport}`;
 
         try {
           const response_forward = await fetch(url_forward, { method: "GET" });
 
-          if (response_forward.ok) {
-            const data_forward = await response_forward.json();
+          if (response_forward.ok || response_forward.status === 404) {
+            const data_forward = response_forward.ok
+              ? await response_forward.json()
+              : [];
             setFlightForwardData(data_forward);
-            navigate("/searchflights", {
-              state: { flightForwardData: data_forward, flightBackwardData: flightBackwardData, startDestination, endDestination, selectedType, passengerSummary },
-            });
+            setTimeout(() => {
+              navigate("/searchflights", {
+                state: {
+                  flightForwardData: data_forward,
+                  // flightBackwardData: flightBackwardData,
+                  startDestination,
+                  endDestination,
+                  selectedType,
+                  passengerSummary,
+                },
+              });
+            }, 3000);
           } else {
             setError("No flights found or an error occurred.");
           }
         } catch (err) {
           setError("An error occurred: " + err.message);
         } finally {
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 3000);
         }
       }
     }
@@ -465,6 +220,15 @@ function MainContent() {
 
   return (
     <div className="main-content">
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-container">
+            <img src="img/loading.gif" alt="Loading" />
+            <p>Searching...</p>
+          </div>
+        </div>
+      )}
+
       <Notification
         message="Please fill in all fields"
         show={showNotification}
@@ -572,7 +336,13 @@ function MainContent() {
                     />
                   </div>
 
-                  <DatePicker type="Departure Date" ref={startDatePickerRef} nextInputRef={endAirportInputRef} isEnd={false} onDateChange={handleDateChange} />
+                  <DatePicker
+                    type="Departure Date"
+                    ref={startDatePickerRef}
+                    nextInputRef={endAirportInputRef}
+                    isEnd={false}
+                    onDateChange={handleDateChange}
+                  />
                 </div>
 
                 <div className="flight-search-bar input-enddes">
@@ -606,7 +376,13 @@ function MainContent() {
                     />
                   </div>
 
-                  <DatePicker type="Return Date" ref={endDatePickerRef} nextInputRef={null} isEnd={true} onDateChange={handleDateChange} />
+                  <DatePicker
+                    type="Return Date"
+                    ref={endDatePickerRef}
+                    nextInputRef={null}
+                    isEnd={true}
+                    onDateChange={handleDateChange}
+                  />
                 </div>
 
                 <PassengerSelector onPassengerChange={handlePassengerChange} />
@@ -623,9 +399,11 @@ function MainContent() {
         <div className="main-rightcontent">
           <img src="img/plane.svg" alt="" className="plane" width="110px" />
           <img src="img/cloud.svg" alt="" width="100px" className="cloud" />
+          <img src="img/plane.gif" alt="" width="100px" className="plane-gif1" />
+          <img src="img/plane.gif" alt="" width="100px" className="plane-gif2" />
           <img
             className="person"
-            src="img/main_image.jpeg"
+            src="img/test.jpeg"
             alt=""
             width="425px"
           />

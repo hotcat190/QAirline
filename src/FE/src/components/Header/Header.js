@@ -1,63 +1,182 @@
-import React from 'react';
-import * as rd from 'react-router-dom'
-
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'contexts/AuthContext';
-
+import { FaBell } from 'react-icons/fa';
 import './Header.css';
 
-const UserAvatar = () => {  
-  const { user, logout } = useAuth();
-  const [showDropdown, setShowDropdown] = React.useState(false);
-  const navigate = rd.useNavigate();
+const Notification = () => {
+  const [ notifications, setNotifications ] = useState([]);
+  const [ unreadCount, setUnreadCount ] = useState(0);
+  const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
+  const [ error, setError ] = useState(null);
 
-  function handleLogout() {
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const url = 'https://qairline.onrender.com/api/user/getNotification';
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setNotifications(data);
+          const unread = data.filter((notification) => notification.unRead).length;
+          setUnreadCount(unread);
+        } else {
+          throw new Error('Unexpected response format');
+        }
+      } catch (err) {
+        console.error('Error fetching notifications:', err);
+        setError(err.message);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+
+  return (
+    <div className="notification-container">
+      <div className="notification-icon" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+        <div
+          className="chuong"
+        >
+          <FaBell className="icon-chuong" />
+          {unreadCount > 0 && (
+            <span
+              className="notification-count"
+
+            >
+              {unreadCount}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {isDropdownOpen && (<div className="notification-dropdown">
+        {error ? (
+          <p className="error-message" style={{ color: 'red' }}>
+            Error: {error}
+          </p>
+        ) : notifications.length > 0 ? (
+          notifications.map((notification, index) => (
+            <div
+              key={index}
+              className={`notification-item ${notification.unRead ? 'unread' : ''}`}
+            >
+              <p>{notification.content}</p>
+              <span className="notification-time">
+                {new Date(notification.create_at).toLocaleString()}
+              </span>
+            </div>
+          ))
+        ) : (
+          <p className="no-notifications">No notifications</p>
+        )}
+      </div>
+      )
+      }
+    </div>
+  );
+};
+
+const UserDropdown = ({ avatar, setAvatar }) => {
+  const { user, logout } = useAuth();
+  const [ showDropdown, setShowDropdown ] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
     setShowDropdown(false);
     if (logout()) {
       navigate('/');
       window.location.reload();
     }
-  }
+  };
 
   return (
     <div className="dropdown-container">
-      <img className="user-avatar" id="user-avatar" alt="User" src="img/default_avatar.png" onClick={() => setShowDropdown(!showDropdown)}/>
+      {/* Avatar */}
+      <img
+        src={avatar || "img/default_avatar.png"}  // Cập nhật avatar khi có thay đổi
+        alt="User Avatar"
+        className="user-avatar"
+        onClick={() => setShowDropdown(!showDropdown)}
+      />
+
+      {/* Dropdown */}
       {showDropdown && (
-      <div className="dropdown-menu">
-        {user.role === "admin" ? (
-          <rd.Link to="/admin" onClick={() => setShowDropdown(false)}>Admin</rd.Link> 
-        ) : (
-          <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
-        )}
-        <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
-        <div onClick={handleLogout}>Logout</div>
-      </div>
+        <div className="dropdown-menu">
+          {/* Header Info */}
+          <div className="dropdown-header">
+            <img src={avatar || "img/default_avatar.png"} alt="Avatar" className="dropdown-avatar" />
+            <div className="dropdown-user-info">
+              <span className="dropdown-name">{user.name || 'Hoàng Vũ Lê'}</span>
+              <span className="dropdown-username">@{user.username || 'lehoangvu6'}</span>
+            </div>
+          </div>
+
+          {/* Links */}
+          <ul className="dropdown-links">
+            <li>
+              <Link to="/profile" onClick={() => setShowDropdown(false)}>
+                Profile
+              </Link>
+            </li>
+            <li>
+              <Link to="/write-blog" onClick={() => setShowDropdown(false)}>
+                Write Blogs
+              </Link>
+            </li>
+            <li>
+              <Link to="/my-posts" onClick={() => setShowDropdown(false)}>
+                My Blogs
+              </Link>
+            </li>
+            <li>
+              <Link to="/settings" onClick={() => setShowDropdown(false)}>
+                Settings
+              </Link>
+            </li>
+            <li onClick={handleLogout} className="logout">
+              Sign out
+            </li>
+          </ul>
+        </div>
       )}
     </div>
   );
-}
+};
 
-function Header() {
+const Header = () => {
   const { user } = useAuth();
+  const [ avatar, setAvatar ] = useState('img/default_avatar.png');  // Thêm state avatar
 
-  function openSignin() {
+  const openSignin = () => {
     document.querySelector('.overlay').style.display = 'block';
     const signinForm = document.querySelector('.signin-form');
     signinForm.style.display = 'flex';
-    setTimeout(() => {
-      signinForm.classList.add("showSign");
-    }, 10);
+    setTimeout(() => signinForm.classList.add('showSign'), 10);
     document.body.classList.add('no-scroll');
-  }
+  };
 
-  function openSignup() {
+  const openSignup = () => {
     document.querySelector('.overlay').style.display = 'block';
     const signupForm = document.querySelector('.signup-form');
     signupForm.style.display = 'flex';
-    setTimeout(() => {
-      signupForm.classList.add("showSign");
-    }, 10);
+    setTimeout(() => signupForm.classList.add('showSign'), 10);
     document.body.classList.add('no-scroll');
-  }
+  };
 
   return (
     <header className="fixed-header">
@@ -70,49 +189,49 @@ function Header() {
               />
             </svg>
           </label>
-          <rd.Link to="/">
-            <img className="logo" id="logo" src="img/LOGO.png" alt="Besnik." />
-          </rd.Link>
+          {/* Logo */}
+          <Link to="/">
+            <img className="logo" src="img/LOGO.png" alt="Logo" />
+          </Link>
 
+          {/* Navigation Links */}
           <ul id="pc-nav">
-            <li><rd.Link to="/">Home</rd.Link></li>
-            <li><rd.Link to="/myflights">My flights</rd.Link></li>
-            <li><rd.Link to="/news">News</rd.Link></li>
-            <li><rd.Link to="/destination">Destinations</rd.Link></li>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/myflights">My Flights</Link>
+            </li>
+            <li>
+              <Link to="/news">News</Link>
+            </li>
+            <li>
+              <Link to="/destination">Destinations</Link>
+            </li>
           </ul>
-          <div className="actions">            
-          {user ? (
-//             <div className="actions">
-//               <div className="dropdown-container">
-//                 <img className="user-avatar" id="user-avatar" alt="User" src="img/default_avatar.png" onClick={() => setShowDropdown(!showDropdown)}/>
-//                 {showDropdown && (
-//                   <div className="dropdown-menu">
-//                     <rd.Link to="/profile" onClick={() => setShowDropdown(false)}>Profile</rd.Link>
-//                     <rd.Link to="/settings" onClick={() => setShowDropdown(false)}>Settings</rd.Link>
-//                     <button onClick={handleLogout}>Logout</button>
-//                   </div>
-//                 )}
-//               </div>
-//             </div>
-//           ) : (
-//             <div className="actions">
-//               <button className="action-link" onClick={openSignup}>Sign up</button>
-//               <button className="btn action-btn" onClick={openSignin}>Sign in</button>
-//             </div>
-//           )}
 
-            <UserAvatar />
+          {/* Actions */}
+          <div className="actions">
+            {user ? (
+              <>
+                <Notification />
+                <UserDropdown avatar={avatar} setAvatar={setAvatar} />
+              </>
             ) : (
-            <>
-              <a href="#!" className="action-link" onClick={openSignup}>Sign up</a>
-              <a href="#!" className="btn action-btn" onClick={openSignin}>Sign in</a>
-            </>
+              <>
+                <button className="action-link" onClick={openSignup}>
+                  Sign up
+                </button>
+                <button className="btn action-btn" onClick={openSignin}>
+                  Sign in
+                </button>
+              </>
             )}
           </div>
         </nav>
       </div>
     </header>
   );
-}
+};
 
 export default Header;

@@ -1,0 +1,270 @@
+.ticket-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  padding-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px; /* Độ rộng của card */
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+
+.ticket-card:hover {
+  border-color: #ff4d4f;
+  box-shadow: 0 2px 4px rgba(255, 77, 79, 0.1);
+}
+
+.ticket-card.selected {
+  border: 2px solid #ff4d4f;
+  /* padding: 15px; */
+  background-color: #fff1f0;
+}
+
+.airport-code,
+.city-name,
+.airport-info,
+.date,
+.time,
+.flight-time,
+.total-price {
+  display: flex;
+  justify-content: space-between; /* Căn đều hai bên */
+  align-items: center;
+  margin: 0px;
+  text-align: left;
+}
+
+.airport-code div,
+.time div {
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px; /* 160% */
+}
+
+.city-name,
+.airport-info,
+.flight-time,
+.date {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19px; /* 146.154% */
+}
+
+.flight-time {
+  opacity: 0.5;
+}
+
+.right {
+  text-align: right;
+}
+
+.flight {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.total-price {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: end;
+  color: black;
+  margin-top: 10px;
+}
+
+.dot-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin: 15px 0px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.start-dot {
+  position: absolute;
+  left: 5px; /* Adjust to left side */
+}
+
+.end-dot {
+  position: absolute;
+  right: 5px; /* Adjust to right side */
+}
+
+.plane-icon {
+  width: 43px;
+  height: 43px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.start-overlay,
+.end-overlay {
+  width: 20px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.start-overlay {
+  position: absolute;
+  left: 0;
+}
+
+.end-overlay {
+  position: absolute;
+  right: 0;
+}
+
+.line {
+  width: 95%;
+  border-top: 2px dotted black;
+  position: absolute;
+  /* top: 50%;
+  transform: translateY(-50%); */
+  margin: 0px 10px;
+  z-index: 1;
+}
+
+.line-solid {
+  border-top: 0.5px solid black;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+div.paid {
+  padding: 5px 12px;
+  transform: translate(50%);
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 500;
+  background-color: #cdfde4;
+  color: #00a854;
+}
+
+div.unpaid {
+  margin: 0 auto;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 500;
+  background-color: #fae8c3;
+  color: #f8860b;
+}
+
+.action-box {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(-20px);
+  max-height: 0;
+  padding: 0px 10px;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out,
+    max-height 0.3s ease-in-out;
+}
+
+.action-box.show {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 150px;
+}
+
+.action-box.hide {
+  opacity: 0;
+  transform: translateY(-20px);
+  max-height: 0;
+}
+
+.action-box .btn {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Căn giữa icon và text */
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+  color: white; /* Màu chữ */
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.action-box .btn i {
+  font-size: 18px;
+}
+
+.action-box .btn span {
+  position: absolute; /* Để căn chỉnh text chính xác */
+  opacity: 0; /* Ban đầu ẩn */
+  visibility: hidden; /* Ban đầu ẩn */
+  color: white;
+  font-size: 14px;
+  left: 50%; /* Đặt văn bản ở giữa */
+  top: 50%; /* Đặt văn bản ở giữa */
+  transform: translate(-50%, -50%) translateX(-100%); /* Ban đầu ẩn bên trái */
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển động */
+  margin-left: 8px; /* Khoảng cách giữa icon và text */
+}
+
+/* Khi hover vào nút, kéo dài và hiển thị text */
+.action-box .btn:hover {
+  justify-content: space-between;
+  width: 150px; /* Nút sẽ mở rộng chiều rộng khi hover */
+}
+
+/* Khi hover vào nút, trượt text vào giữa */
+.action-box .btn:hover span {
+  opacity: 1; /* Hiển thị văn bản */
+  visibility: visible; /* Đảm bảo văn bản được hiển thị */
+  transform: translate(-50%, -50%) translateX(0); /* Trượt văn bản vào giữa */
+}
+/* Thay đổi màu nền khi hover */
+.action-box .btn:hover {
+  background-color: #d94e50;
+}
+
+/* Nút "View Details" */
+.action-box .btn.view-details {
+  flex-direction: row-reverse;
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.action-box .btn.view-details:hover {
+  background-color: #45a049;
+}
+
+/* Nút "Delete Ticket" */
+.action-box .btn.delete-ticket {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.action-box .btn.delete-ticket:hover {
+  background-color: #e53935;
+}

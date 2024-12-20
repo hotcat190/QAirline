@@ -11,6 +11,10 @@ import Destination from './components/pages/Destination';
 import MyFlight from './components/pages/MyFlights';
 import SearchFlight from './components/SearchFlight/SearchFlight';
 import Passenger from './components/Passenger/Passenger';
+import Profile from './components/Profile/Profile';
+import WriteBlog from './components/WriteBlog/WriteBlog';
+import Settings from 'components/Settings/Settings';
+import MyBlogs from 'components/MyBlogs/MyBlogs';
 import './assets/styles/responsives.css';
 
 import AdminLayout from './components/admin/layout/AdminLayout';
@@ -29,7 +33,7 @@ import { notFound } from 'components/ErrorPage/errors';
 const DefaultLayout = () => {
   const location = useLocation();
   
-  if (location.pathname.includes('/searchflights') || location.pathname.includes('/passenger')) {
+  if (location.pathname.includes('/searchflights') || location.pathname.includes('/passenger') || location.pathname.includes('/destination')) {
     return (
       <>
         <ActionForm />
@@ -65,6 +69,10 @@ class App extends Component {
                 <rd.Route path="/destination" element={<Destination />}></rd.Route>
                 <rd.Route path="/searchflights" element={<SearchFlight />}></rd.Route>
                 <rd.Route path="/passenger" element={<Passenger />}></rd.Route>
+                <rd.Route path="/profile" element={<Profile />}></rd.Route>
+                <rd.Route path="/write-blog" element={<WriteBlog />}></rd.Route>
+                <rd.Route path="/settings" element={<Settings />}></rd.Route>
+                <rd.Route path="/my-posts" element={<MyBlogs />}></rd.Route>
               </rd.Route>
               
               <rd.Route exact path="/admin" element={<AdminLayout />}>
@@ -73,8 +81,8 @@ class App extends Component {
                 <rd.Route path="aircrafts" element={<AdminAircrafts />}></rd.Route>
                 <rd.Route path="schedules" element={<AdminSchedules />}></rd.Route>
                 <rd.Route path="flights" element={<AdminFlights />}></rd.Route>
-                <rd.Route path="advertisements" element={<AdminAdvertisements />}></rd.Route>
                 <rd.Route path="bookings" element={<AdminBookings />}></rd.Route>
+                <rd.Route path="advertisements" element={<AdminAdvertisements />}></rd.Route>
               </rd.Route>
               
               <rd.Route path="*" element={<ErrorPage error={notFound} />} />

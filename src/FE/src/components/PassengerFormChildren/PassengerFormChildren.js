@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './PassengerFormChildren.css';
 
-const PassengerFormChildren = ({stt}) => {
+const PassengerFormChildren = ({stt, onUpdate}) => {
     const [ formData, setFormData ] = useState({
         firstName: "",
         lastName: "",
@@ -36,6 +36,10 @@ const PassengerFormChildren = ({stt}) => {
             setErrors((prevErrors) => ({ ...prevErrors, [ name ]: "" }));
         }
     };
+
+    useEffect(() => {
+        onUpdate(formData);
+    }, [formData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

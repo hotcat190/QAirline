@@ -114,10 +114,11 @@ const Flight = sequelize.define(
 const ClassFlight = sequelize.define(
   "ClassFlight",
   {
-    idclassFlight: {
+    idClassFlight: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      field: "idclassFlight",
     },
     class: { type: DataTypes.STRING(45), allowNull: false },
     seatAmount: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true },
@@ -160,13 +161,14 @@ const Notification = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    content: { type: DataTypes.STRING(100), allowNull: true },
+    content: { type: DataTypes.STRING(500), allowNull: true },
+    type: { type: DataTypes.STRING(45), allowNull: true },
+    unRead: { type: DataTypes.BOOLEAN, allowNull: true, defaultValue: true },
     create_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
-    unRead: { type: DataTypes.BOOLEAN, allowNull: true, defaultValue: true },
     idCustomer: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
   },
   {
@@ -235,11 +237,11 @@ Ticket.belongsTo(Customer, { foreignKey: "idCustomer" });
 
 ClassFlight.hasMany(Ticket, {
   foreignKey: "idClassFlight",
-  targetKey: "idclassFlight",
+  // targetKey: "idclassFlight",
 });
 Ticket.belongsTo(ClassFlight, {
   foreignKey: "idClassFlight",
-  targetKey: "idclassFlight",
+  // targetKey: "idclassFlight",
 });
 
 export {
