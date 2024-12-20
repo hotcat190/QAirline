@@ -118,7 +118,7 @@ export const logout = async (req, res) => {
     });
     // Trả về phản hồi thành công sau khi logout
     res.status(200).json({ message: "Logged out successfully" });
-  } catch (e) {
+  } catch (e) {    
     res.status(500).send(e.message);
     console.log(e);
   }
@@ -126,23 +126,35 @@ export const logout = async (req, res) => {
 
 export const sendUserInfo = async (req, res) => {
   const user = req.user;
-  if (user.role === 'admin') {
-    const admin = await Admin.findOne({
-      where: {
-        idAdmin: user.idAdmin,
-      }
-    })
-    res.status(200).json({
-      role: 'admin',
-      username: admin.username,
-      email: admin.email,
-      phoneNumber: admin.phoneNumber,
-    })
+  try {
+    if (user.role === 'admin') {
+      const admin = await Admin.findOne({
+        where: {
+          idAdmin: user.idAdmin,
+        }
+      })
+      res.status(200).json({
+        role: 'admin',
+        username: admin.username,
+        email: admin.email,
+        phoneNumber: admin.phoneNumber,
+      })
+    } else {
+      const customer = await Customer.findOne({
+        where: {
+          idCustomer: user.idCustomer,
+        }
+      })
+      res.status(200).json({
+        role: 'customer',
+        username: customer.username,
+        email: customer.email,
+        phoneNumber: customer.phoneNumber,
+      })
+    }
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err);
   }
-
-  res.status(200).json({
-    role: req.user.role,
-    username: req.user.username,    
-  })
 };
 

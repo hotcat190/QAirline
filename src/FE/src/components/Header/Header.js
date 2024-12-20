@@ -98,10 +98,11 @@ const UserDropdown = ({ avatar, setAvatar }) => {
 
   const handleLogout = () => {
     setShowDropdown(false);
-    if (logout()) {
-      navigate('/');
-      window.location.reload();
-    }
+    logout().then(success => {
+      if (success) {
+        navigate('/');
+      }
+    })
   };
 
   return (
