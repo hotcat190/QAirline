@@ -1,6 +1,7 @@
 import express from "express";
 import {
   bookTicket,
+  deleteTicket,
   getAllTickets,
   getTicketByCode,
   getTicketsSold
@@ -15,6 +16,7 @@ const router = express.Router();
 router.post("/", authenticateToken, bookTicket);
 router.get("/getTicketByCode", getTicketByCode);
 router.get("/", authenticateAdmin, getAllTickets);
+router.delete("/", authenticateToken, deleteTicket);
 router.get("/getTicketsSold", authenticateAdmin, getTicketsSold);
 
 export default router;

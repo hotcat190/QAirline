@@ -1,16 +1,22 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./TicketCard.css";
+import { BACKEND_BASE_URL } from "services/api";
 
 const TicketCard = ({
   ticket,
   onSelectTicket,
   selectedTicket,
   containerRef,
+  setListTicket,
+  setShowTicketDetail,
+  setShowNotification,
+  setNotification,
 }) => {
   const cardRef = useRef(null);
 
   const [isSelected, setSelected] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const formatDateAndTime = (isoDate) => {
     const date = new Date(isoDate);
@@ -52,7 +58,6 @@ const TicketCard = ({
         if (cardRef.current && containerRef.current) {
           const cardRect = cardRef.current.getBoundingClientRect();
           const containerRect = containerRef.current.getBoundingClientRect();
-          // console.log(cardRect.top, containerRef.current.scrollTop);
           const scrollTop =
             containerRef.current.scrollTop +
             (cardRect.top - containerRect.top) -
@@ -69,6 +74,7 @@ const TicketCard = ({
           setIsAnimating(false);
         }, 10);
       } else {
+        setShowTicketDetail(false);
         setSelected(false);
         setIsAnimating(true);
         setTimeout(() => {
@@ -79,13 +85,59 @@ const TicketCard = ({
   };
 
   const handleViewDetails = () => {
-    console.log("View details clicked");
-    // Logic xem chi tiết vé
+    // console.log("View details clicked");
+    if (isSelected) {
+      setShowTicketDetail((prev) => !prev);
+    }
   };
 
-  const handleDeleteTicket = () => {
-    console.log("Delete ticket clicked");
-    // Logic xóa vé
+  const handleDeleteTicket = async () => {
+    try {
+      const response = await fetch(
+        `${BACKEND_BASE_URL}/booking/?idTicket=${ticket.idTicket}`,
+        { method: "DELETE", credentials: "include" }
+      );
+      if (!response.ok) {
+        setNotification("Error delete ticket");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+        throw new Error("Error delete ticket");
+      } else {
+        setListTicket((prevList) =>
+          prevList.filter((tk) => tk != null && tk.idTicket !== ticket.idTicket)
+        );
+        onSelectTicket(null);
+        setNotification("Delete ticket successfully.");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+        throw new Error("Error delete ticket");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  const confirmDelete = () => {
+    const now = new Date();
+    const startDate = new Date(ticket.timeStart);
+    if (startDate - now < 24 * 60 * 60 * 1000) {
+      setNotification(
+        "You can't delete ticket with departure date less than 1 day away."
+      );
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+      return;
+    } else {
+      setShowDeleteConfirmation(true);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    handleDeleteTicket();
+    setShowDeleteConfirmation(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirmation(false);
   };
 
   useEffect(() => {
@@ -94,6 +146,8 @@ const TicketCard = ({
       selectedTicket &&
       selectedTicket.idTicket != ticket.idTicket
     ) {
+      window.scrollTo(0, 50);
+      setShowTicketDetail(false);
       setSelected(false);
       setIsAnimating(true);
       setTimeout(() => {
@@ -158,13 +212,14 @@ const TicketCard = ({
           </div>
         </div>
       </div>
+
       {(isSelected || isAnimating) && (
         <div
           className={`action-box ${
             isSelected ? "show" : isAnimating ? "hide" : ""
           }`}
         >
-          <button className="btn delete-ticket" onClick={handleDeleteTicket}>
+          <button className="btn delete-ticket" onClick={confirmDelete}>
             <i className="fas fa-trash"></i>
             <span>Delete Ticket</span>
           </button>
@@ -173,6 +228,45 @@ const TicketCard = ({
             <i className="fas fa-eye"></i>
           </button>
         </div>
+      )}
+
+      {showDeleteConfirmation && (
+        <>
+          <div className="overlay-delete"></div>
+          <div className="delete-confirmation-box">
+            <div className="confirmation-message">
+              <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                Are you sure you want to delete this ticket?
+              </p>
+            </div>
+            <div className="confirmation-buttons">
+              <button
+                className="btn yes"
+                onClick={handleConfirmDelete}
+                style={{
+                  padding: "10px 20px",
+                  border: "none",
+                  cursor: "pointer",
+                  borderRadius: "30px",
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className="btn no"
+                onClick={handleCancelDelete}
+                style={{
+                  padding: "10px 20px",
+                  border: "none",
+                  cursor: "pointer",
+                  borderRadius: "30px",
+                }}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

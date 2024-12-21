@@ -107,8 +107,8 @@ export const getNotification = async (req, res) => {
     const notifications = await Notification.findAll({
       where: { idCustomer },
       attributes: ["content", "type", "unRead", "create_at"],
+      order: [["create_at", "DESC"]],
     });
-
     res.send(notifications);
   } catch (err) {
     res.status(500).send(err.message);
