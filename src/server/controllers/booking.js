@@ -2,12 +2,12 @@ import { col } from "sequelize";
 import { sequelize } from "../models/config.model.js";
 
 import {
+  Customer,
   ClassFlight,
   Ticket,
   Flight,
   Airport,
   Notification,
-  Customer,
 } from "../models/model.js";
 
 const sendNotification = async (
