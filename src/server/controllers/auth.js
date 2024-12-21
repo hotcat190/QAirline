@@ -136,8 +136,6 @@ export const sendUserInfo = async (req, res) => {
       res.status(200).json({
         role: 'admin',
         username: admin.username,
-        email: admin.email,
-        phoneNumber: admin.phoneNumber,
       })
     } else {
       const customer = await Customer.findOne({
@@ -148,8 +146,6 @@ export const sendUserInfo = async (req, res) => {
       res.status(200).json({
         role: 'customer',
         username: customer.username,
-        email: customer.email,
-        phoneNumber: customer.phoneNumber,
       })
     }
   } catch (err) {

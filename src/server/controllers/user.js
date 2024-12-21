@@ -115,3 +115,14 @@ export const getNotification = async (req, res) => {
     console.log(err.message);
   }
 };
+
+export const getUserCount = async (req, res) => {
+  try {
+    const userCount = await Customer.count();
+    res.status(200).send({userCount: userCount});
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err.message);
+  }
+  
+}

@@ -7,13 +7,17 @@ import { LoadState } from 'types/states/LoadState';
 import AdminTable from '../../components/AdminTable/AdminTable';
 import AdminPageTitle from '../../components/PageTitle/AdminPageTitle';
 import AdminModal from '../../components/Modal/AdminModal';
-
+import Notification from 'components/Notification/Notification';
 
 export default function AdminAircrafts() {
 
     const [aircrafts, setAircrafts] = useState([]);
     const [loadState, setLoadState] = useState(LoadState.LOADING);
     const { getAllAirplane, getAirplane, addAirplane, updateAirplane, deleteAirplane } = useAirplane();
+
+    const [showNoti, setShowNoti] = useState(false);
+    const [notiMessage, setNotiMessage] = useState('');
+    const [isSuccessful, setIsSuccessful] = useState(true); 
 
     useEffect(() => {
         handleRefresh();
@@ -31,7 +35,7 @@ export default function AdminAircrafts() {
     };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingAircraft, setEditingAircraft] = useState(null);
+    const [editingAircraft, setEditingAircraft] = useState({});
 
     const columns = [
         { key: 'idAirplane', label: 'ID', type: 'number' },
@@ -67,16 +71,40 @@ export default function AdminAircrafts() {
     const handleSubmit = (formData) => {
         if (editingAircraft) {
             // Edit existing aircraft
-            updateAirplane(formData).then(
-                setAircrafts(aircrafts.map(aircraft => 
-                    aircraft.idAirplane === editingAircraft.idAirplane ? { ...formData, idAirplane: aircraft.idAirplane } : aircraft
-                ))
-            )
+            updateAirplane(formData).then(() => {
+                console.log(aircrafts);
+                setAircrafts(prev => 
+                    prev.map(aircraft => 
+                        aircraft.idAirplane === editingAircraft.idAirplane 
+                            ? { ...formData, idAirplane: aircraft.idAirplane } 
+                            : aircraft // Ensure to return the unchanged aircraft
+                    )
+                );
+                console.log(aircrafts);
+                setNotiMessage("Successfully updated aircraft!");
+                setIsSuccessful(true);
+                setShowNoti(true);
+                setTimeout(() =>
+                    setShowNoti(false), 2000
+                );
+            });
         } else {
             // Add new aircraft
-            addAirplane(formData).then( newAircraft => {
-                console.log(newAircraft);
-                handleRefresh()
+            addAirplane(formData).then( (idAirplane) => {
+                getAirplane(idAirplane).then (newAircraft =>
+                    setAircrafts(prev => [
+                        ...prev,
+                        newAircraft,
+                    ])
+                )
+                setNotiMessage("Successfully created aircraft!");
+                setIsSuccessful(true);
+                setShowNoti(true);
+                setTimeout(() =>
+                    setShowNoti(false), 2000
+                );
+                
+                // handleRefresh()
                 // setAircrafts([...aircrafts, { newAircraft }]);
             });
         }
@@ -85,6 +113,11 @@ export default function AdminAircrafts() {
 
     return (
         <div className={styles.container}>
+            <Notification
+                message={notiMessage}
+                show={showNoti}
+                isSuccessful={isSuccessful}
+            />
             <AdminPageTitle title="Aircrafts Management" onAdd={handleAdd} label="Add Aircraft" />
 
             <AdminTable

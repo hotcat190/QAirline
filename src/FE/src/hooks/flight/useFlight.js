@@ -87,6 +87,17 @@ export const useFlight = () => {
         return data;
     }
 
+    const getFlightCount = async () => {
+        const response = await fetch(`${BACKEND_BASE_URL}/flight/getFlightCount`, {
+            credentials: 'include',
+        })
+        if (!response.ok) {
+            throw new Error("Error getting flight count.")
+        }
+        const data = await response.json();
+        return data;
+    }
+
     return {
         getAllFlights,
         getAllFlightsAdmin,
@@ -94,6 +105,7 @@ export const useFlight = () => {
         getFlightByIdAdmin,
         createFlight,
         changeInfoFlight,
-        deleteFlight
+        deleteFlight,
+        getFlightCount,
     }
 }

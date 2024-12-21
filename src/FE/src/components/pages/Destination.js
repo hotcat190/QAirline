@@ -113,7 +113,7 @@ function Destination() {
                 const flights = await res.json();
 
                 const flightWithPrices = await Promise.all(
-                    flights.map(async (flight) => {
+                    flights.filter(f => Date.parse(f.timeStart) > Date.now()).map(async (flight) => {
                         const flightInfo = await fetch(
                             `https://qairline.onrender.com/api/flight/getInfo?idFlight=${flight.idFlight}`
                         );

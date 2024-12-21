@@ -55,6 +55,7 @@ export function AuthProvider({ children }) {
             console.log(
               `Verified failed: ${(await verifyAdmin.json()).message}`
             );
+            setAuthStatus(AuthState.UNAUTHORIZED)
             return;
           }
 

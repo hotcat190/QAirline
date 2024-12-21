@@ -276,3 +276,15 @@ export const deleteTicket = async (req, res) => {
     });
   }
 };
+
+export const getTicketsSold = async (req, res) => {
+  try {
+    const ticketsSold = await Ticket.count({
+    });
+    res.status(200).send({ticketsSold: ticketsSold});
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err.message);
+  }
+  
+}

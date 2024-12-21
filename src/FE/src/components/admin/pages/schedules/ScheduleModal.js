@@ -289,7 +289,7 @@ export function ScheduleModal({ flight, onClose, onSubmit, onEdit, onDelete, air
                     airplanes={!canEdit ? airplanes : airplanes.filter(airplane => airplane.status === "Active")}
                     onSelectAircraft={onSelectAircraft}
                     inputRef={aircraftInputRef}
-                    disabled={isEditing}
+                    // disabled={isEditing}
                     initialValue={formData.idAirplane}
                 />
                 {errors.airplane && <span className={styles.error}>{errors.airplane}</span>}

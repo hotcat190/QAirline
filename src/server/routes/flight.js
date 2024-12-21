@@ -9,6 +9,7 @@ import {
   getAllFlightsAdmin,
   getInfoFlightAdmin,
   getFlightsPaged,
+  getFlightCount,
 } from "../controllers/flight.js";
 import {
   authenticateToken,
@@ -26,6 +27,7 @@ router.delete("/", authenticateAdmin, deleteFlight);
 router.get("/", getAllFlights);
 router.get("/adminAll", authenticateAdmin, getAllFlightsAdmin);
 router.get("/getInfoAdmin", authenticateAdmin, getInfoFlightAdmin);
-router.get("/getFlightPaged",getFlightsPaged)
+router.get("/getFlightPaged", authenticateAdmin, getFlightsPaged);
+router.get("/getFlightCount", authenticateAdmin, getFlightCount);
 
 export default router;

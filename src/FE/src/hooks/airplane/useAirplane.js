@@ -26,6 +26,8 @@ export const useAirplane = () => {
             body: JSON.stringify(airplane),
             credentials: 'include',
         });
+        const data = await response.json();
+        return data
     }
 
     const updateAirplane = async (airplane) => {
@@ -46,5 +48,20 @@ export const useAirplane = () => {
         });
     }   
 
-    return { getAllAirplane, getAirplane, addAirplane, updateAirplane, deleteAirplane };
+    const getAirplaneCount = async () => {
+        const response = await fetch(`${BACKEND_BASE_URL}/airplane/getAirplaneCount`, {
+            credentials: 'include',
+        }); 
+        const data = await response.json();
+        return data;
+    }
+
+    return { 
+        getAllAirplane,
+        getAirplane,
+        addAirplane,
+        updateAirplane, 
+        deleteAirplane,
+        getAirplaneCount,
+    };
 }

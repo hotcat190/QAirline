@@ -15,6 +15,7 @@ import { getCoordinates } from 'data/const/airportCoordinates';
 import { formatDate } from 'utils/date/formatDate';
 import { FlightStatus, getFlightStatus } from 'types/flightStatus/FlightStatus';
 import AdminModal from 'components/admin/components/Modal/AdminModal';
+import RefreshButton from 'components/admin/components/buttons/RefreshButton/RefreshButton';
 
 export default function AdminFlights() {
     const [selectedFlight, setSelectedFlight] = useState(null);
@@ -27,8 +28,6 @@ export default function AdminFlights() {
     useEffect(() => {
         handleRefresh();
     }, []);
-
-    
 
     const handleRefresh = () => {
         setLoadState(LoadState.LOADING);
@@ -60,11 +59,11 @@ export default function AdminFlights() {
         // { key: 'aircraftCode', label: 'Aircraft Code', type: 'text' },
         { key: 'origin', label: 'Origin', type: 'text' },
         { key: 'destination', label: 'Destination', type: 'text' },
-        { key: 'aircraft', label: 'Aircraft', type: 'text' },
+        // { key: 'aircraft', label: 'Aircraft', type: 'text' },
         // { key: 'departureDate', label: 'Departure', type: 'date', showLabel: true, labelPadding: 'medium' },
         // { key: 'departureTime', label: '', type: 'timeSlider'},
-        { key: 'departureTime', label: 'Departure', type: 'datetime', showLabel: true, labelPadding: 'medium' },
-        { key: 'arrivalTime', label: 'Arrival', type: 'datetime', showLabel: true, labelPadding: 'medium' },
+        // { key: 'departureTime', label: 'Departure', type: 'datetime', showLabel: true, labelPadding: 'medium' },
+        // { key: 'arrivalTime', label: 'Arrival', type: 'datetime', showLabel: true, labelPadding: 'medium' },
         // { key: 'arrivalDate', label: 'Arrival', type: 'date', showLabel: true, labelPadding: 'medium' },
         { 
             key: 'status',

@@ -70,3 +70,12 @@ export const getAllAirplane = async (req, res) => {
   }
 };
 
+export const getAirplaneCount = async (req, res) => {
+  try {
+    const airplaneCount = await Airplane.count();
+    res.status(200).send({airplaneCount: airplaneCount});
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err.message);
+  }
+}

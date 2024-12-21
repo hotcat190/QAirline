@@ -4,6 +4,7 @@ import {
   deleteTicket,
   getAllTickets,
   getTicketByCode,
+  getTicketsSold
 } from "../controllers/booking.js";
 import {
   authenticateAdmin,
@@ -16,5 +17,6 @@ router.post("/", authenticateToken, bookTicket);
 router.get("/getTicketByCode", getTicketByCode);
 router.get("/", authenticateAdmin, getAllTickets);
 router.delete("/", authenticateToken, deleteTicket);
+router.get("/getTicketsSold", authenticateAdmin, getTicketsSold);
 
 export default router;

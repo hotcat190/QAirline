@@ -39,11 +39,11 @@ const ProtectedAdminRoute = ({ children }) => {
         return <LoadingPage />;
     } else if (authStatus === AuthState.SERVER_UNAVAILABLE) {
         return <ErrorPage error={serverUnavailable} />;
-    } else if (authStatus === AuthState.UNAUTHORIZED) {
-        return <ErrorPage error={unauthorized} />;
     } else if (authStatus === AuthState.SERVER_ERROR) {
         return <ErrorPage error={internalServerError} />;
-    }
+    } else if (authStatus !== AuthState.ELEVATED) {
+        return <ErrorPage error={unauthorized} />;
+    } 
 
     if (!user || user.role !== 'admin') {
         return <ErrorPage error={unauthorized} />;
