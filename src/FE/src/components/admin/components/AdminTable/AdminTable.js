@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight, FaSync } from 'react-icons/fa';
-
+import { formatDate } from 'utils/date/formatDate';
 import LoadingSpinner from 'components/LoadingPage/LoadingSpinner';
 import { LoadState } from 'types/states/LoadState';
 
@@ -150,6 +150,38 @@ export default function AdminTable({
         }
     };
 
+    const handleFilter = (filters) => {
+        let filtered = data;
+
+        // Apply column filters
+        for (const key in filters) {
+            if (filters[key]) {
+                filtered = filtered.filter(item => columnFilter(item, filters));
+            }
+        }
+
+        // Apply datetime filtering
+        if (filters.bookingDate) {
+            const startDate = new Date(filters.bookingDate.start);
+            const endDate = new Date(filters.bookingDate.end);
+            filtered = filtered.filter(item => {
+                const bookingDate = new Date(item.bookingDate);
+                return bookingDate >= startDate && bookingDate <= endDate;
+            });
+        }
+
+        if (filters.travelDate) {
+            const startDate = new Date(filters.travelDate.start);
+            const endDate = new Date(filters.travelDate.end);
+            filtered = filtered.filter(item => {
+                const travelDate = new Date(item.travelDate);
+                return travelDate >= startDate && travelDate <= endDate;
+            });
+        }
+
+        setFilteredData(filtered);
+    };
+
     return (
         <div className={styles.tableWrapper}>
             <div className={styles.tableHeader}>
@@ -196,6 +228,12 @@ export default function AdminTable({
                                         <td key={column.key} className={styles.statusContainer}>
                                             <span className={`${styles.status} ${styles[item[column.key].toLowerCase()]}`}>
                                                 {item[column.key]}
+                                            </span>
+                                        </td>
+                                    ) : column.type === 'datetime' ? (
+                                        <td key={column.key} className={styles.statusContainer}>
+                                            <span className={`${styles.status} ${styles[item[column.key].toLowerCase()]}`}>
+                                                {formatDate(item[column.key])}
                                             </span>
                                         </td>
                                     ) : (
