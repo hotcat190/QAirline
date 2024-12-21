@@ -45,7 +45,7 @@ export default function AdminBookings() {
                 id: ticket.idTicket,
                 code: ticket.code,
                 passengerName: ticket.Customer.username,
-                flightNumber: ticket.ClassFlight.Flight.idFlight,
+                flightNumber: `QA${ticket.ClassFlight.Flight.idFlight}`,
                 class: ticket.ClassFlight.class,
                 departure: ticket.ClassFlight.Flight.beginAirport.city,
                 destination: ticket.ClassFlight.Flight.endAirport.city,
@@ -53,6 +53,7 @@ export default function AdminBookings() {
                 travelDate: formatDate(ticket.ClassFlight.Flight.timeStart),
                 status: getTicketStatus[ticket.status],
                 amount: ticket.price,
+                created_at: ticket.created_at,
             }));
             console.log(mappedData);
             setBookings(mappedData);
@@ -83,10 +84,15 @@ export default function AdminBookings() {
             key: 'status', 
             label: 'Status', 
             type: 'checkbox',
-            options: ['Confirmed', 'Pending', 'Cancelled']
+            options: ['Confirmed', 'Pending']
         },
         
     ];    
+
+    const inRangeToday = (date) => {
+        const parsedDate = Date.parse(date);
+        return parsedDate < Date.now() + 24*3600*1000 && parsedDate > Date.now() - 24*3600*1000
+    }
 
     return (
         <div className={styles.bookingsPage}>
@@ -95,19 +101,19 @@ export default function AdminBookings() {
             <div className={styles.statsCards}>
                 <div className={styles.statCard}>
                     <h3>Total Bookings</h3>
-                    <p>1,234</p>
+                    <p>{bookings.length}</p>
                 </div>
                 <div className={styles.statCard}>
                     <h3>Today's Bookings</h3>
-                    <p>45</p>
+                    <p>{bookings.filter(b => inRangeToday(b.created_at)).length}</p>
                 </div>
                 <div className={styles.statCard}>
                     <h3>Pending Confirmation</h3>
-                    <p>12</p>
+                    <p>{bookings.filter(b => b.status === 'Pending').length}</p>
                 </div>
                 <div className={styles.statCard}>
                     <h3>Total Revenue</h3>
-                    <p>123.5M VND</p>
+                    <p>{bookings.reduce((acc, val) => Number(acc) + Number(val.amount), 0)/1000000}M</p>
                 </div>
             </div>
 

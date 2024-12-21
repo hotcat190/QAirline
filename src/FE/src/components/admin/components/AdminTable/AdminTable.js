@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight, FaSync } from 'react-icons/fa';
 
 import LoadingSpinner from 'components/LoadingPage/LoadingSpinner';
@@ -30,6 +29,42 @@ export default function AdminTable({
     pageSizeOptions = [5, 10, 20, 50], // Options for items per page    
 }) {
     const [filteredData, setFilteredData] = useState(data);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(itemsPerPage);
+    
+    // Calculate current data based on filteredData, currentPage, and pageSize
+    const [currentData, setCurrentData] = useState([]);
+
+    useEffect(() => {
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, filteredData.length);
+        setCurrentData(filteredData.slice(startIndex, endIndex));
+    }, [filteredData, currentPage, pageSize]);
+
+    const handleSort = (columnKey) => {
+        let direction = 'ascending';
+        if (sortConfig.key === columnKey && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key: columnKey, direction });
+    };
+
+    useEffect(() => {
+        let sortedData = [...data];
+        if (sortConfig.key) {
+            sortedData.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        setFilteredData(sortedData);
+    }, [data, sortConfig]);
 
     const handleSearch = (searchQuery) => {
         setGlobalSearch(searchQuery);
@@ -64,16 +99,11 @@ export default function AdminTable({
         setFilteredData(data);
     }, [data]);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(itemsPerPage);
     const [pageInput, setPageInput] = useState(currentPage.toString());
 
     // Calculate pagination values
     const totalItems = filteredData.length;
     const totalPages = Math.ceil(totalItems / pageSize);
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = Math.min(startIndex + pageSize, totalItems);
-    const currentData = filteredData.slice(startIndex, endIndex);
 
     // Handle page changes
     const handlePageChange = (newPage) => {
@@ -151,7 +181,9 @@ export default function AdminTable({
                     <thead>
                         <tr>
                             {columns.map(column => (
-                                <th key={column.key}>{column.label}</th>
+                                <th key={column.key} onClick={() => handleSort(column.key)}>
+                                    {column.label} {sortConfig.key === column.key ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : ''}
+                                </th>
                             ))}
                             {actions && <th>Actions</th>}
                         </tr>

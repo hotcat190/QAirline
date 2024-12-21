@@ -17,6 +17,7 @@ import { ScheduleModal } from './ScheduleModal';
 import { useAirport } from 'hooks/airport/useAirport';
 import { useAirplane } from 'hooks/airplane/useAirplane';
 import SortControls from '../../components/SortControls/SortControls';
+import Notification from 'components/Notification/Notification';
 
 const AdminSchedules = () => {
     const {getAllAirports} = useAirport();
@@ -25,6 +26,10 @@ const AdminSchedules = () => {
 
     const [airports, setAirports] = useState();
     const [airplanes, setAirplanes] = useState();
+
+    const [showNoti, setShowNoti] = useState(false);
+    const [notiMessage, setNotiMessage] = useState('');
+    const [isSuccessful, setIsSuccessful] = useState(true);
 
     useEffect(() => {
         getAllAirports().then(value =>
@@ -77,6 +82,12 @@ const AdminSchedules = () => {
                 })
                 setFlights(prev => [...prev, newFlight]);
                 setFilteredFlights(prev => [...prev, newFlight]);
+                setNotiMessage(`Successfully created flight: QA${newFlight.idFlight}!`);
+                setIsSuccessful(true);
+                setShowNoti(true);
+                setTimeout(() =>
+                    setShowNoti(false), 2000
+                );
             })
         })
         setIsModalOpen(false);
@@ -114,6 +125,12 @@ const AdminSchedules = () => {
                         timeEnd: requestBody.timeEnd,
                     } : flight
                 )
+            );
+            setNotiMessage("Successfully updated flight!");
+            setIsSuccessful(true);
+            setShowNoti(true);
+            setTimeout(() =>
+                setShowNoti(false), 2000
             );
         });
 
@@ -345,7 +362,14 @@ const AdminSchedules = () => {
 
     return (
         <div className={styles.schedulesPage}>
+            <Notification
+                message={notiMessage}
+                show={showNoti}
+                isSuccessful={isSuccessful}
+            />
+            
             <AdminPageTitle title="Schedules Management" onAdd={handleAddSchedule} label="Add Flight" />
+            
             <div className={styles.mainContent}>
                 <div className={styles.filtersCard}>
                     <div className={styles.filterHeader}>
@@ -416,7 +440,6 @@ const AdminSchedules = () => {
                 />
             )}
         </div>
-        
     )
 }
 

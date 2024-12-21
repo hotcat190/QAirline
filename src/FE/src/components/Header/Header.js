@@ -129,6 +129,13 @@ const UserDropdown = ({ avatar, setAvatar }) => {
 
           {/* Links */}
           <ul className="dropdown-links">
+            {user.role === 'admin' && 
+              <li>
+                <Link to="/admin" onClick={() => setShowDropdown(false)}>
+                  Admin
+                </Link>
+              </li>
+            }
             <li>
               <Link to="/profile" onClick={() => setShowDropdown(false)}>
                 Profile

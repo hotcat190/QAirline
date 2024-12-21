@@ -554,3 +554,13 @@ export const getInfoFlightAdmin = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+export const getFlightCount = async (req, res) => {
+  try {
+    const flightCount = await Flight.count();
+    res.status(200).send({flightCount: flightCount});
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+}
