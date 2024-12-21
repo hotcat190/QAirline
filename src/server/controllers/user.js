@@ -109,7 +109,6 @@ export const getNotification = async (req, res) => {
       attributes: ["content", "type", "unRead", "create_at"],
       order: [["create_at", "DESC"]],
     });
-    console.log(notifications[0]);
     res.send(notifications);
   } catch (err) {
     res.status(500).send(err.message);
