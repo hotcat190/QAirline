@@ -8,7 +8,6 @@ import {
   Flight,
   Airport,
   Notification,
-  Customer,
 } from "../models/model.js";
 
 const sendNotification = async (
