@@ -261,6 +261,13 @@ export const deleteTicket = async (req, res) => {
       });
     }
     await transaction.commit();
+    const content = `Bạn đã hủy thành công chuyến bay có số hiệu QA${ticket.ClassFlight.idFlight} hạng vé ${ticket.ClassFlight.class} mã vé: ${ticket.code}`;
+
+    await Notification.create({
+      content,
+      type: "ticket",
+      idCustomer,
+    });
     res.send(`Ticket deleted and ClassFlight updated successfully.`);
   } catch (err) {
     await transaction.rollback();
