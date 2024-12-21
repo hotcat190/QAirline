@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "./News.css";
+import { useAdvert } from "hooks/advert/useAdvert";
+
+const mocksNewsData = [
+  { id: 1, image: "img/noel.jpg" },
+  { id: 2, image: "img/noel.jpg" },
+  { id: 3, image: "img/noel.jpg" },
+  { id: 4, image: "img/noel.jpg" },
+  { id: 5, image: "img/noel.jpg" },
+];
 
 const News = () => {
-  const newsData = [
-    { id: 1, image: "img/noel.jpg" },
-    { id: 2, image: "img/noel.jpg" },
-    { id: 3, image: "img/noel.jpg" },
-    { id: 4, image: "img/noel.jpg" },
-    { id: 5, image: "img/noel.jpg" },
-  ];
+  const {getAllAdvert} = useAdvert();
+  const [newsData, setNewsData] = useState([]);
+
+  useEffect(() => {
+    getAllAdvert().then(data => {
+      setNewsData(data.map(ad => ({
+        id: ad.idAdvertisement,
+        image: ad.image_url,
+      })));
+    })
+  }, [])
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date());
