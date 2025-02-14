@@ -51,6 +51,10 @@
 }
 
 @media screen and (max-width: 1200px) {
+    main .main-leftcontent .des {
+        width: 65%;
+        margin: 0 auto;
+    }
 
     .staffs-show {
         height: 100%;
@@ -71,7 +75,7 @@
     }
 
     main .main-leftcontent {
-        width: 80%;
+        width: 100%;
         text-align: center;
         margin: 0 auto;
     }
@@ -228,6 +232,23 @@
 
 @media screen and (max-width: 767px) {
 
+    /* .main-booking {
+        width: 300px;
+    } */
+    .flight-options {
+        justify-content: space-between;
+    }
+
+    .flight-options label {
+        font-size: 1.4rem;
+    }
+
+
+    .hidden-end {
+        width: 278px;
+    }
+
+
     .flight-details {
         gap: 30px;
     }
@@ -237,7 +258,7 @@
     }
 
     .logo {
-        width: 110px;
+        width: 95px;
     }
 
     .flight-form {
@@ -336,7 +357,12 @@
     }
 
     .featured .list {
+        width: 100%;
         grid-template-columns: repeat(1, 1fr);
+    }
+
+    .features {
+        width: 100%;
     }
 
     .world-map {
@@ -398,6 +424,11 @@
     .num-stats .stats-desc {
         font-size: 1.2rem;
         margin-top: 10px;
+        text-align: center;
+    }
+
+    .stats-info .detailed {
+        text-align: center;
     }
 
     .stats-info .num {

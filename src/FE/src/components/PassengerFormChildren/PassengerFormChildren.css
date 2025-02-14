@@ -1,0 +1,169 @@
+.form-passenger-container {
+    width: 100%;
+    height: auto;
+    background: #ffffff;
+    padding: 10px 20px 20px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.form-passenger-container .receive-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+
+.form-passenger-container .MuiTab-root {
+    height: 40px;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #aaa9a9;
+    border-radius: 10px;
+}
+
+.MuiTab-wrapper .jss7743 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.jss5461 i {
+    font-size: 30px;
+}
+
+.jss5461 {
+    width: 30px;
+    transform: translateX(-5px);
+    text-align: center;
+}
+
+.form-passenger-container.collapsed {
+    height: 50px; 
+}
+
+.expand svg {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.form-passenger-container.collapsed .expand svg {
+    transform: rotate(180deg); 
+}
+
+input[type="radio" i] {
+    margin-left: 0;
+    margin-right: 5px;
+}
+
+.form-passenger-container .form-group-gender {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-passenger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Row Layout */
+.form-passenger-row {
+    display: flex;
+    gap: 30px;
+}
+
+.form-passenger-row.single {
+    flex-direction: column;
+}
+
+.form-passenger-group {
+    height: 56px;
+    position: relative;
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+/* Input Field */
+.form-passenger-input {
+    width: 100%;
+    font-size: 14px;
+    border: none;
+    border-bottom: 2px solid #918f8f;
+    background: transparent;
+    transition: border-color 0.3s ease, padding 0.3s ease;
+    height: 35px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.form-passenger-input:focus {
+    border-bottom: 2px solid black;
+    outline: none;
+}
+
+.form-passenger-input.error {
+    border-bottom: 2px solid #e74c3c;
+}
+
+.placeholder, .placholder-not-required {
+    position: absolute;
+    top: 34%;
+    left: 0;
+    color: #918f8f;
+    font-size: 14px;
+    font-weight: 550;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+.form-passenger-input:focus + .placeholder,
+.form-passenger-input:not(:placeholder-shown) + .placeholder {
+    top: -10px;
+    left: 2px;
+    color: black;
+}
+
+
+.form-passenger-input:focus + .placholder-not-required,
+.form-passenger-input:not(:placeholder-shown) + .placholder-not-required {
+    top: -3px;
+    left: 2px;
+    color: black;
+}
+
+.form-passenger-error {
+    color: rgb(224, 54, 54);
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.form-passenger-container .expand {
+    cursor: pointer;
+}
+
+.form-passenger-container .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+
+@media screen and (max-width: 996px) {
+    .form-passenger-container {
+        width: 100%;
+        height: auto;
+    }    
+}

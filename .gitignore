@@ -26,3 +26,8 @@ logs
 
 # Compiled binary addons
 build/Release
+
+# other
+src/server/controllers_t
+src/server/script.py
+QAirline_database/

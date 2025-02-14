@@ -1,0 +1,80 @@
+.airport-search .list-airports {
+  position: absolute; /* Hiện ngay bên dưới ô input */
+  top: 100%; /* Hiện ngay dưới ô input */
+  margin-top: 10px; /* fix cứng */
+  left: -43px; /* fix cứng */
+  width: 324px; /* fix cứng */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #fff;
+  z-index: 19;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.airport-search .input-field {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: black;
+  background-color: transparent;
+  font-family: "Poppins", sans-serif;
+}
+
+.airport-search .row {
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+.airport-search .country-cell {
+  font-weight: bold; 
+  font-size: 14px; 
+}
+
+.airport-search .city-cell {
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.airport-search span {
+  display: inline-block;
+  transition: transform 0.3s ease; /* Thêm animation mượt */
+}
+
+.airport-search .rotated {
+  transform: rotate(180deg);
+}
+
+/* Animation container */
+.airport-search .airport-list {
+  max-height: 0; /* Start with 0 height */
+  overflow: hidden; /* Hide overflowing elements */
+  transition: max-height 0.5s ease-in-out; /* Add a smooth transition */
+}
+
+/* When visible, expand the max-height */
+.airport-search .airport-list.show {
+  max-height: 1300px; /* Enough height to show the list items */
+}
+
+/* Add styles for disabled state */
+.airport-search .input-field:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Optional: Style the container differently when disabled */
+.airport-search:has(.input-field:disabled) {
+    opacity: 0.8;
+}

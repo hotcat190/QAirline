@@ -1,0 +1,27 @@
+.addButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #64b867;
+}
+
+.addButton:active {
+  background-color: #409e45;
+}
+
+
+
+@media screen and (max-width: 991px) { /* or any breakpoint you prefer */
+    .buttonText {
+      display: none;
+    }
+}

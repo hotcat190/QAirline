@@ -1,101 +1,139 @@
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(253, 248, 248, 0.5); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; 
+}
+
+.loading-container {
+  text-align: center;
+}
+
+.loading-container img {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.loading-container p {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+
 main .main-leftcontent .ranking {
-    background-color: #fef5f6;
-    color: var(--primary-color);
-    border: none;
-    padding: 5px 10px;
-    font-weight: bold;
+  background-color: #fef5f6;
+  color: var(--primary-color);
+  border: none;
+  padding: 5px 10px;
+  font-weight: bold;
 }
 
 .main-content {
-    padding-top: 80px;
-    position: relative;
+  padding-top: 80px;
+  position: relative;
 }
 
 main .main-leftcontent {
-    width: 55%;
-    position: relative;
+  width: 55%;
+  position: relative;
 }
 
 main .main-leftcontent .des {
-    font-size: 1.6rem;
-    margin-top: 30px;
-    line-height: 1.4;
+  font-size: 1.6rem;
+  margin-top: 20px;
+  line-height: 1.4;
 }
 
 .main-content .content {
-    display: flex;
+  display: flex;
 }
 
 main .main-content .destination {
-    position: absolute;
-    left: -90px;
-    top: 60px;
-    transform: rotate(-45deg);
+  position: absolute;
+  left: -90px;
+  top: 60px;
+  transform: rotate(-45deg);
 }
 
 main .main-content .cloud {
-    position: absolute;
-    top: -50px;
-    left: -120px;
-    width: 100px;
-    height: 100px;
-    animation: moveCloud 2s ease-in-out infinite alternate,
-            scaleCloud 2s ease-in-out infinite alternate;
-
+  position: absolute;
+  top: -50px;
+  left: -120px;
+  width: 100px;
+  height: 100px;
+  /* animation: moveCloud 2s ease-in-out infinite alternate,
+    scaleCloud 2s ease-in-out infinite alternate; */
 }
 
-@keyframes moveCloud {
-    0% { transform: translateX(-20px); }
-    100% { transform: translateX(20px); }
+/* @keyframes moveCloud {
+  0% {
+    transform: translateX(-20px);
+  }
+
+  100% {
+    transform: translateX(20px);
+  }
 }
 
 @keyframes scaleCloud {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.1); }
-}
+  0% {
+    transform: scale(1);
+  }
 
+  100% {
+    transform: scale(1.1);
+  }
+} */
 
 main .main-rightcontent {
-    position: relative;
-    margin-left: auto;
+  position: relative;
+  margin-left: auto;
 }
 
 main .main-rightcontent .plane {
-    position: absolute;
-    top: -70px;
-    right: -110px;
-    transform: rotate(25deg);
-    /* animation: movePlanee 7s linear infinite; */
+  position: absolute;
+  top: -70px;
+  right: -110px;
+  transform: rotate(25deg);
+  /* animation: movePlanee 7s linear infinite; */
 }
 
 @keyframes movePlane {
-    0% {
-        transform: translateX(100vw); /* Bắt đầu từ ngoài màn hình bên phải */
-    }
-    100% {
-        transform: translateX(-100vw); /* Kết thúc tại ngoài màn hình bên trái */
-    }
-}
+  0% {
+    transform: translateX(100vw);
+    /* Bắt đầu từ ngoài màn hình bên phải */
+  }
 
+  100% {
+    transform: translateX(-100vw);
+    /* Kết thúc tại ngoài màn hình bên trái */
+  }
+}
 
 main .main-content .rating-container {
-    position: absolute;
-    bottom: -20px;
-    right: -55px;
-    width: 160px;
-    padding: 10px 5px 10px 20px;
-    display: flex;
-    align-items: center;
-    background-color: white;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+  position: absolute;
+  bottom: -20px;
+  right: -55px;
+  width: 160px;
+  padding: 10px 5px 10px 20px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
-
-
 main .main-content .avatars {
-    display: flex;
-    position: relative;
+  display: flex;
+  position: relative;
 }
 
 /* .main-rightcontent .person {
@@ -103,172 +141,243 @@ main .main-content .avatars {
 } */
 
 main .main-content .avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    overflow: hidden;
-    margin-left: -10px;
-    /* Overlap effect */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  overflow: hidden;
+  margin-left: -10px;
+  /* Overlap effect */
 }
 
 main .main-content .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 main .main-content .rating-text {
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-    font-size: 16px;
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 main .main-content .star {
-    color: gold;
-    margin-left: 5px;
+  color: gold;
+  margin-left: 5px;
 }
 
 main .main-rightcontent img {
-    border-radius: 10px;
-    max-width: 100%;
-    height: auto;
+  border-radius: 10px;
+  max-width: 100%;
+  height: auto;
 }
 
 .booking-container {
-    padding: 20px;
-    background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding: 20px;
+  background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dropdown-container {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }
 
 .flight-options {
-    background: #e40f27;
-    display: flex;
-    gap: 65px;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    padding: 15px 20px;
-    width: 100%;
+  background: #e40f27;
+  display: flex;
+  gap: 30px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 15px 20px;
+  width: 100%;
+}
+
+.input-group .input-field {
+  width: 100%;
 }
 
 .dropdown {
-    background: #e40f27;
-    color: #fff;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    font-size: 14px;
-    cursor: pointer;
+  background: #e40f27;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .dropdown:focus {
-    outline: none;
-    /* Loại bỏ viền focus */
-    box-shadow: none;
-    /* Loại bỏ bóng */
+  outline: none;
+  /* Loại bỏ viền focus */
+  box-shadow: none;
+  /* Loại bỏ bóng */
 }
 
 .flight-details {
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.flight-details-from,
-.flight-details-to {
-    display: flex;
-    gap: 10px;
-}
-
-.detail {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 14px;
-}
-
-.detail label {
-    font-weight: bold;
-}
-
-.detail input {
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    width: 200px;
-}
-
-.detail .location,
-.detail .date {
-    display: flex;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
 }
 
 .search-flights {
-    background-color: #e40f27;
-    color: #fff;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s;
+  background-color: #e40f27;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
 }
 
 h1 {
-    margin-top: 20px;
-    font-size: 6.0rem;
-    font-weight: bold;
-    color: black;
-    line-height: 1.3;
+  margin-top: 20px;
+  font-size: 6rem;
+  font-weight: bold;
+  color: black;
+  line-height: 1.3;
 }
 
 .red-text {
-    color: #e30613;
+  color: #e30613;
 }
 
 .search-flights:hover {
-    opacity: 0.8;
-    transform: translateY(-5px);
+  opacity: 0.8;
+  transform: translateY(-5px);
 }
-
 
 .main-booking {
-    margin-top: 40px;
-    display: inline-block;
+  max-width: 350px;
+  margin-top: 25px;
+  display: inline-block;
 }
 
-.fa-magnifying-glass {
-    font-size: 18px;
+.plane-gif1 {
+  position: absolute;
+  bottom: 200px;
+  left: -180px;
 }
 
-.icon-rotate {
-    transform: rotate(180deg);
+.plane-gif2 {
+  position: absolute;
+  bottom: 30px;
+  left: -350px;
+  transform: rotateY(180deg); 
 }
 
-.main-booking .from, .main-booking .to, .main-booking .depart, .main-booking .return {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.people-button {
+  background-color: rgb(224, 54, 54);
+  color: #fff;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s;
+}
+
+.people-button:hover {
+  opacity: 0.9;
+}
+
+.flight-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  /* overflow: hidden; */
+  background-color: #fff;
+}
+
+.booking-container .input-group {
+  width: 175px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.input-group-date {
+  display: flex;
+  text-align: left;
+  padding-right: 20px;
+}
+
+.input-group:last-child {
+  border-right: none;
+}
+
+.icon {
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-field {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  background-color: transparent;
+}
+
+.date-field {
+  text-align: right;
+}
+
+.input-field::placeholder {
+  color: #999;
+}
+
+.main-content svg {
+  width: 1.5em;
 }
 
 .hidden-return {
-    display: none;
+  display: none;
+}
+
+.hidden-end {
+  width: 324px;
+}
+
+#from::placeholder {
+  color: black;
+}
+
+/* Custom radio button */
+.custom-radio {
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  appearance: none; 
+  border: 2px solid white;
+  border-radius: 50%; 
+  position: relative; 
+  outline: none; 
+  transition: background-color 0.3s, border-color 0.3s; 
+}
+
+.custom-radio:checked {
+  background-color: yellow; 
+  border-color: white
 }

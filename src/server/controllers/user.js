@@ -1,14 +1,29 @@
-import pool from "../database/database.js";
+import { col } from "sequelize";
+import {
+  Customer,
+  Ticket,
+  ClassFlight,
+  Flight,
+  Airport,
+  Notification,
+} from "../models/model.js";
 
 export const getInfo = async (req, res) => {
   const { idCustomer } = req.user;
 
   try {
-    const [info] = await pool.query(
-      "SELECT username, email FROM customer WHERE idCustomer = ?",
-      idCustomer
-    );
-    res.send(info);
+    const customer = await Customer.findOne({
+      attributes: ["username", "email", "numberPhone"],
+      where: {
+        idCustomer: idCustomer,
+      },
+    });
+
+    if (!customer) {
+      return res.status(404).send("Customer not found");
+    }
+
+    res.send(customer);
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -16,13 +31,20 @@ export const getInfo = async (req, res) => {
 
 export const changeInfo = async (req, res) => {
   const { idCustomer } = req.user;
-  const { username, email } = req.body;
+  const { username, email, numberPhone } = req.body;
 
   try {
-    await pool.query(
-      "UPDATE customer SET username = ?, email = ? WHERE idCustomer = ?",
-      [username, email, idCustomer]
+    const [updatedRows] = await Customer.update(
+      { username, email, numberPhone },
+      {
+        where: { idCustomer },
+      }
     );
+
+    if (updatedRows === 0) {
+      return res.status(404).send("Customer not found");
+    }
+
     res.send("Change info customer success");
   } catch (err) {
     res.status(500).send(err.message);
@@ -33,36 +55,74 @@ export const getTickets = async (req, res) => {
   const { idCustomer } = req.user;
 
   try {
-    const query = `SELECT 
-                      ticket.idTicket,
-                      idclassFlight,
-                      cf.class,
-                      ticket.code,
-                      ticket.price,
-                      ticket.status,
-                      ticket.created_at,
-                      flight.timeStart,
-                      ap1.name AS airportBeginName,
-                      ap2.name AS airportEndName
-                    FROM 
-                        customer
-                    JOIN 
-                        ticket USING(idCustomer)
-                    JOIN 
-                        classFlight AS cf USING(idclassFlight)
-                    JOIN 
-                        flight USING(idFlight)
-                    JOIN 
-                        airport AS ap1 ON flight.idbeginAirport = ap1.idairport
-                    JOIN 
-                        airport AS ap2 ON flight.idendAirport = ap2.idairport
-                    WHERE 
-                        customer.idCustomer = ?;`;
-    const [info] = await pool.query(query, idCustomer);
+    const tickets = await Ticket.findAll({
+      attributes: ["idTicket", "code", "status", "price"], // Chỉ lấy các thuộc tính cần thiết
+      include: [
+        {
+          model: ClassFlight,
+          attributes: ["class", "seatAmount", "seatBooked", "currentPrice"], // Chỉ lấy các trường cần thiết
+          include: [
+            {
+              model: Flight,
+              attributes: ["idFlight", "timeStart", "timeEnd"], // Chỉ lấy thời gian bắt đầu và kết thúc
+              include: [
+                {
+                  model: Airport,
+                  as: "beginAirport",
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
+                },
+                {
+                  model: Airport,
+                  as: "endAirport",
+                  attributes: ["name", "country", "city", "code"], // Chỉ lấy thông tin cần thiết
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: Customer,
+          as: "Customer",
+          attributes: [],
+          where: { idCustomer },
+        },
+      ],
+    });
 
-    res.send(info);
+    if (!tickets || tickets.length === 0) {
+      return res.status(404).send("No tickets found");
+    }
+
+    res.send(tickets);
   } catch (err) {
     res.status(500).send(err.message);
     console.log(err.message);
   }
 };
+
+export const getNotification = async (req, res) => {
+  const { idCustomer } = req.user;
+
+  try {
+    const notifications = await Notification.findAll({
+      where: { idCustomer },
+      attributes: ["content", "type", "unRead", "create_at"],
+      order: [["create_at", "DESC"]],
+    });
+    res.send(notifications);
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err.message);
+  }
+};
+
+export const getUserCount = async (req, res) => {
+  try {
+    const userCount = await Customer.count();
+    res.status(200).send({userCount: userCount});
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err.message);
+  }
+  
+}

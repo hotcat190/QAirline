@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useInputValidation } from "hooks/input/useInputValidation";
 import { BACKEND_BASE_URL } from "services/api";
 import isEmail from "validator/es/lib/isEmail";
-import isVietnameseMobilePhone from "utils/isVietnameseMobilePhone";
+import isVietnameseMobilePhone from "utils/validation/isVietnameseMobilePhone";
 
 export const useRegister = () => {
   const { value: email, handleChange: setEmail} 

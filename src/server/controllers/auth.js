@@ -1,5 +1,6 @@
 import * as argon2 from "argon2";
-import pool from "../database/database.js";
+import { Op } from "sequelize";
+import { Customer, Admin } from "../models/model.js";
 import { createAccessToken, createRefreshToken } from "./jwt.js";
 
 export const login = async (req, res) => {
@@ -8,17 +9,14 @@ export const login = async (req, res) => {
   let accessToken, refreshToken;
 
   try {
-    let [user] = await pool.query("SELECT * FROM admin WHERE email = ?", [
-      email,
-    ]);
+    let user = email ? await Admin.findAll({ where: { email } }) : [];
 
     if (user.length !== 0) {
       role = "admin";
     } else {
-      [user] = await pool.query(
-        "SELECT * FROM customer WHERE email = ? OR numberPhone = ?",
-        [email, numberPhone]
-      );
+      user = email
+        ? await Customer.findAll({ where: { email } })
+        : await Customer.findAll({ where: { numberPhone } });
 
       if (user.length === 0) {
         return res.status(400).json({ message: "User does not exist." });
@@ -38,21 +36,25 @@ export const login = async (req, res) => {
       accessToken = createAccessToken({
         idCustomer: `${user[0].idCustomer}`,
         role: `${role}`,
+        username: `${user[0].username}`,
         createAt: new Date(),
       });
       refreshToken = createRefreshToken({
         idCustomer: `${user[0].idCustomer}`,
         role: `${role}`,
+        username: `${user[0].username}`,
       });
     } else {
       accessToken = createAccessToken({
         idAdmin: `${user[0].idAdmin}`,
         role: `${role}`,
+        username: `${user[0].username}`,
         createAt: new Date(),
       });
       refreshToken = createRefreshToken({
         idAdmin: `${user[0].idAdmin}`,
         role: `${role}`,
+        username: `${user[0].username}`,
       });
     }
 
@@ -67,8 +69,8 @@ export const login = async (req, res) => {
       sameSite: "None",
     });
 
-    console.log(accessToken, refreshToken);
-    res.send({ role, idCustomer: user[0].username });
+    console.log(`accessToken: ${accessToken}\n refreshToken: ${refreshToken}`);
+    res.send({ role, username: user[0].username });
   } catch (e) {
     res.status(500).send(e.message);
     console.log(e);
@@ -78,13 +80,9 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
   const { email, password, numberPhone, username } = req.body;
   try {
-    const [existingUser] = (email) ? await pool.query(
-      "SELECT * FROM customer WHERE email = ?",
-      [email]
-    ) : await pool.query(
-      "SELECT * FROM customer WHERE numberPhone = ?",
-      [numberPhone]
-    );
+    const existingUser = email
+      ? await Customer.findAll({ where: { email } })
+      : await Customer.findAll({ where: { numberPhone } });
     console.log(existingUser);
 
     if (existingUser.length > 0) {
@@ -92,13 +90,67 @@ export const register = async (req, res) => {
     }
     var passwordHash = await argon2.hash(password);
 
-    await pool.query(
-      "INSERT INTO customer (username, email, password, numberPhone) VALUES (?, ?, ?, ?)",
-      [username, email, passwordHash, numberPhone]
-    );
+    await Customer.create({
+      username,
+      email,
+      password: passwordHash,
+      numberPhone,
+    });
   } catch (e) {
     res.status(500).send(e.message);
     console.log(e);
   }
   res.send(username);
 };
+
+export const logout = async (req, res) => {
+  try {
+    // Xóa cookie chứa token access và refresh
+    res.clearCookie("access", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+    res.clearCookie("refresh", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+    // Trả về phản hồi thành công sau khi logout
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (e) {    
+    res.status(500).send(e.message);
+    console.log(e);
+  }
+};
+
+export const sendUserInfo = async (req, res) => {
+  const user = req.user;
+  try {
+    if (user.role === 'admin') {
+      const admin = await Admin.findOne({
+        where: {
+          idAdmin: user.idAdmin,
+        }
+      })
+      res.status(200).json({
+        role: 'admin',
+        username: admin.username,
+      })
+    } else {
+      const customer = await Customer.findOne({
+        where: {
+          idCustomer: user.idCustomer,
+        }
+      })
+      res.status(200).json({
+        role: 'customer',
+        username: customer.username,
+      })
+    }
+  } catch (err) {
+    res.status(500).send(err.message);
+    console.log(err);
+  }
+};
+

@@ -97,7 +97,8 @@
 .returnHome {
     position: fixed;
     bottom: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1); 
+    width: auto;
 }
 
 .homeLink {
